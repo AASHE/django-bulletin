@@ -10,7 +10,7 @@ A simple newsletter application.
   - Story submission form for users
   - Newsletter email composition from stories
   - Constant Contact integration
-  - Content Type Plugins
+  - Content type plugins
 
 ## Settings
 
