@@ -1,0 +1,137 @@
+{% extends "bulletin/base.html" %}
+{% load static from staticfiles %}
+{% load bootstrap_pagination %}
+
+{% block before_headline %}
+  <a class="btn-u btn-u-blue btn-block visible-xs"
+     href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submit a Post
+  </a>
+  <a class="btn-u btn-u-blue btn-block btn-u-lg visible-s hidden-xs"
+     href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submit a Post
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="row blog-page">
+    <!-- Left Sidebar -->
+    <div class="col-md-9 md-margin-bottom-40">
+      {% for post in object_list %}
+        <!--Post-->
+        <div class="row blog blog-medium margin-bottom-40">
+          <div class="col-sm-3 text-right">
+            {% if post.image %}
+              <img class="img-responsive" src="{{ post.image.url }}" />
+            {% endif %}
+          </div>
+          <div class="col-sm-9">
+            <a href="{{ post.url }}">
+              <h2>{{ post.title }}</h2>
+            </a>
+            <div class="margin-bottom-10">
+              {{ post.blurb }}
+            </div>
+            <ul class="list-unstyled list-inline blog-info">
+              <li><span class="glyphicon glyphicon-calendar"></span>
+                {{ post.pub_date|date:"M j, Y" }}
+              </li>
+              {% if post.category %}
+                <li><span class="glyphicon glyphicon-tag"></span>
+                  {{ post.category }}
+                </li>
+              {% endif %}
+              {% if user.is_staff %}
+                <li>
+                  <a href="{% url "bulletin:plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <!--End Post-->
+      {% endfor %}
+
+      <!--Pagination-->
+      <div class="text-center">
+        {% bootstrap_paginate page_obj range=10 %}
+      </div>
+    <!--End Pagination-->
+    </div>
+    <!-- End Left Sidebar -->
+
+    <!-- Right Sidebar -->
+    <div class="col-md-3 md-margin-bottom-40">
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md text-left">
+          <h2><p>Featured Stories</p></h2>
+        </div>
+        <ul>
+          <li><a href="#">St. Mary's College Maryland Proposes Wage Policy</a> </li>
+          <li> <a href="#">Burlington County College Partners with Vocational School</a> </li>
+          <li> <a href="#">Ten Universities Collaborate on Local Food Procurement</a> </li>
+          <li> <a href="#">U Colorado Colorado Springs to Get Outdoor Solar Seating</a> </li>
+          <li> <a href="#">Four U Minnesota Buildings Claim Energy Star Rating</a> </li>
+        </ul>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md text-left">
+          <h2>Latest Events</h2>
+        </div>
+        <ul>
+          <li> <a href="#">Brunch with the President</a> </li>
+          <li> <a href="#">Sit In In Indianapolis In</a> </li>
+          <li> <a href="#">Next 4 Years Brunch</a> </li>
+          <li> <a href="#">Campus Doctor's Appointment Day</a> </li>
+          <li> <a href="#">Free Tour Please Come</a> </li>
+        </ul>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <h2>Latest Jobs</h2>
+        </div>
+        <ul>
+          <li> <a href="#">Assistant Faculty Advisor, Columia U</a> </li>
+          <li> <a href="#">Keeper of the Flame, Bismark U</a> </li>
+          <li> <a href="#">Technical Librarian, Carnegie-Mellon U</a> </li>
+          <li> <a href="#">Janitor, U Massachusetts</a> </li>
+          <li> <a href="#">Tenured Tenure Dispenser, Robert Morris College</a> </li>
+        </ul>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <h2>Latest Opportunities</h2>
+        </div>
+        <ul>
+          <li> <a href="#">Test Subjects Always Welcome</a> </li>
+          <li> <a href="#">Once In A Lifetime Opportunity</a> </li>
+          <li> <a href="#">Call Now!</a> </li>
+          <li> <a href="#">Scholarship For Grass Roots Fundraising</a> </li>
+          <li> <a href="#">Ineffable Value-laden Tenureless Position</a> </li>
+        </ul>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <h2>Latest Resources</h2>
+        </div>
+        <ul>
+          <li> <a href="#">Thirty-five New Databases</a> </li>
+          <li> <a href="#">Lots of Stuff That Used to Cost Money Now Free</a> </li>
+          <li> <a href="#">Peer Support Group For Sustainability Officers</a> </li>
+          <li> <a href="#">Webinars Galore</a> </li>
+          <li> <a href="#">5 Best Sustainable Videos on YouTube</a> </li>
+        </ul>
+      </div>
+      <a class="btn-u btn-u-blue btn-u-lg btn-block"
+         href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
+         type="button">
+        Submit a Post
+      </a>
+    </div>
+    <!-- End Right Sidebar -->
+  </div><!--/row-->
+{% endblock %}

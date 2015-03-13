@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load bootstrap_pagination %}
+
+{% block before_headline %}
+  <a class="btn-u btn-u-blue btn-block visible-xs"
+     href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submit News
+  </a>
+  <a class="btn-u btn-u-blue btn-block btn-u-lg visible-s hidden-xs"
+     href="{% url 'bulletin:plugins:story-submit' %}?next={{ request.path }}"
+     type="button">
+    Submit News
+  </a>
+{% endblock %}
+
+{% block after_headline %}
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="navbar-collapse navbar-responsive-collapse collapse" style="height: 0px;">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+              {{ current_filter_name }}
+              <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url "bulletin:plugins:story-list" %}">All</a></li>
+              {% for category in categories %}
+                {% comment %}
+                 Only want to show subcategories, here, so we only show a
+                 category if it's got a parent (i.e., a supercategory).
+                {% endcomment %}
+                {% if category.parent %}
+                <li>
+                  <a href="{% url "bulletin:plugins:story-list" %}?category={{ category.id }}">
+                    {{ category.fully_qualified_name }}
+                  </a>
+                </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="row blog-page">
+    <!-- Left Sidebar -->
+    <div class="col-md-9 md-margin-bottom-40">
+      {% for story in object_list %}
+        <!--Story-->
+        <div class="row blog blog-medium margin-bottom-40">
+          <div class="col-sm-3 text-right">
+            {% if story.image %}
+              <a href="{{ story.url }}">
+                <img class="img-responsive" src="{{ story.image.url }}" />
+              </a>
+            {% endif %}
+          </div>
+          <div class="col-sm-9">
+            <a href="{{ story.url }}">
+              <h2>{{ story.title }}</h2>
+            </a>
+            <div class="margin-bottom-10">
+              {{ story.blurb }}
+            </div>
+            <ul class="list-unstyled list-inline blog-info">
+              <li><span class="glyphicon glyphicon-calendar"></span>
+                {{ story.pub_date|date:"M j, Y" }}
+              </li>
+              {% if story.category %}
+                <li><span class="glyphicon glyphicon-tag"></span>
+                  <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
+                    {{ story.category.fully_qualified_name }}
+                  </a>
+                </li>
+              {% endif %}
+              {% if user.is_staff %}
+                <li>
+                  <a href="{% url "bulletin:plugins:update" story.content_type.model story.id %}?next={{ request.get_full_path }}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <!--End Story-->
+      {% endfor %}
+
+      <!--Pagination-->
+      <div class="text-center">
+        {% bootstrap_paginate page_obj range=10 %}
+      </div>
+    <!--End Pagination-->
+    </div>
+    <!-- End Left Sidebar -->
+
+    {% include "bulletin/sidebar.html" %}
+  </div><!--/row-->
+{% endblock %}

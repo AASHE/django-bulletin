@@ -1,0 +1,111 @@
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="panel-group" id="link-accordion-{{ link.id }}">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a data-toggle="collapse" data-parent="#link-accordion-{{ link.id }}"
+           href="#collapse-link-{{ link.id }}">
+          {{ link.text }}
+        </a>
+        <div class="pull-right">
+          <a href="{% url "newsletter:link-update" link.id %}?next={{ request.get_full_path }}"
+             title="Edit link">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <a data-toggle="modal"
+             data-target="#confirm-removal-{{ link.id }}"
+             title="Delete link">
+            {% bootstrap_icon "remove" %}
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="collapse-link-{{ link.id }}"
+         class="panel-collapse collapse">
+      <div class="panel-body">
+        <p>
+          <a href="{{ link.url }}">
+            {{ link.url }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirm-removal-{{ link.id }}" tabindex="-1"
+       role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+       data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Really?</h4>
+        </div>
+        <div class="modal-body">
+          Really delete <em>{{ link.text }}</em>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  id="btn-delete-confirmed-{{ link.id }}">
+            Yes
+          </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block end_of_body %}
+  <script type="text/javascript">
+
+   function getCookie(name) {
+     var cookieValue = null;
+     if (document.cookie && document.cookie != '') {
+       var cookies = document.cookie.split(';');
+       for (var i = 0; i < cookies.length; i++) {
+         var cookie = jQuery.trim(cookies[i]);
+         // Does this cookie string begin with the name we want?
+         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+           break;
+         }
+       }
+     }
+     return cookieValue;
+   }
+
+   $("#btn-delete-confirmed-{{ link.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: "DELETE",
+       url: "{% url "newsletter:api:link-detail" link.id %}",
+       success: function(msg){
+         // remove the link widget:
+         $("#link-accordion-{{ link.id }}").remove();
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+	 alert("Something broke. " + thrownError);
+         this.complete();
+       },
+     });
+   });
+  </script>
+{% endblock %}

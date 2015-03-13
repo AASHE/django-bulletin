@@ -1,0 +1,19 @@
+<html>
+  <body>
+    Issue: {{ issue }}
+    <ul>
+      {% for section in issue.sections.all %}
+        <li>
+          Section: {{ section }}
+          <ul>
+            {% for post in section.posts.all %}
+              <li>
+                Post: {{ post }}
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

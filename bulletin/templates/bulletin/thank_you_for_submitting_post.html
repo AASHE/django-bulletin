@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4>Thank you for submitting a post!</h4>
+    </div>
+    <div class="panel-body">
+      <p>
+        After approval of the editor of The Bulletin, your post will
+        appear on The Bulletin web site.
+      </p>
+      <a type="button"
+         href="{{ next }}"
+         class="btn btn-primary">
+        Continue
+      </a>
+    </div>
+  </div>
+{% endblock content %}

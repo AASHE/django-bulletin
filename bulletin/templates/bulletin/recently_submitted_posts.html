@@ -1,0 +1,64 @@
+{% extends "bulletin/base.html" %}
+
+{% block content %}
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Approved</th>
+        <th>Pub Date</th>
+        <th>Date Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in object_list %}
+        <tr>
+          <td>
+            <a href="{% url 'bulletin:update-post' post.pk %}?next={{ next }}">
+              {{ post.title }}
+            </a>
+          </td>
+          <td>{{ post.approved }}</td>
+          <td>{{ post.pub_date }}</td>
+          <td>{{ post.date_created }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <div class="pagination">
+      <span class="page-links">
+        {% if page_obj.has_previous %}
+          <a href="{% url 'bulletin:recently-added-posts' %}?page={{ page_obj.previous_page_number }}">
+            previous
+          </a>
+        {% endif %}
+        <span class="page-current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+          <a href="{% url 'bulletin:recently-added-posts' %}?page={{ page_obj.next_page_number }}">
+            next
+          </a>
+        {% endif %}
+      </span>
+    </div>
+  {% endif %}
+
+{% endblock %}
+
+{% block end_of_body %}
+  {{ block.super }}
+  <script>
+    jQuery( function($) {
+      $('tbody tr').addClass('clickable').click( function() {
+        var href = $(this).find('a').attr('href')
+        if(href) {
+            window.location = href;
+        }
+      });
+    });
+  </script>
+{% endblock %}

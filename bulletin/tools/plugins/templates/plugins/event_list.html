@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load bootstrap_pagination %}
+
+{% block before_headline %}
+  <a class="btn-u btn-u-blue btn-block visible-xs"
+     href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submit an Event
+  </a>
+  <a class="btn-u btn-u-blue btn-block btn-u-lg visible-s hidden-xs"
+     href="{% url 'bulletin:plugins:event-submit' %}?next={{ request.path }}"
+     type="button">
+    Submit an Event
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="row blog-page">
+    <!-- Left Sidebar -->
+    <div class="col-md-9 md-margin-bottom-40">
+      {% for event in object_list %}
+        <!--Event-->
+        <div class="row blog blog-medium margin-bottom-40">
+          <div class="col-sm-3 text-right">
+          </div>
+          <div class="col-sm-9">
+            <a href="{{ event.url }}">
+              <h2>{{ event.title }}</h2>
+            </a>
+            <div class="margin-bottom-10">
+              {{ event.organization }}
+            </div>
+            {% if event.organization != event.location %}
+              <div class="margin-bottom-10">
+                {{ event.location }}
+              </div>
+            {% endif %}
+            <ul class="list-unstyled list-inline blog-info">
+              <li><span class="glyphicon glyphicon-calendar"></span>
+                {{ event.pub_date|date:"M j, Y" }}
+              </li>
+              {% if user.is_staff %}
+                <li>
+                  <a href="{% url "bulletin:plugins:update" event.content_type.model event.id %}?next={{ request.get_full_path }}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <!--End Event-->
+      {% endfor %}
+
+      <!--Pagination-->
+      <div class="text-center">
+        {% bootstrap_paginate page_obj range=10 %}
+      </div>
+    <!--End Pagination-->
+    </div>
+    <!-- End Left Sidebar -->
+
+    {% include "bulletin/sidebar.html" %}
+  </div><!--/row-->
+{% endblock %}

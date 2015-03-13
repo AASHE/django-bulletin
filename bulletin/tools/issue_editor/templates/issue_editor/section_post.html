@@ -1,0 +1,216 @@
+{% comment %}
+    This template displays a list of Stories in a Section.
+{% endcomment %}
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="panel-group post-accordion"
+       id="post-accordion-{{ post.id }}">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#post-accordion-{{ post.id }}"
+             href="#collapsePost{{ post.id }}">
+            {{ post.title }}
+          </a>
+          <div class="pull-right">
+            <a href="{% url "plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}"
+               title="Edit post">
+              {% bootstrap_icon "pencil" %}
+            </a>
+            <a id="move-post-up-{{ post.id }}"
+               title="Move post up">
+              {% bootstrap_icon "arrow-up" %}
+            </a>
+            <a id="move-post-down-{{ post.id }}"
+               title="Move post down">
+              {% bootstrap_icon "arrow-down" %}
+            </a>
+            <a data-toggle="modal"
+               data-target="#confirm-removal-{{ post.id }}"
+               title="Remove post from issue">
+              {% bootstrap_icon "remove" %}
+            </a>
+          </div>
+        </h4>
+      </div>
+      <div id="collapsePost{{ post.id }}"
+           class="panel-collapse collapse">
+        <div class="panel-body">
+          <p>
+            {{ post.body }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirm-removal-{{ post.id }}" tabindex="-1"
+       role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+       data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Really?</h4>
+        </div>
+        <div class="modal-body">
+          Really remove <em>{{ post.title }}</em> from this issue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  id="btnDeleteConfirmed{{ post.id }}">
+            Yes
+          </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block end_of_body %}
+  <script type="text/javascript">
+
+   function getCookie(name) {
+     var cookieValue = null;
+     if (document.cookie && document.cookie != '') {
+       var cookies = document.cookie.split(';');
+       for (var i = 0; i < cookies.length; i++) {
+         var cookie = jQuery.trim(cookies[i]);
+         // Does this cookie string begin with the name we want?
+         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+           break;
+         }
+       }
+     }
+     return cookieValue;
+   }
+
+   $("#move-post-up-{{ post.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: "PATCH",
+       url: "{% url "newsletter:api:section-post-up" post.section.id post.id %}",
+       success: function(msg){
+         // move the post widget:
+         var thisPostAccordionId = "post-accordion-{{ post.id }}";
+         var thisPost = $('#' + thisPostAccordionId);
+         var previousPost = function () {
+
+           var postAccordions = thisPost.parent().find('.post-accordion');
+           var previousOne;
+
+           for (var i = 0; i < postAccordions.length; i++) {
+             postAccordion = postAccordions[i]
+
+             if (postAccordion.id === thisPostAccordionId) {
+               return (previousOne);
+             }
+             else {
+               previousOne = postAccordion;
+             }
+           }
+         }();
+
+         if (previousPost) {
+           thisPost.insertBefore(previousPost);
+         }
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+         alert("Something broke. " + thrownError);
+         this.complete();
+       },
+     });
+   });
+
+   $("#move-post-down-{{ post.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: "PATCH",
+       url: "{% url "newsletter:api:section-post-down" post.section.id post.id %}",
+       success: function(msg){
+         // move the post widget:
+         var thisPostAccordionId = "post-accordion-{{ post.id }}";
+         var thisPost = $('#' + thisPostAccordionId);
+         var nextPost = function () {
+
+           var postAccordions = thisPost.parent().find('.post-accordion');
+           var nextOne = false;
+
+           for (var i = 0; i < postAccordions.length; i++) {
+             postAccordion = postAccordions[i]
+
+             if (nextOne) {
+               return (postAccordion);
+             }
+             else if (postAccordion.id === thisPostAccordionId) {
+               nextOne = true;
+             }
+           }
+         }();
+         if (nextPost) {
+           thisPost.insertAfter(nextPost);
+         }
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+         alert("Something broke. " + thrownError);
+         this.complete();
+       },
+     });
+   });
+
+   $("#btnDeleteConfirmed{{ post.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: "DELETE",
+       url: "{% url "newsletter:api:section-post-delete" section.id post.id %}",
+       success: function(msg){
+         // remove the post widget:
+         $("#post-accordion-{{ post.id }}").remove();
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+	 alert("Something broke. " + thrownError);
+         this.complete();
+       },
+     });
+   });
+  </script>
+{% endblock %}

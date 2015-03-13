@@ -1,0 +1,24 @@
+{% extends "bulletin/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <form method='post' action='.'>
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <div class='form-actions'>
+        <button type='submit'
+                id='submit_button'
+                class='btn btn-primary'>
+          Save
+        </button>
+        <a href="{% url "bulletin:issue-section-list" object.id %}"
+           class="btn btn-default">
+          Sections
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

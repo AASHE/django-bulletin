@@ -1,0 +1,23 @@
+{% extends "newsletter/issue_section_list.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-6">
+    <form method='post' action='.'>
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      <div class='form-actions'>
+        <button type='submit'
+                id='submit_button'
+                class='btn btn-primary'>
+          Save
+        </button>
+        <a href="{% url "newsletter:section-post-list" object.id %}"
+           class="btn btn-default">
+          Posts
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

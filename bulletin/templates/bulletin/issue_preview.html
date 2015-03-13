@@ -1,0 +1,13 @@
+{% extends "bulletin/base.html" %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <h4>
+      <a href="{% url "bulletin:issue-preview" pk issue.html_template_name %}">
+        HTML</a>
+    or
+      <a href="{% url "bulletin:issue-preview" pk issue.text_template_name %}">
+        text</a>?
+    </h4>
+  </div>
+{% endblock %}

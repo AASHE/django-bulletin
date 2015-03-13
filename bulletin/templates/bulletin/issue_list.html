@@ -1,0 +1,15 @@
+{% extends "bulletin/base.html" %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <ul>
+      {% for issue in object_list %}
+        <li>
+          <a href="{% url "bulletin:issue-editor" issue.id %}">
+            {{ issue.pub_date }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

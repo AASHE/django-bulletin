@@ -1,0 +1,116 @@
+    <!-- Right Sidebar -->
+    <div class="col-md-3 md-margin-bottom-40">
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md text-left">
+          <a href="{% url 'bulletin:plugins:story-list' %}">
+            <h2>Featured Stories</h2>
+          </a>
+        </div>
+        <ul>
+          {% for this in story %}
+            <li>
+              <a href="{{ this.url }}"">
+                {{ this.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="pull-right">
+          <a href="{% url 'bulletin:plugins:story-list' %}#6">
+            more news ...
+          </a>
+        </div>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <a href="{% url 'bulletin:plugins:opportunity-list' %}">
+            <h2>Latest Opportunities</h2>
+          </a>
+        </div>
+        <ul>
+          {% for this in opportunity %}
+            <li>
+              <a href="{{ this.url }}"">
+                {{ this.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="pull-right">
+          <a href="{% url 'bulletin:plugins:opportunity-list' %}#6">
+            more opportunities ...
+          </a>
+        </div>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <a href="{% url 'bulletin:plugins:new-resource-list' %}">
+            <h2>Latest New Resources</h2>
+          </a>
+        </div>
+        <ul>
+          {% for this in newresource %}
+            <li>
+              <a href="{{ this.url }}"">
+                {{ this.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="pull-right">
+          <a href="{% url 'bulletin:plugins:new-resource-list' %}#6">
+            more resources ...
+          </a>
+        </div>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md text-left">
+          <a href="{% url 'bulletin:plugins:event-list' %}">
+            <h2>Latest Events</h2>
+          </a>
+        </div>
+        <ul>
+          {% for this in event %}
+            <li>
+              <a href="{{ this.url }}"">
+                {{ this.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="pull-right">
+          <a href="{% url 'bulletin:plugins:event-list' %}#6">
+            more events ...
+          </a>
+        </div>
+      </div>
+      <div class="funny-boxes funny-boxes-right-u">
+        <div class="headline headline-md">
+          <a href="{% url 'bulletin:plugins:job-list' %}">
+            <h2>Latest Jobs</h2>
+          </a>
+        </div>
+        <ul>
+          {% for this in job %}
+            <li>
+              <a href="{{ this.url }}"">
+                {{ this.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="pull-right">
+          <a href="{% url 'bulletin:plugins:job-list' %}#6">
+            more jobs ...
+          </a>
+        </div>
+      </div>
+      <div class="md-margin-bottom-40">  <!-- <-- this doesn't work -->
+        <a class="btn-u btn-u-blue btn-u-lg btn-block"
+           href="{% url 'bulletin:plugins:plugin-list' %}?next={{ request.path }}"
+           type="button">
+          Submissions
+        </a>
+      </div>
+    </div>
+    <!-- End Right Sidebar -->

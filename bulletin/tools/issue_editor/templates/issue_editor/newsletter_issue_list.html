@@ -1,0 +1,50 @@
+{% extends "issue_editor/issue.html" %}
+{% load bootstrap_pagination %}
+
+{% comment %}
+    This template displays a list of Issues for a Newsletter.
+{% endcomment %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <span class="container">
+    <a href="{% url "newsletter:issue-create" newsletter.id %}?next={{ request.get_full_path }}"
+       class="btn">
+      {% bootstrap_icon "plus" %}
+      New issue
+    </a>
+  </span>
+  {% for issue in object_list %}
+    {{ block.super }}
+  {% endfor %}
+
+  <!--Pagination-->
+  <div class="text-center">
+    {% bootstrap_paginate page_obj range=10 %}
+  </div>
+  <!--End Pagination-->
+
+{% endblock %}
+
+{% block end_of_body %}
+  {{ block.super }}
+  <script "text/javascript">
+    // Store and restore the state of all collapsable widgets:
+    $(document).ready(function() {
+      $('.collapse').on('hidden.bs.collapse', function() {
+        if (this.id) {
+         localStorage.removeItem(this.id);
+        }
+     }).on('shown.bs.collapse', function() {
+        if (this.id) {
+         localStorage[this.id] = 'hide';
+        }
+     }).each(function() {
+        if (this.id && localStorage[this.id] === 'hide' ) {
+          $(this).collapse('hide');
+        }
+      });
+    });
+  </script>
+{% endblock %}

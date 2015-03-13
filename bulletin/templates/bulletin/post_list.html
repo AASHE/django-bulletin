@@ -1,0 +1,77 @@
+{% comment %}
+
+What's this file (post_list.html) for? There's no view that
+uses it. Is it supposed to serve as an example of how to make
+a template that lists posts? Is that its purpose?
+
+It seems so project-specific (rather than app-specific).
+
+{% endcomment %}
+{% extends "base.html" %}
+{% load bootstrap_pagination %}
+
+{% block before_headline %}
+  <a class="btn-u btn-u-blue btn-block visible-xs"
+     href="{% url 'plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submissions
+  </a>
+  <a class="btn-u btn-u-blue btn-block btn-u-lg visible-s hidden-xs"
+     href="{% url 'plugins:submit' %}?next={{ request.path }}"
+     type="button">
+    Submissions
+  </a>
+{% endblock %}
+
+{% block content %}
+  <div class="row blog-page">
+    <!-- Left Sidebar -->
+    <div class="col-md-9 md-margin-bottom-40">
+      {% for post in object_list %}
+        <!--Post-->
+        <div class="row blog blog-medium margin-bottom-40">
+          <div class="col-sm-3 text-right">
+            {% if post.image %}
+              <img class="img-responsive" src="{{ post.image.url }}" />
+            {% endif %}
+          </div>
+          <div class="col-sm-9">
+            <a href="{{ post.url }}">
+              <h2>{{ post.title }}</h2>
+            </a>
+            <div class="margin-bottom-10">
+              {{ post.blurb }}
+            </div>
+            <ul class="list-unstyled list-inline blog-info">
+              <li><span class="glyphicon glyphicon-calendar"></span>
+                {{ post.pub_date|date:"M j, Y" }}
+              </li>
+              {% if post.category %}
+                <li><span class="glyphicon glyphicon-tag"></span>
+                  {{ post.category }}
+                </li>
+              {% endif %}
+              {% if user.is_staff %}
+                <li>
+                  <a href="{% url "plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <!--End Post-->
+      {% endfor %}
+
+      <!--Pagination-->
+      <div class="text-center">
+        {% bootstrap_paginate page_obj range=10 %}
+      </div>
+    <!--End Pagination-->
+    </div>
+    <!-- End Left Sidebar -->
+
+    {% include "sidebar.html" %}
+  </div><!--/row-->
+{% endblock %}

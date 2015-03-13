@@ -1,0 +1,280 @@
+{% extends "issue_editor/base.html" %}
+
+{% comment %}
+    This template shows one Issue.
+{% endcomment %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="panel-group" id="issue-accordion-{{ issue.id }}">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#issue-accordion"
+             href="#collapseIssue{{ issue.id }}">
+            {{ issue.name }}
+          </a>
+          <div class="pull-right">
+            <h5>
+              <a href="#"
+                 id="fillIssue{{ issue.id }}"
+                 title="Fill Issue">
+                {% bootstrap_icon "filter" %}
+              </a>
+              <a href="{% url "newsletter:issue-settings-update" issue.id %}?next={{ request.get_full_path }}"
+                 title="Settings">
+                {% bootstrap_icon "cog" %}
+              </a>
+              <a href="{% url "newsletter:issue-preview-form" issue.id %}?next={{ request.get_full_path }}"
+                 title="Preview">
+                {% bootstrap_icon "eye-open" %}
+              </a>
+              <a href="#"
+                 id="uploadLink{{ issue.id }}"
+                 title="Upload to Constant Contact">
+                {% bootstrap_icon "cloud-upload" %}
+              </a>
+              <a data-toggle="modal"
+                 data-target="#confirmDeleteIssue{{ issue.id }}"
+                 title="Delete issue">
+                {% bootstrap_icon "remove" %}
+              </a>
+            </h5>
+          </div>
+        </h4>
+      </div>
+      <div id="collapseIssue{{ issue.id }}"
+           class="panel-collapse collapse">
+        <div class="panel-body">
+          <a href="{% url "newsletter:section-create" issue.id %}?next={{ request.get_full_path }}">
+            {% bootstrap_icon "plus" %}
+            Add a section
+          </a>
+          {% for section in issue.sections.all %}
+            {% include "issue_editor/section.html" %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="confirmDeleteIssue{{ issue.id }}" tabindex="-1"
+       role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Really?</h4>
+        </div>
+        <div class="modal-body">
+          Really delete the <em>{{ issue.pub_date }}</em> issue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  id="btnDeleteIssueConfirmed{{ issue.id }}">
+            Yes
+          </button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="uploadSuccessfulModal" tabindex="-1"
+       role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Huzzah!</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Huzzah!</h4>
+        </div>
+        <div class="modal-body">
+          It worked!  This issue has been uploaded to Constant Contact!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">
+            Excellent
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="fillSuccessfulModal" tabindex="-1"
+       role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+        data-backdrop="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Huzzah!</span>
+          </button>
+          <h4 class="modal-title" id="myModalLabel">Huzzah!</h4>
+        </div>
+        <div class="modal-body">
+          It worked!  This issue has been filled with posts that have
+          been approved for inclusion in a newsletter, but weren't
+          included yet.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+                  id="fillIssueSuccessModalButton{{ issue.id }}">
+            Excellent
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+   function getCookie(name) {
+     var cookieValue = null;
+     if (document.cookie && document.cookie != '') {
+       var cookies = document.cookie.split(';');
+       for (var i = 0; i < cookies.length; i++) {
+         var cookie = jQuery.trim(cookies[i]);
+         // Does this cookie string begin with the name we want?
+         if (cookie.substring(0, name.length + 1) == (name + '=')) {
+           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+           break;
+         }
+       }
+     }
+     return cookieValue;
+   }
+
+   $("#btnDeleteIssueConfirmed{{ issue.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: "DELETE",
+       url: {% if issue.id %}
+              "{% url "newsletter:api:issue-detail" issue.id %}",
+            {% else %}
+              "",
+            {% endif %}
+       success: function(msg){
+         // remove the post widget:
+         $("#issue-accordion-{{ issue.id }}").remove();
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+	 alert("Something broke. " + thrownError);
+         this.complete();
+       },
+     });
+   });
+
+   $("#uploadLink{{ issue.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+         $("body").css({"cursor": "wait"});
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $.ajax({
+       type: {% if issue.email_marketing_campaign != None %}
+               "PATCH",  <!-- update uploaded -->
+             {% else %}
+               "PUT",    <!-- upload new -->
+             {% endif %}
+       url: {% if issue.id %}
+              "{% url "newsletter:api:issue-upload" issue.id %}",
+            {% else %}
+              "",
+            {% endif %}
+       complete: function() {
+         $("body").css({"cursor": "default"});
+       },
+       success: function(msg){
+         $("#uploadSuccessfulModal").modal("show")
+         {% comment %}
+         If this Issue hasn't been uploaded yet, the type
+         for this ajax call will be PUT.  Next time user
+         tries to upload this issue, it should do a PATCH,
+         so we force a refresh here so it gets to to PATCH.
+
+         Would be nicer just to set the type here.  I wonder
+         how to do that.
+         {% endcomment %}
+         {% if issue.email_marketing_campaign == None %}
+           location.reload(true);
+         {% endif %}
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+         alert("Something broke. " + thrownError + "\n" + xhr.responseText);
+       },
+     });
+   });
+
+   $("#fillIssue{{ issue.id }}").click(function() {
+
+     $.ajaxSetup({
+       beforeSend: function(xhr, settings) {
+         if (!this.crossDomain) {
+           xhr.setRequestHeader("X-CSRFToken", csrftoken);
+         }
+       }
+     });
+
+     var csrftoken = getCookie('csrftoken');
+
+     $("body").css("cursor", "progress");
+
+     $.ajax({
+       type: "PATCH",
+       url: {% if issue.id %}  <!-- when would issue.id not be? -->
+              "{% url "newsletter:api:issue-fill" issue.id %}",
+            {% else %}
+              "",
+            {% endif %}
+       success: function(msg) {
+         $("#fillSuccessfulModal").modal("show");
+       },
+       error: function(xhr, ajaxOptions, thrownError) {
+         alert("Something broke. " + thrownError + "\n" + xhr.responseText);
+       },
+       complete: function() {
+         $("body").css("cursor", "default");
+       },
+     });
+   });
+
+   $("#fillIssueSuccessModalButton{{ issue.id }}").click(function() {
+     // Reload so the Posts just added to this Issue will show:
+     location.reload(true);  // (true means load from the server, not cache)
+   });
+
+  </script>
+
+{% endblock %}

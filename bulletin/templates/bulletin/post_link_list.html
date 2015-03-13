@@ -1,0 +1,27 @@
+{% extends "bulletin/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <ul>
+      {% for link in object_list %}
+        {% include "bulletin/post_link.html" %}
+      {% empty %}
+        No links for this post.
+      {% endfor %}
+    </ul>
+    <div class="form-actions">
+      <a href="{% url "bulletin:link-create" post.id %}?next={{ request.get_full_path }}"
+         class="btn btn-primary">
+        {% bootstrap_icon "plus" %}
+        Add link
+      </a>
+      <a href="{{ next }}"
+         class="btn btn-default">
+        {% bootstrap_icon "backward" %}
+        Back
+      </a>
+    </div>
+  </div>
+{% endblock %}

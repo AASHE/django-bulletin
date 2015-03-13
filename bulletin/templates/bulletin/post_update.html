@@ -1,0 +1,38 @@
+{% extends "bulletin/base.html" %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+  <form class="margin-bottom-40" action="" method="post" role="form"
+        enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
+
+    <label class="control-label" for="links">
+      Supplemental Links
+      <a href="{% url "bulletin:link-create" post.id %}?next={{ request.get_full_path }}">
+        {% bootstrap_icon "plus" %}
+        New link
+      </a>
+    </label>
+    <div id="links" class="row col-md-12">
+      {% for link in post.links.all %}
+        {% include "bulletin/post_link.html" %}
+      {% endfor %}
+    </div>
+    <br />
+    <input type="hidden" name="next" value="{{ next }}" />
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        Save
+      </button>
+      <a class="btn btn-default" href="{{ next }}" role="button">
+        Cancel
+      </a>
+    </div>
+  </form>
+
+{% endblock content %}

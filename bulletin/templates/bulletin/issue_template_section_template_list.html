@@ -1,0 +1,29 @@
+{% extends "bulletin/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <ul>
+      {% for section_template in object_list %}
+        <li>
+          <a href="{% url "bulletin:section-template-update" section_template.id %}?next={{ request.get_full_path }}">
+            {{ section_template.name }}
+          </a>
+          <a href="{% url "bulletin:section-template-delete" section_template.id %}">
+            {% bootstrap_icon "remove" %}
+          </a>
+        </li>
+      {% empty %}
+        No sections for this issue template.
+      {% endfor %}
+    </ul>
+    <div class='form-actions'>
+      <a href="{% url "bulletin:section-template-create" issue_template.id %}"
+         class="btn btn-default">
+        {% bootstrap_icon "plus" %}
+        New Section
+      </a>
+    </div>
+  </div>
+{% endblock %}

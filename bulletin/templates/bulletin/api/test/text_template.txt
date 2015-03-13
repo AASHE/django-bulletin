@@ -1,0 +1,15 @@
+<text>
+# Issue: {{ issue }}
+
+{% for section in issue.sections.all %}
+
+## Section: {{ section }}
+
+{% for post in section.posts.all %}
+
+    - Post: {{ post }}
+
+{% endfor %}
+
+{% endfor %}
+</text>

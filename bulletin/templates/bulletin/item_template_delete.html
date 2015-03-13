@@ -1,0 +1,25 @@
+{% extends "bulletin/base.html" %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <form method='post' action='.'>
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ next }}" />
+      <div class='form-actions'>
+        <button type='submit'
+                id='submit_button'
+                class='btn btn-primary'>
+          Yes
+        </button>
+        {% if next %}
+          <a href="{{ next }}"
+        {% else %}
+          <a href="{% url "bulletin:newsletter-issue-template-list" newsletter.id %}"
+        {% endif %}
+             class="btn btn-default">
+            No
+        </a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

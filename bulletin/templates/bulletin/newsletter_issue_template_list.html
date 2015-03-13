@@ -1,0 +1,29 @@
+{% extends "bulletin/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-12">
+    <ul>
+      {% for issue_template in object_list %}
+        <li>
+          <a href="{% url "bulletin:issue-template-update" issue_template.id %}">
+            {{ issue_template.name }}
+          </a>
+          <a href="{% url "bulletin:issue-template-delete" issue_template.id %}">
+            {% bootstrap_icon "remove" %}
+          </a>
+        </li>
+      {% empty %}
+        no issue templates for this newsletter
+      {% endfor %}
+    </ul>
+    <div class='form-actions'>
+      <a href="{% url "bulletin:issue-template-create" newsletter.id %}"
+         class="btn btn-default">
+        {% bootstrap_icon "plus" %}
+        new issue
+      </a>
+    </div>
+  </div>
+{% endblock %}

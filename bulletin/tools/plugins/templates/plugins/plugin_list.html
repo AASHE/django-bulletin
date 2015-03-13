@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-9 md-margin-bottom-40">
+      <div class="row">
+        <div class="col-md-12 md-margin-bottom-40">
+          <p>
+            We gratefully accept a number of types of submissions.
+          </p>
+        </div>
+      </div>
+
+      {% for post_type in post_types %}
+        <div class="row">
+          <div class="col-md-8 md-margin-bottom-40">
+            <h4>{{ post_type.name }}</h4>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7 md-margin-bottom-40">
+            <p>
+              {{ post_type.description|safe }}
+            </p>
+          </div>
+          <div class="col-md-5 md-margin-bottom-40">
+            <a class="btn-u btn-u-blue btn-u-lg btn-block"
+               href="{{ post_type.submit_url }}"
+               type="button">
+              {{ post_type.button_caption }}
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% include "bulletin/sidebar.html" %}
+
+  </div>
+{% endblock %}

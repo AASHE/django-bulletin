@@ -1,0 +1,34 @@
+Django==1.6.10
+Pillow==2.5.3
+South==1.0
+Werkzeug
+coverage
+django-bootstrap-breadcrumbs==0.7.0
+django-bootstrap-pagination==1.5.0
+django-bootstrap3==4.11.0
+django-braces==1.4.0
+django-cors-headers==0.13
+django-datetime-widget
+django-extensions
+django-form-utils
+django-jsonfield==0.9.13
+django-mathfilters
+django-polymorphic
+django-positions==0.5.1
+django-premailer
+django-template-repl
+djangorestframework==2.4.2
+elpy
+fabric
+ipdb
+ipython
+mailchimp
+mkdocs
+nap==2.0.0
+premailer
+psycopg2==2.5.2
+-e git+https://github.com/riltsken/python-constant-contact.git#egg=python-constant-contact
+pytz==2014.7
+sorl-thumbnail
+wsgiref==0.1.2
+-e git+https://github.com/AASHE/django-constant-contact.git#egg=django_constant_contact

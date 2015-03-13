@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+  <form class="margin-bottom-40" action="" method="post" role="form"
+        enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
+
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+      <a class="btn btn-default" href="javascript:window.history.back();"
+         role="button">
+        Cancel
+      </a>
+    </div>
+  </form>
+
+{% endblock content %}

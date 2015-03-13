@@ -1,0 +1,27 @@
+{% extends "bulletin/base.html" %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+  <div class="row col-md-12">
+    </ul>
+    <div class='form-actions'>
+      <a href="{% url "bulletin:ad-create" %}"
+         class="btn btn-default">
+        {% bootstrap_icon "plus" %}
+        new ad
+      </a>
+    </div>
+    <ul>
+      {% for ad in object_list %}
+        <li>
+          <a href="{% url "bulletin:ad-update" ad.id %}">
+            {{ ad.name }}
+          </a>
+        </li>
+      {% empty %}
+        no ads ...
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

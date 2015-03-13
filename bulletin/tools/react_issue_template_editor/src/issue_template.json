@@ -1,0 +1,31 @@
+{
+    "name": "Test Issue Template",
+    "sections": [
+        {
+            "name": "First Test Section",
+            "categories": [
+                {
+                    "name": "First Test Category",
+                    "id": 1
+                },
+                {
+                    "name": "Second Test Category",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": "Second Test Section",
+            "categories": [
+                {
+                    "name": "Third Test Category",
+                    "id": 2
+                },
+                {
+                    "name": "Fourth Test Category",
+                    "id": 4
+                }
+            ]
+        }
+    ]
+}

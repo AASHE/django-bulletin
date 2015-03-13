@@ -1,0 +1,7 @@
+{% extends "issue_editor/section.html" %}
+
+{% block content %}
+  {% for object in object_list %}
+    {{ block.super }}
+  {% endfor %}
+{% endblock %}
