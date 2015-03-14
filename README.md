@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/AASHE/django-bulletin.svg?branch=master)](https://travis-ci.org/AASHE/django-bulletin)
+[![Coverage Status](https://coveralls.io/repos/AASHE/django-bulletin/badge.svg?branch=master)](https://coveralls.io/r/AASHE/django-bulletin?branch=master)
 
 # django-bulletin
 
