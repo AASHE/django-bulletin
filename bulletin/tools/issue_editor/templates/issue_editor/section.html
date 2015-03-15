@@ -35,7 +35,7 @@
       <div id="collapseSection{{ section.id }}"
            class="panel-collapse collapse">
         <div class="panel-body">
-          <a href="{% url "newsletter:section-post-add" section.id %}?next={{ request.get_full_path }}">
+          <a href="{% url "bulletin:section-post-add" section.id %}?next={{ request.get_full_path }}">
             {% bootstrap_icon "plus" %}
             Add a post
           </a>
@@ -110,7 +110,7 @@
 
      $.ajax({
        type: "DELETE",
-       url: "{% url "newsletter:api:section-detail" section.id %}",
+       url: "{% url "bulletin:api:section-detail" section.id %}",
        success: function(msg){
          // remove the section widget:
          $("#section-accordion-{{ section.id }}").remove();
@@ -136,7 +136,7 @@
 
      $.ajax({
        type: "PATCH",
-       url: "{% url "newsletter:api:issue-section-up" section.issue.id section.id %}",
+       url: "{% url "bulletin:api:issue-section-up" section.issue.id section.id %}",
        success: function(msg){
          // move the section widget:
          var thisSectionAccordionId = "section-accordion-{{ section.id }}";
@@ -183,7 +183,7 @@
 
      $.ajax({
        type: "PATCH",
-       url: "{% url "newsletter:api:issue-section-down" section.issue.id section.id %}",
+       url: "{% url "bulletin:api:issue-section-down" section.issue.id section.id %}",
        success: function(msg){
          // move the section widget:
          var thisSectionAccordionId = "section-accordion-{{ section.id }}";

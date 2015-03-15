@@ -22,11 +22,11 @@
                  title="Fill Issue">
                 {% bootstrap_icon "filter" %}
               </a>
-              <a href="{% url "newsletter:issue-settings-update" issue.id %}?next={{ request.get_full_path }}"
+              <a href="{% url "bulletin:issue-settings-update" issue.id %}?next={{ request.get_full_path }}"
                  title="Settings">
                 {% bootstrap_icon "cog" %}
               </a>
-              <a href="{% url "newsletter:issue-preview-form" issue.id %}?next={{ request.get_full_path }}"
+              <a href="{% url "bulletin:issue-preview-form" issue.id %}?next={{ request.get_full_path }}"
                  title="Preview">
                 {% bootstrap_icon "eye-open" %}
               </a>
@@ -47,7 +47,7 @@
       <div id="collapseIssue{{ issue.id }}"
            class="panel-collapse collapse">
         <div class="panel-body">
-          <a href="{% url "newsletter:section-create" issue.id %}?next={{ request.get_full_path }}">
+          <a href="{% url "bulletin:section-create" issue.id %}?next={{ request.get_full_path }}">
             {% bootstrap_icon "plus" %}
             Add a section
           </a>
@@ -174,7 +174,7 @@
      $.ajax({
        type: "DELETE",
        url: {% if issue.id %}
-              "{% url "newsletter:api:issue-detail" issue.id %}",
+              "{% url "bulletin:api:issue-detail" issue.id %}",
             {% else %}
               "",
             {% endif %}
@@ -209,7 +209,7 @@
                "PUT",    <!-- upload new -->
              {% endif %}
        url: {% if issue.id %}
-              "{% url "newsletter:api:issue-upload" issue.id %}",
+              "{% url "bulletin:api:issue-upload" issue.id %}",
             {% else %}
               "",
             {% endif %}
@@ -254,7 +254,7 @@
      $.ajax({
        type: "PATCH",
        url: {% if issue.id %}  <!-- when would issue.id not be? -->
-              "{% url "newsletter:api:issue-fill" issue.id %}",
+              "{% url "bulletin:api:issue-fill" issue.id %}",
             {% else %}
               "",
             {% endif %}

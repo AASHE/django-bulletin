@@ -108,7 +108,7 @@
 
      $.ajax({
        type: "PATCH",
-       url: "{% url "newsletter:api:section-post-up" post.section.id post.id %}",
+       url: "{% url "bulletin:api:section-post-up" post.section.id post.id %}",
        success: function(msg){
          // move the post widget:
          var thisPostAccordionId = "post-accordion-{{ post.id }}";
@@ -155,7 +155,7 @@
 
      $.ajax({
        type: "PATCH",
-       url: "{% url "newsletter:api:section-post-down" post.section.id post.id %}",
+       url: "{% url "bulletin:api:section-post-down" post.section.id post.id %}",
        success: function(msg){
          // move the post widget:
          var thisPostAccordionId = "post-accordion-{{ post.id }}";
@@ -201,7 +201,7 @@
 
      $.ajax({
        type: "DELETE",
-       url: "{% url "newsletter:api:section-post-delete" section.id post.id %}",
+       url: "{% url "bulletin:api:section-post-delete" section.id post.id %}",
        success: function(msg){
          // remove the post widget:
          $("#post-accordion-{{ post.id }}").remove();
