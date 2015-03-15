@@ -7,10 +7,10 @@
     <ul>
       {% for issue in object_list %}
         <li>
-          <a href="{% url "newsletter:issue-update" issue.id %}">
+          <a href="{% url "bulletin:issue-update" issue.id %}">
             {{ issue.pub_date }}
           </a>
-          <a href="{% url "newsletter:issue-delete" issue.id %}">
+          <a href="{% url "bulletin:issue-delete" issue.id %}">
             {% bootstrap_icon "remove" %}
           </a>
         </li>
@@ -19,7 +19,7 @@
       {% endfor %}
     </ul>
     <div class='form-actions'>
-      <a href="{% url "newsletter:issue-create" newsletter.id %}"
+      <a href="{% url "bulletin:issue-create" newsletter.id %}"
          class="btn btn-default">
         {% bootstrap_icon "plus" %}
         new issue

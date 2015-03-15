@@ -9,7 +9,7 @@
           {{ link.text }}
         </a>
         <div class="pull-right">
-          <a href="{% url "newsletter:link-update" link.id %}?next={{ request.get_full_path }}"
+          <a href="{% url "bulletin:link-update" link.id %}?next={{ request.get_full_path }}"
              title="Edit link">
             <span class="glyphicon glyphicon-pencil"></span>
           </a>
@@ -96,7 +96,7 @@
 
      $.ajax({
        type: "DELETE",
-       url: "{% url "newsletter:api:link-detail" link.id %}",
+       url: "{% url "bulletin:api:link-detail" link.id %}",
        success: function(msg){
          // remove the link widget:
          $("#link-accordion-{{ link.id }}").remove();
