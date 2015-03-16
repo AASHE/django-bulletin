@@ -2,12 +2,23 @@
 
 {% block content %}
   <div class="row col-md-12">
+    This view is broken. The following issues should link to the
+    issue editor, but they're broken.
+
+    The problem is that `"bulletin:issue-editor" issue.id`
+    doesn't resolve to a url, which raises a NoReverseMatch
+    error -- so the anchor tag pointing to that URL is commented
+    out -- just so the page can show w/o error.
     <ul>
       {% for issue in object_list %}
         <li>
+          {% comment %}
           <a href="{% url "bulletin:issue-editor" issue.id %}">
+          {% endcomment %}
             {{ issue.pub_date }}
+          {% comment %}
           </a>
+          {% endcomment %}
         </li>
       {% endfor %}
     </ul>
