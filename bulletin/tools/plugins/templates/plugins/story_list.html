@@ -77,6 +77,13 @@
                   <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
                     {{ story.category.fully_qualified_name }}
                   </a>
+                  {% if story.category.url %}
+                    <li><span class="glyphicon glyphicon-star-empty"></span>
+                      <a href="{{ story.category.url }}">
+                        {{ story.category.name|title }}
+                      </a>
+                    </li>
+                  {% endif %}
                 </li>
               {% endif %}
               {% if user.is_staff %}
