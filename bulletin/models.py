@@ -178,10 +178,13 @@ class Category(models.Model):
                               upload_to='django-bulletin/%Y/%m/%d/category',
                               null=True,
                               blank=True)
+    url = models.URLField(max_length=640,
+                          null=True,
+                          blank=True)
 
     class Meta:
         ordering = ['fully_qualified_name']
-        verbose_name_plural = 'category'
+        verbose_name_plural = 'categories'
         unique_together = ('parent', 'name')
 
     def _fully_qualified_name(self, delimiter='/'):
