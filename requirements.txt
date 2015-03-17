@@ -9,7 +9,7 @@ django-bootstrap3==4.11.0
 django-braces==1.4.0
 django-cors-headers==0.13
 django-datetime-widget
-django-extensions==0.5.1
+django-extensions==1.5.1
 django-form-utils
 django-jsonfield==0.9.13
 django-mathfilters
