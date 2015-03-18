@@ -617,6 +617,13 @@ class PostSubmitView(LoginRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(PostSubmitView, self).get_context_data(
             **kwargs)
+        context['screen_image_uploads'] = getattr(settings,
+                                                  'SCREEN_IMAGE_UPLOADS',
+                                                  False)
+        context['screen_image_license_text'] = getattr(
+            settings,
+            'SCREEN_IMAGE_LICENSE_TEXT',
+            'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
         if 'next' in self.request.GET:
             context['next'] = self.request.GET['next']
         return context

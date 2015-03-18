@@ -25,3 +25,54 @@
   </form>
 
 {% endblock content %}
+
+{% block end_of_body %}
+
+  {% if screen_image_uploads %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="confirmPermissionModal" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         data-backdrop="false" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Sharing</h4>
+          </div>
+          <div class="modal-body">
+            Do you have permission to share this image with AASHE?
+          </div>
+          <div class="modal-body">
+            {{ screen_image_license_text }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    id="permissionGrantedButton">
+              Yes
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal"
+                    id="noPermissionButton">
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+     var image_widget = document.getElementById("id_image");
+     if (image_widget) {
+       image_widget.onchange = function() {
+         $("#confirmPermissionModal").modal("show");
+       }
+       var noPermissionButton = document.getElementById("noPermissionButton");
+       noPermissionButton.onclick = function() {
+         var image_widget = document.getElementById("id_image");
+         image_widget.value = "";
+       }
+     }
+    </script>
+
+  {% endif %}
+
+{% endblock end_of_body %}
