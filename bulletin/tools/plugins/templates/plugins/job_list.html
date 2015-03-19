@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load bootstrap_pagination %}
 
+{% block jobs_tab_class %}
+  active
+{% endblock %}
+
 {% block before_headline %}
   <a class="btn-u btn-u-blue btn-block visible-xs"
      href="{% url 'bulletin:plugins:submit' %}?next={{ request.path }}"
