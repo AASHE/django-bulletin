@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <table data-height="400" data-row-style="rowStyle"
+         class="table-hover table-condensed">
+    <thead>
+      <tr>
+        <th class="col-md-2">
+          Type
+        </th>
+        <th class="col-md-6">
+          Title
+        </th>
+        <th class="col-md-3">
+          Date Submitted
+        </th>
+      </tr>
+    </thead>
+    {% for post in unmoderated_posts %}
+      <tr>
+        <td class="col-md-2">
+          {{ post.content_type.name }}
+        </td>
+        <td class="col-md-6">
+          <a href="{% url "bulletin:plugins:update" pk=post.pk post_type=post.content_type.name %}">
+            {{ post.title }}
+          </a>
+        </td>
+        <td class="col-md-3">
+          {{ post.date_submitted }}
+        </td>
+    {% empty %}
+        <tr>
+          <td class="col-md-12 md-margin-bottom-40">
+            <h4>All posts have been moderated!</h4>
+          </td>
+        </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
