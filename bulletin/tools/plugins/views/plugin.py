@@ -5,6 +5,7 @@ import django.views.generic
 
 from bulletin.views import SidebarView
 from bulletin.tools.plugins.forms import plugin as forms
+from bulletin.tools.plugins.utils import get_active_plugins
 
 
 class PluginSubmitView(braces.views.LoginRequiredMixin,
@@ -133,4 +134,26 @@ class PluginListView(SidebarView,
              'submit_url': django.core.urlresolvers.reverse(
                  'bulletin:plugins:job-submit')}
         ]
+        return context
+
+
+class ModerationView(braces.views.SetHeadlineMixin,
+                     django.views.generic.TemplateView):
+
+    headline = 'Unmoderated Posts'
+    template_name = 'plugins/moderation.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ModerationView, self).get_context_data(**kwargs)
+
+        context['unmoderated_posts'] = []
+
+        for plugin in get_active_plugins():
+
+            for unmoderated_post in plugin.model_class().objects.filter(
+                    approved=None).order_by('-date_submitted'):
+                context['unmoderated_posts'].append(unmoderated_post)
+
+        context['next'] = self.request.GET.get('next', '')
+
         return context

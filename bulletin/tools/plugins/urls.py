@@ -28,6 +28,10 @@ urlpatterns = patterns(
     # End of generic plugin views #
     ###############################
 
+    url(r'^moderation/$',
+        views.plugin.ModerationView.as_view(),
+        name='moderation'),
+
     ###############
     # Event views #
     ###############
