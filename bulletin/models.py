@@ -140,7 +140,9 @@ class Issue(models.Model):
     def _render(self, template_name):
         response = SimpleTemplateResponse(
             template=template_name,
-            context={'issue': self})
+            context={'issue': self,
+                     'ads': Ad.ads_for(date=self.pub_date,
+                                       include_in_newsletter=True)})
         response.render()
         return response.content
 
