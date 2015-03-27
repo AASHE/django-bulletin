@@ -59,17 +59,18 @@ class SidebarView(ContextMixin):
          'job': [<Job 1>, <Job 2> ...]
          ...}
 
-    5 most recent (by pub_date) Posts of each type are provided, except
-    for Stories. Stories provided are those included in the most recently
-    published issue of the newsletter.
+    5 most recent (by pub_date) accepted Posts of each type are
+    provided, except for Stories. Stories provided are those included
+    in the most recently published issue of the newsletter.
     """
     def get_context_data(self, **kwargs):
         context = super(SidebarView, self).get_context_data(**kwargs)
 
         for plugin in get_active_plugins():
             if plugin.model != 'story':
-                plugin_instances = plugin.model_class().objects.order_by(
-                    '-pub_date')[:5]
+                plugin_instances = plugin.model_class().objects.filter(
+                    approved=True).order_by(
+                        '-pub_date')[:5]
             else:
                 plugin_instances = get_news_from_most_recent_issue()
 
