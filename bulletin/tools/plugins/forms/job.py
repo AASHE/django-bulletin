@@ -13,6 +13,9 @@ class JobSubmitForm(ModelForm):
                   'url',
                   'organization',
                   'image']
+        labels = {
+            'image': 'Image (10Mb Limit)'
+        }
 
 
 class JobUpdateForm(ModelForm):

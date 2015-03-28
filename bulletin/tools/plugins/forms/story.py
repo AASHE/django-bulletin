@@ -16,7 +16,8 @@ class StorySubmitForm(django.forms.ModelForm):
                   'date',
                   'category']
         labels = {
-            'date': 'Publish Date of News'
+            'image': 'Image (10Mb limit)',
+            'date': 'Date originally published - if unknown, select today.'
         }
         widgets = {
             'date': DateWidget(usel10n=True, bootstrap_version=3)
