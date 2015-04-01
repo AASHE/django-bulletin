@@ -7,13 +7,8 @@
 {% block content %}
   <div class="row">
     <div class="col-md-9 md-margin-bottom-40">
-      <div class="row">
-        <div class="col-md-12 md-margin-bottom-40">
-          <p>
-            We gratefully accept a number of types of submissions.
-          </p>
-        </div>
-      </div>
+      {% block intro %}
+      {% endblock intro %}
 
       {% for post_type in post_types %}
         <div class="row">
