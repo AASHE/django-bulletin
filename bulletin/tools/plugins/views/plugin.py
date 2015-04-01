@@ -52,7 +52,7 @@ class PluginListView(SidebarView,
     """List the installed plugins.
     """
     template_name = 'plugins/plugin_list.html'
-    headline = 'Submissions'
+    headline = 'Submit an Item'
 
     def get_context_data(self, *args, **kwargs):
         context = super(PluginListView, self).get_context_data(*args, **kwargs)
