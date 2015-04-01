@@ -38,7 +38,7 @@
                 {% if category.parent %}
                 <li>
                   <a href="{% url "bulletin:plugins:story-list" %}?category={{ category.id }}">
-                    {{ category.fully_qualified_name }}
+                    {{ category.name }}
                   </a>
                 </li>
                 {% endif %}
@@ -79,7 +79,7 @@
               {% if story.category %}
                 <li><span class="glyphicon glyphicon-tag"></span>
                   <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
-                    {{ story.category.fully_qualified_name }}
+                    {{ story.category.name|title }}
                   </a>
                   {% if story.category.url %}
                     <li><span class="glyphicon glyphicon-star-empty"></span>

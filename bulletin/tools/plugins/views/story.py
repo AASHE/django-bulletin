@@ -44,12 +44,12 @@ class StoryListView(SetHeadlineMixin,
     def get_context_data(self, **kwargs):
         context = super(StoryListView, self).get_context_data(**kwargs)
 
-        context['categories'] = Category.objects.all()
+        context['categories'] = Category.objects.all().order_by('name')
 
         category_id = self.request.GET.get('category')
         if category_id:
             context['current_filter_name'] = Category.objects.get(
-                pk=category_id).fully_qualified_name
+                pk=category_id).name
         else:
             context['current_filter_name'] = 'All'
 

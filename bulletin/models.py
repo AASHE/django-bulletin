@@ -202,7 +202,7 @@ class Category(models.Model):
         super(Category, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.fully_qualified_name
+        return self.name
 
 
 class Section(models.Model):
