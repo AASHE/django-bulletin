@@ -323,9 +323,7 @@ class IssuePreviewView(TemplateView):
         context = super(IssuePreviewView, self).get_context_data(
             **kwargs)
         issue = self.get_issue()
-        context['issue'] = issue
-        context['ads'] = Ad.ads_for(date=issue.pub_date,
-                                    include_in_newsletter=True)
+        context = issue.get_context_data()
         return context
 
 
