@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.response import SimpleTemplateResponse
@@ -142,7 +143,8 @@ class Issue(models.Model):
             template=template_name,
             context={'issue': self,
                      'ads': Ad.ads_for(date=self.pub_date,
-                                       include_in_newsletter=True)})
+                                       include_in_newsletter=True),
+                     'domain': Site.objects.get_current().domain})
         response.render()
         return response.content
 
