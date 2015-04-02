@@ -4,6 +4,7 @@ import uuid
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from rest_framework import status
@@ -228,6 +229,7 @@ class IssueTests(APITestCase):
         issue_kwargs.pop('sections')
         self.issue = Issue.objects.create(newsletter=self.newsletter,
                                           **issue_kwargs)
+        Site.objects.create()
 
     def tearDown(self):
         if self.issue.email_marketing_campaign:

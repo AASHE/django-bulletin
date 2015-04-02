@@ -47,6 +47,7 @@ def main():
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django.contrib.sites',
 
         # AASHE Apps
         # 'aashe.aasheauth',
@@ -94,6 +95,8 @@ def main():
     global_settings.MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY', None)
 
     global_settings.SECRET_KEY = "blahblah"
+
+    global_settings.SITE_ID = 1
 
 
     from django.test.utils import get_runner
