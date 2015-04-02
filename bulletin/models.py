@@ -138,13 +138,18 @@ class Issue(models.Model):
                 section.content_types.add(content_type)
                 section.save()
 
+    def get_context_data(self):
+        """Provides a context for rendering this issue.
+        """
+        return {'issue': self,
+                'ads': Ad.ads_for(date=self.pub_date,
+                                  include_in_newsletter=True),
+                'domain': Site.objects.get_current().domain}
+
     def _render(self, template_name):
         response = SimpleTemplateResponse(
             template=template_name,
-            context={'issue': self,
-                     'ads': Ad.ads_for(date=self.pub_date,
-                                       include_in_newsletter=True),
-                     'domain': Site.objects.get_current().domain})
+            context=self.get_context_data())
         response.render()
         return response.content
 
