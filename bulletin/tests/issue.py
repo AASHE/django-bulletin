@@ -1,6 +1,7 @@
 import datetime
 
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import Client, TestCase
@@ -60,6 +61,17 @@ class IssueTests(TestCase):
 
         soup = BeautifulSoup(html)
         self.assertTrue(soup.find('html').find('body'))
+
+    def test_render_to_html_valid_variables(self):
+        """Are all template variables in html valid?
+        """
+        marker = "TEMPLATESTRINGINVALID"
+        settings.TEMPLATE_STRING_IF_INVALID = marker
+
+        html = self.issue.render_to_html(
+            html_template_name='bulletin/api/test/html_template.html')
+
+        self.assertEqual(html.find(marker), -1)
 
     def test_init_from_issue_template(self):
         """Does init_from_issue_template() work?
