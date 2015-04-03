@@ -86,12 +86,11 @@ class PluginListView(SidebarView,
             {'name': 'New Resources',
              'description': (
                  """
-                 Recently published resources. Examples include
-                 campus sustainability reports; campus sustainability focused
-                 white papers; new magazines or journals; websites or
-                 newsletters focused on campus sustainability; and campus
-                 sustainability videos. New resources should be accessible
-                 to the higher education sustainability community at large.
+                 New resources must be accessible to the higher education
+                 sustainability community at large. Examples include
+                 campus sustainability reports, white papers, case
+                 studies, new magazines or journals, original AASHE
+                 content, websites, newsletters and videos.
                  """),
              'button_caption': 'Submit a New Resource',
              'submit_url': django.core.urlresolvers.reverse(
