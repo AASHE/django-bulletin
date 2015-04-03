@@ -27,13 +27,13 @@ class JobListView(SetHeadlineMixin,
                   SidebarView):
 
     model = Job
-    queryset = Job.objects.filter(approved=True).order_by('-pub_date')
     template_name = 'plugins/job_list.html'
     paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'Jobs'
 
     def get_queryset(self):
-        queryset = super(JobListView, self).get_queryset()
+        queryset = Job.objects.filter(approved=True).order_by('-pub_date',
+                                                              'title')
         if 'category' in self.request.GET:
             category = Category.objects.get(name=self.request.GET['category'])
             queryset.filter(category_id=category.id)

@@ -27,13 +27,14 @@ class OpportunityListView(SetHeadlineMixin,
                           SidebarView):
 
     model = Opportunity
-    queryset = Opportunity.objects.filter(approved=True).order_by('-pub_date')
     template_name = 'plugins/opportunity_list.html'
     paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'Opportunities'
 
     def get_queryset(self):
-        queryset = super(OpportunityListView, self).get_queryset()
+        queryset = Opportunity.objects.filter(approved=True).order_by(
+            '-pub_date',
+            'title')
         if 'category' in self.request.GET:
             category = Category.objects.get(name=self.request.GET['category'])
             queryset.filter(category_id=category.id)

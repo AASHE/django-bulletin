@@ -34,7 +34,6 @@ class StoryListView(SetHeadlineMixin,
     def get_queryset(self, *args, **kwargs):
         queryset = Story.objects.filter(approved=True).order_by('-pub_date',
                                                                 'title')
-
         category_id = self.request.GET.get('category')
         if category_id:
             queryset = queryset.filter(category_id=category_id)

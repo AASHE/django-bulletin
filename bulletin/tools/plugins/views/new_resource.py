@@ -32,7 +32,9 @@ class NewResourceListView(SetHeadlineMixin,
     headline = 'New Resources'
 
     def get_queryset(self):
-        queryset = super(NewResourceListView, self).get_queryset()
+        queryset = NewResource.objects.filter(approved=True).order_by(
+            '-pub_date',
+            'title')
         if 'category' in self.request.GET:
             category = Category.objects.get(name=self.request.GET['category'])
             queryset.filter(category_id=category.id)

@@ -27,13 +27,13 @@ class EventListView(SetHeadlineMixin,
                     SidebarView):
 
     model = Event
-    queryset = Event.objects.filter(approved=True).order_by('-pub_date')
     template_name = 'plugins/event_list.html'
     paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'Events'
 
     def get_queryset(self):
-        queryset = super(EventListView, self).get_queryset()
+        queryset = Event.objects.filter(approved=True).order_by('-pub_date',
+                                                                'title')
         if 'category' in self.request.GET:
             category = Category.objects.get(name=self.request.GET['category'])
             queryset.filter(category_id=category.id)
