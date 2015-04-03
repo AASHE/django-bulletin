@@ -11,17 +11,17 @@ urlpatterns = patterns(
     # Generic plugin views #
     ########################
     # List installed plugins:
-    url(r'^plugin-list/$',
+    url(r'^submit/$',
         views.plugin.PluginListView.as_view(),
         name='plugin-list'),
 
     # Generic submit view.
-    url(r'^submit/$',
+    url(r'^submit-post/$',
         views.plugin.PluginSubmitView.as_view(),
         name='submit'),
 
     # Generic update view.
-    url(r'^update/(?P<post_type>\w+)/(?P<pk>\d+)$',
+    url(r'^update-post/(?P<post_type>\w+)/(?P<pk>\d+)$',
         views.plugin.PluginUpdateView.as_view(),
         name='update'),
     ###############################
