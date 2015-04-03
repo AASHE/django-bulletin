@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% load static from staticfiles %}
 
 {% block content %}
 
@@ -71,6 +72,22 @@
          image_widget.value = "";
        }
      }
+    </script>
+
+  {% endif %}
+
+  {% if max_blurb_length > 0 %}
+
+    <script type="text/javascript"
+            src="{% static "assets/js/bootstrap-maxlength.min.js" %}">
+    </script>
+
+    <script type="text/javascript">
+     $(document).ready(function () {
+       $("#id_blurb").maxlength({
+         alwaysShow:true
+       });
+     });
     </script>
 
   {% endif %}

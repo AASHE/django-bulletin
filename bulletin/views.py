@@ -616,6 +616,7 @@ class PostSubmitView(LoginRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(PostSubmitView, self).get_context_data(
             **kwargs)
+
         context['screen_image_uploads'] = getattr(settings,
                                                   'SCREEN_IMAGE_UPLOADS',
                                                   False)
@@ -623,6 +624,11 @@ class PostSubmitView(LoginRequiredMixin,
             settings,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
+
+        context['max_blurb_length'] = getattr(settings,
+                                              'MAX_STORY_BLURB_LENGTH',
+                                              -1)
+
         if 'next' in self.request.GET:
             context['next'] = self.request.GET['next']
         return context
@@ -648,6 +654,9 @@ class PostUpdateView(StaffuserRequiredMixin,
         context = super(PostUpdateView, self).get_context_data(
             **kwargs)
         context['post'] = self.get_post()
+        context['max_blurb_length'] = getattr(settings,
+                                              'MAX_STORY_BLURB_LENGTH',
+                                              -1)
         context['next'] = self.request.GET.get('next', '')
         return context
 ######################
