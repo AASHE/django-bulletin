@@ -78,9 +78,10 @@ urlpatterns = patterns(
     # NewResource views #
     #####################
     # Submit a new resource:
+    # Same goes for this url as the following. It's turdy.
     url(r'^new-resource/submit/$',
         views.new_resource.NewResourceSubmitView.as_view(),
-        name='new-resource-submit'),
+        name='newresource-submit'),
 
     # Update a new resource:
     # Here's an ugly fact. This url has a magic name. It must be
@@ -88,7 +89,7 @@ urlpatterns = patterns(
     # turd - because plugins.view.plugin.PluginUpdateView is going
     # to redirect requests to this URL to `{post-type}-update` where
     # post-type is `newresource`. Not `new-resource`. `newresource-update`
-    # it must be. Well, it's a fancy turd, at least.
+    # it must be.
     url(r'^new-resource/(?P<pk>\d+)$',
         views.new_resource.NewResourceUpdateView.as_view(),
         name='newresource-update'),
