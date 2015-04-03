@@ -94,7 +94,7 @@ class PluginListView(SidebarView,
                  """),
              'button_caption': 'Submit a New Resource',
              'submit_url': django.core.urlresolvers.reverse(
-                 'bulletin:plugins:new-resource-submit')},
+                 'bulletin:plugins:newresource-submit')},
             {'name': 'Events',
              'description': (
                  """
