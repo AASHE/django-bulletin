@@ -46,6 +46,7 @@ from .models import (Category,
                      Post,
                      Ad)
 from tools.plugins.utils import get_active_plugins
+from tools.plugins.models import Story
 
 
 class SidebarView(ContextMixin):
@@ -625,9 +626,13 @@ class PostSubmitView(LoginRequiredMixin,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
 
-        context['max_blurb_length'] = getattr(settings,
-                                              'MAX_STORY_BLURB_LENGTH',
-                                              -1)
+        queryset = self.get_queryset()
+        model = queryset.model
+        if model == Story:
+            context['max_story_blurb_length'] = getattr(
+                settings,
+                'MAX_STORY_BLURB_LENGTH',
+                -1)
 
         if 'next' in self.request.GET:
             context['next'] = self.request.GET['next']
@@ -654,9 +659,15 @@ class PostUpdateView(StaffuserRequiredMixin,
         context = super(PostUpdateView, self).get_context_data(
             **kwargs)
         context['post'] = self.get_post()
-        context['max_blurb_length'] = getattr(settings,
-                                              'MAX_STORY_BLURB_LENGTH',
-                                              -1)
+
+        queryset = self.get_queryset()
+        model = queryset.model
+        if model == Story:
+            context['max_story_blurb_length'] = getattr(
+                settings,
+                'MAX_STORY_BLURB_LENGTH',
+                -1)
+
         context['next'] = self.request.GET.get('next', '')
         return context
 ######################
