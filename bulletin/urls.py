@@ -271,7 +271,7 @@ urlpatterns = patterns(
                      namespace='issue-editor',
                      app_name='Issue Editor')),
 
-    url(r'^plugins/', include(plugin_urls,
+    url(r'^posts/', include(plugin_urls,
                    namespace='plugins',
                    app_name='Plugins')),
 
