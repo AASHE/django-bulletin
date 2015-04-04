@@ -24,7 +24,7 @@ def main():
     global_settings.BULLETIN_CONTENT_TYPE_PLUGINS = (
         'event',
         'job',
-        'new resource',
+        'newresource',
         'opportunity',
         'story',
     )
@@ -35,10 +35,10 @@ def main():
         os.path.dirname(os.path.dirname(__file__)), "bulletin")
 
     global_settings.STATIC_URL = os.environ.get('STATIC_URL', '/static/')
-    global_settings.STATIC_ROOT = os.environ.get('STATIC_ROOT',
-                                 os.path.join(
-                                    BASE_DIR,
-                                    global_settings.STATIC_URL.strip('/')))
+    global_settings.STATIC_ROOT = os.environ.get(
+        'STATIC_ROOT',
+        os.path.join(BASE_DIR,
+                     global_settings.STATIC_URL.strip('/')))
 
     global_settings.INSTALLED_APPS = (
         'django.contrib.admin',
@@ -60,6 +60,7 @@ def main():
         'bootstrap_pagination',
         'django_bootstrap_breadcrumbs',
     )
+
     if django.VERSION > (1,2):
         global_settings.DATABASES = {
             'default': {
@@ -101,8 +102,6 @@ def main():
 
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
-
-    # import pdb; pdb.set_trace()
 
     if django.VERSION > (1,2):
         test_runner = test_runner()
