@@ -71,7 +71,7 @@ class SidebarView(ContextMixin):
             if plugin.model != 'story':
                 plugin_instances = plugin.model_class().objects.filter(
                     approved=True).order_by(
-                        '-pub_date')[:5]
+                        '-pub_date', 'title')[:5]
             else:
                 plugin_instances = get_news_from_most_recent_issue()
 
