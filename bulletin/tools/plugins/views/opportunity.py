@@ -1,5 +1,6 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -20,6 +21,10 @@ class OpportunityUpdateView(PostUpdateView):
     model = Opportunity
     form_class = forms.OpportunityUpdateForm
     headline = 'Update Opportunity'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Opportunity saved.")
+        return super(OpportunityUpdateView, self).form_valid(form)
 
 
 class OpportunityListView(SetHeadlineMixin,

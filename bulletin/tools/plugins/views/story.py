@@ -1,5 +1,6 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -20,6 +21,10 @@ class StoryUpdateView(PostUpdateView):
     model = Story
     form_class = forms.StoryUpdateForm
     headline = 'Update Story'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Story saved.")
+        return super(StoryUpdateView, self).form_valid(form)
 
 
 class StoryListView(SetHeadlineMixin,

@@ -1,5 +1,6 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -20,6 +21,10 @@ class JobUpdateView(PostUpdateView):
     model = Job
     form_class = forms.JobUpdateForm
     headline = 'Update Job'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Job saved.")
+        return super(JobUpdateView, self).form_valid(form)
 
 
 class JobListView(SetHeadlineMixin,

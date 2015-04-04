@@ -1,5 +1,6 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -20,6 +21,10 @@ class NewResourceUpdateView(PostUpdateView):
     model = NewResource
     form_class = forms.NewResourceUpdateForm
     headline = 'Update New Resource'
+
+    def form_valid(self, form):
+        messages.success(self.request, "New Resource saved.")
+        return super(NewResourceUpdateView, self).form_valid(form)
 
 
 class NewResourceListView(SetHeadlineMixin,

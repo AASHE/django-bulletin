@@ -1,5 +1,6 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
+from django.contrib import messages
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -19,7 +20,11 @@ class EventUpdateView(PostUpdateView):
 
     model = Event
     form_class = forms.EventUpdateForm
-    headline = 'Update an Event'
+    headline = 'Update Event'
+
+    def form_valid(self, form):
+        messages.success(self.request, "Event saved.")
+        return super(EventUpdateView, self).form_valid(form)
 
 
 class EventListView(SetHeadlineMixin,
