@@ -3,7 +3,7 @@
       <div class="funny-boxes funny-boxes-right-u">
         <div class="headline headline-md text-left">
           <a href="{% url 'bulletin:plugins:story-list' %}">
-            <h2>Featured Stories</h2>
+            <h2>Featured News</h2>
           </a>
         </div>
         <ul>
@@ -16,7 +16,7 @@
           {% endfor %}
         </ul>
         <div class="pull-right">
-          <a href="{% url 'bulletin:plugins:story-list' %}">
+          <a href="{% url 'bulletin:plugins:story-list' %}#top">
             more news ...
           </a>
         </div>
@@ -37,7 +37,7 @@
           {% endfor %}
         </ul>
         <div class="pull-right">
-          <a href="{% url 'bulletin:plugins:opportunity-list' %}">
+          <a href="{% url 'bulletin:plugins:opportunity-list' %}#top">
             more opportunities ...
           </a>
         </div>
@@ -58,7 +58,7 @@
           {% endfor %}
         </ul>
         <div class="pull-right">
-          <a href="{% url 'bulletin:plugins:new-resource-list' %}">
+          <a href="{% url 'bulletin:plugins:new-resource-list' %}#top">
             more resources ...
           </a>
         </div>
@@ -79,7 +79,7 @@
           {% endfor %}
         </ul>
         <div class="pull-right">
-          <a href="{% url 'bulletin:plugins:event-list' %}">
+          <a href="{% url 'bulletin:plugins:event-list' %}#top">
             more events ...
           </a>
         </div>
@@ -100,7 +100,7 @@
           {% endfor %}
         </ul>
         <div class="pull-right">
-          <a href="{% url 'bulletin:plugins:job-list' %}">
+          <a href="{% url 'bulletin:plugins:job-list' %}#top">
             more jobs ...
           </a>
         </div>
