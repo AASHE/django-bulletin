@@ -22,6 +22,7 @@ class Job(Post):
 class NewResource(Post):
 
     blurb = models.TextField()
+    verbose_name = 'newresource'
 
 
 class Opportunity(Post):
