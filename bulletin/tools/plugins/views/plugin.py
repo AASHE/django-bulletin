@@ -153,6 +153,6 @@ class ModerationView(braces.views.SetHeadlineMixin,
                     approved=None).order_by('-date_submitted'):
                 context['unmoderated_posts'].append(unmoderated_post)
 
-        context['next'] = self.request.GET.get('next', '')
+        context['next'] = self.request.get_full_path()
 
         return context

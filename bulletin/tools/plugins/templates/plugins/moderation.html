@@ -26,7 +26,7 @@
           {{ post.content_type.name }}
         </td>
         <td class="col-md-6">
-          <a href="{% url "bulletin:plugins:update" pk=post.pk post_type=post.content_type.name %}">
+          <a href="{% url "bulletin:plugins:update" pk=post.pk post_type=post.content_type.name %}?next={{ next }}">
             {{ post.title }}
           </a>
         </td>
