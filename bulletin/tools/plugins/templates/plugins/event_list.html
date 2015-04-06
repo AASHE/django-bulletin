@@ -39,8 +39,25 @@
               {{ event.organization }}
             </div>
             {% if event.organization != event.location %}
+              {% if event.location != 'Unknown' %}
+                <div class="margin-bottom-10">
+                  {{ event.location }}
+                </div>
+              {% endif %}
+            {% endif %}
+            {% if event.start_date %}
               <div class="margin-bottom-10">
-                {{ event.location }}
+                {{ event.start_date|date }}
+                {% if event.end_date %}
+                  {% if event.end_date != event.start_date %}
+                    - {{ event.end_date|date }}
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if event.time %}
+              <div class="margin-bottom-10">
+                {{ event.time }}
               </div>
             {% endif %}
             <ul class="list-unstyled list-inline blog-info">
