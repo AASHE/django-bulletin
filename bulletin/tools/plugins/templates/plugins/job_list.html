@@ -45,7 +45,7 @@
             </div>
             <ul class="list-unstyled list-inline blog-info">
               <li><span class="glyphicon glyphicon-calendar"></span>
-                {{ job.pub_date|date:"M j, Y" }}
+                Posted {{ job.pub_date|date:"M j, Y" }}
               </li>
               {% if user.is_staff %}
                 <li>
