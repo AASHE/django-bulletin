@@ -80,7 +80,7 @@
               {% if story.category %}
                 <li><span class="glyphicon glyphicon-tag"></span>
                   <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
-                    {{ story.category.name|title }}
+                    {{ story.category.name|title }} News
                   </a>
                   {% if story.category.url %}
                     <li><span class="glyphicon glyphicon-star"></span>
