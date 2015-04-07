@@ -12,6 +12,11 @@
 
     {% bootstrap_form form %}
 
+    <div class="form-group">
+      <a class="btn btn-default" href="mailto:{{ post.submitter.email }}" role="button">
+        Email Submitter
+      </a>
+    </div>
     <label class="control-label" for="links">
       Supplemental Links
       <a href="{% url "bulletin:link-create" post.id %}?next={{ request.get_full_path }}">
