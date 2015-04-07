@@ -106,6 +106,8 @@
 
      var csrftoken = getCookie('csrftoken');
 
+     $("body").css("cursor", "progress");
+
      $.ajax({
        type: "PATCH",
        url: "{% url "bulletin:api:section-post-up" post.section.id post.id %}",
@@ -138,6 +140,9 @@
          alert("Something broke. " + thrownError);
          this.complete();
        },
+       complete: function() {
+         $("body").css("cursor", "default");
+       },
      });
    });
 
@@ -152,6 +157,8 @@
      });
 
      var csrftoken = getCookie('csrftoken');
+
+     $("body").css("cursor", "progress");
 
      $.ajax({
        type: "PATCH",
@@ -183,6 +190,9 @@
        error: function(xhr, ajaxOptions, thrownError) {
          alert("Something broke. " + thrownError);
          this.complete();
+       },
+       complete: function() {
+         $("body").css("cursor", "default");
        },
      });
    });
