@@ -13,8 +13,13 @@
     {% bootstrap_form form %}
 
     <div class="form-group">
-      <a class="btn btn-default" href="mailto:{{ post.submitter.email }}" role="button">
+      <a class="btn btn-default" href="mailto:{{ post.submitter.first_name }}%20{{ post.submitter.last_name}}&lt;{{ post.submitter.email }}&gt;" role="button" target="blank">
         Email Submitter
+        {% if post.submitter.first_name or post.submitter.last_name %}
+          ({{ post.submitter.first_name }} {{ post.submitter.last_name }})
+        {% else %}
+          (name unavailable)
+        {% endif %}
       </a>
     </div>
     <label class="control-label" for="links">
