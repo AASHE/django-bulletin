@@ -505,7 +505,7 @@ class SectionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         news = Section.objects.get(pk=news.id)
-        self.assertEqual(news.position, 1)
+        self.assertEqual(news.position, 2)
 
     def test_move_section_down(self):
         """Can we move a section down in an issue?
@@ -529,7 +529,7 @@ class SectionTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         sports = Section.objects.get(pk=sports.id)
-        self.assertEqual(comics.position, 1)
+        self.assertEqual(comics.position, 2)
 
 
 class SectionTemplateTests(APITestCase):

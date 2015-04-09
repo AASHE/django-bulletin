@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
-from django.db import models
+from django.db import models, transaction
 from django.template.response import SimpleTemplateResponse
 import polymorphic
 from positions.fields import PositionField
@@ -217,7 +217,8 @@ class Section(models.Model):
     name = models.CharField(max_length=255)
     issue = models.ForeignKey(Issue,
                               related_name='sections')
-    position = PositionField(collection='issue')
+    position = models.IntegerField(null=True,
+                                   blank=True)
     categories = models.ManyToManyField(Category,
                                         related_name='sections',
                                         null=True,
@@ -233,20 +234,34 @@ class Section(models.Model):
     def __unicode__(self):
         return unicode(self.issue) + ': ' + self.name
 
-    def up(self, commit=True):
-        if self.position > 0:
-            self.position -= 1
-            if commit:
+    def up(self):
+        previous_section = self.issue.sections.filter(
+            position__lt=self.position).last()
+        if previous_section:
+            self.position, previous_section.position = (
+                previous_section.position, self.position)
+            with transaction.atomic():
                 self.save()
+                previous_section.save()
         # else, already at start of list
 
-    def down(self, commit=True):
-        num_sections = self.issue.sections.count()
-        if self.position < (num_sections - 1):
-            self.position += 1
-            if commit:
+    def down(self):
+        next_section = self.issue.sections.filter(
+            position__gt=self.position).first()
+        if next_section:
+            self.position, next_section.position = (
+                next_section.position, self.position)
+            with transaction.atomic():
                 self.save()
+                next_section.save()
         # else, already at end of list
+
+    def save(self, *args, **kwargs):
+        if self.issue and self.position is None:
+            self.position = self.issue.sections.count() + 1
+        elif self.issue is None:
+            self.position = None
+        return super(Section, self).save(*args, **kwargs)
 
 
 class Post(polymorphic.PolymorphicModel):
@@ -272,9 +287,8 @@ class Post(polymorphic.PolymorphicModel):
                                 null=True,
                                 blank=True,
                                 on_delete=models.SET_NULL)
-    position = PositionField(collection='section',
-                             null=True,
-                             blank=True)
+    position = models.IntegerField(null=True,
+                                   blank=True)
     image = models.ImageField(max_length=512,
                               upload_to='django-bulletin/%Y/%m/%d/post',
                               null=True,
@@ -301,19 +315,26 @@ class Post(polymorphic.PolymorphicModel):
     def __unicode__(self):
         return self.title
 
-    def up(self, commit=True):
-        if self.position > 0:
-            self.position -= 1
-            if commit:
+    def up(self):
+        previous_post = self.section.posts.filter(
+            position__lt=self.position).last()
+        if previous_post:
+            self.position, previous_post.position = (
+                previous_post.position, self.position)
+            with transaction.atomic():
                 self.save()
+                previous_post.save()
         # else, already at start of list
 
-    def down(self, commit=True):
-        num_posts = self.section.posts.count()
-        if self.position < (num_posts - 1):
-            self.position += 1
-            if commit:
+    def down(self):
+        next_post = self.section.posts.filter(
+            position__gt=self.position).first()
+        if next_post:
+            self.position, next_post.position = (
+                next_post.position, self.position)
+            with transaction.atomic():
                 self.save()
+                next_post.save()
         # else, already at end of list
 
     @property
@@ -325,6 +346,10 @@ class Post(polymorphic.PolymorphicModel):
     def save(self, *args, **kwargs):
         if self.approved and not self.pub_date:
             self.pub_date = datetime.datetime.now(pytz.utc)
+        if self.section and self.position is None:
+            self.position = self.section.posts.count() + 1
+        elif self.section is None:
+            self.position = None
         return super(Post, self).save(*args, **kwargs)
 
 

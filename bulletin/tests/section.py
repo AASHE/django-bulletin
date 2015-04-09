@@ -70,3 +70,16 @@ class SectionTests(TestCase):
         self.assertEqual(0, section.posts.count())
         # But should not delete the posts.
         self.assertEqual(2, Post.objects.count())
+
+    def test_section_position_on_add_to_issue(self):
+        """Is Section.position set correctly when a section is added to
+        an issue?
+        """
+        blue_section = Section.objects.create(name="Blue",
+                                              position=1)
+        red_section = Section.objects.create(name="Red",
+                                             position=2)
+        self.issue.sections.add(blue_section)
+        self.issue.sections.add(red_section)
+        self.assertEqual(1, blue_section.position)
+        self.assertEqual(2, red_section.position)

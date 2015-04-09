@@ -145,6 +145,7 @@ class IssueFill(generics.UpdateAPIView):
         side effects for you, lots of Posts updated in fill_issue.
         """
         issue = self.get_object()
+
         remaining_posts = Post.available_for_newsletter()
 
         for section in issue.sections.all():
@@ -394,7 +395,7 @@ class IssueSectionUp(generics.UpdateAPIView):
         return Section.objects.get(pk=self.kwargs['section_pk'])
 
     def pre_save(self, obj):
-        obj.up(commit=False)
+        obj.up()
 
 
 class IssueSectionDown(generics.UpdateAPIView):
@@ -407,7 +408,7 @@ class IssueSectionDown(generics.UpdateAPIView):
         return Section.objects.get(pk=self.kwargs['section_pk'])
 
     def pre_save(self, obj):
-        obj.down(commit=False)
+        obj.down()
 
 
 class SectionList(generics.ListCreateAPIView):
@@ -456,7 +457,7 @@ class SectionPostUp(generics.UpdateAPIView):
         return Post.objects.get(pk=self.kwargs['post_pk'])
 
     def pre_save(self, obj):
-        obj.up(commit=False)
+        obj.up()
 
 
 class SectionPostDown(generics.UpdateAPIView):
@@ -469,7 +470,7 @@ class SectionPostDown(generics.UpdateAPIView):
         return Post.objects.get(pk=self.kwargs['post_pk'])
 
     def pre_save(self, obj):
-        obj.down(commit=False)
+        obj.down()
 
 
 class PostList(generics.ListCreateAPIView):

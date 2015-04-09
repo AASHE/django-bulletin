@@ -14,7 +14,6 @@ django-form-utils
 django-jsonfield==0.9.13
 django-mathfilters
 django-polymorphic
-django-positions==0.5.1
 django-premailer
 django-template-repl
 djangorestframework==2.4.2
