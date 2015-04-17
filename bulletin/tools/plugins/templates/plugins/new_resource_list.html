@@ -39,7 +39,7 @@
               <h2>{{ new_resource.title }}</h2>
             </a>
             <div class="margin-bottom-10">
-              {{ new_resource.blurb }}
+              {{ new_resource.blurb|safe }}
             </div>
             <ul class="list-unstyled list-inline blog-info">
               <li><span class="glyphicon glyphicon-calendar"></span>
