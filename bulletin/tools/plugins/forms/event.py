@@ -13,6 +13,10 @@ event_field_labels = {
     'location': 'Location of Event'
 }
 
+event_help_texts = {
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+}
+
 
 class EventSubmitForm(ModelForm):
 
@@ -30,6 +34,7 @@ class EventSubmitForm(ModelForm):
             'start_date': DateWidget(usel10n=True, bootstrap_version=3),
             'end_date': DateWidget(usel10n=True, bootstrap_version=3)
         }
+        help_texts = event_help_texts
 
 
 class EventUpdateForm(ModelForm):
@@ -52,3 +57,4 @@ class EventUpdateForm(ModelForm):
             'end_date': DateWidget(usel10n=True, bootstrap_version=3),
             'pub_date': DateTimeWidget(usel10n=True, bootstrap_version=3)
         }
+        help_texts = event_help_texts

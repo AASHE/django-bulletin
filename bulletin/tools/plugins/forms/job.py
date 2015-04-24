@@ -4,6 +4,15 @@ from form_utils.widgets import ImageWidget
 
 from ..models import Job
 
+job_field_labels = {
+    'image': 'Image (10Mb Limit)',
+    'url': 'URL'
+}
+
+job_help_texts = {
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+}
+
 
 class JobSubmitForm(ModelForm):
 
@@ -14,8 +23,10 @@ class JobSubmitForm(ModelForm):
                   'organization',
                   'image']
         labels = {
-            'image': 'Image (10Mb Limit)'
+
         }
+        labels = job_field_labels
+        help_texts = job_help_texts
 
 
 class JobUpdateForm(ModelForm):
@@ -33,3 +44,5 @@ class JobUpdateForm(ModelForm):
             'pub_date': DateTimeWidget(usel10n=True, bootstrap_version=3),
             'image': ImageWidget(),
         }
+        labels = job_field_labels
+        help_texts = job_help_texts
