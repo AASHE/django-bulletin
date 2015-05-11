@@ -13,6 +13,10 @@ job_help_texts = {
     'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
 }
 
+field_widgets = {
+    'image': ImageWidget(attrs={'required': 'required'})
+}
+
 
 class JobSubmitForm(ModelForm):
 
@@ -22,11 +26,9 @@ class JobSubmitForm(ModelForm):
                   'url',
                   'organization',
                   'image']
-        labels = {
-
-        }
         labels = job_field_labels
         help_texts = job_help_texts
+        widgets = field_widgets
 
 
 class JobUpdateForm(ModelForm):
