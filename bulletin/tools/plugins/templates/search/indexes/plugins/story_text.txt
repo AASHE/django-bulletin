@@ -1,0 +1,3 @@
+{{ object.title }}
+{{ object.blurb|striptags }}
+{{ objects.category.name }}

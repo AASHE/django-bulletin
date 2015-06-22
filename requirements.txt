@@ -11,6 +11,7 @@ django-cors-headers==0.13
 django-datetime-widget
 django-extensions==1.5.1
 django-form-utils
+django-haystack==2.4.0rc1
 django-jsonfield==0.9.13
 django-mathfilters
 django-polymorphic

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+  <div class="headline">
+    <h2>
+      Search
+    </h2>
+  </div>
+
+  <form method="get" action=".">
+    <div class="form-group has-success">
+      <div class="input-group">
+        <input class="form-control" id="id_q" name="q" placeholder="Search"
+               title="" type="search" value="aashe">
+        <span class="input-group-btn">
+          <button class="btn" type="submit">
+            <span class="glyphicon glyphicon-search"></span>
+            Search
+          </button>
+        </span>
+      </div>
+    </div>
+
+    {% if query %}
+      {% for result in page.object_list %}
+        <p>
+          {% if result.content_type == "plugins.event" %}
+            <!-- News story. -->
+            <div class="story_result">
+              <a href="{{ result.object.url }}">
+                <h3>
+                  {{ result.object.title }}
+                </h3>
+              </a>
+              <blockquote>
+                <p>
+                  {{ result.object.start_date }}
+                </p>
+              </blockquote>
+            </div>
+          {% endif %}
+          {% if result.content_type == "plugins.story" %}
+            <div class="story_result">
+              <a href="{{ result.object.url }}">
+                <h3>
+                  {{ result.object.title }}
+                </h3>
+              </a>
+              <blockquote>
+                <p>
+                  {{ result.object.blurb|truncatewords_html:30 }}
+                </p>
+              </blockquote>
+            </div>
+          {% endif %}
+          {% if result.content_type == "plugins.newresource" %}
+            <div class="newresource_result">
+              <a href="{{ result.object.url }}">
+                <h3>
+                  {{ result.object.title }}
+                </h3>
+              </a>
+              <blockquote>
+                <p>
+                  {{ result.object.blurb|truncatewords_html:30 }}
+                </p>
+              </blockquote>
+            </div>
+          {% endif %}
+          {% if result.content_type == "plugins.opportunity" %}
+            <div class="opportunity_result">
+              <a href="{{ result.object.url }}">
+                <h3>
+                  {{ result.object.title }}
+                </h3>
+              </a>
+              <blockquote>
+                <p>
+                  {{ result.object.blurb|truncatewords_html:30 }}
+                </p>
+              </blockquote>
+            </div>
+          {% endif %}
+          {% if result.content_type == "plugins.job" %}
+            <div class="job_result">
+              <a href="{{ result.object.url }}">
+                <h3>
+                  {{ result.object.title }}
+                </h3>
+              </a>
+              <blockquote>
+                <p>
+                  {{ result.object.organization }}
+                </p>
+              </blockquote>
+            </div>
+          {% endif %}
+        </p>
+      {% empty %}
+        <p>No results found.</p>
+      {% endfor %}
+
+      {% if page.has_previous or page.has_next %}
+        <div>
+          {% if page.has_previous %}
+            <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">
+          {% endif %}
+          &laquo; Previous
+          {% if page.has_previous %}
+            </a>
+          {% endif %}
+          |
+          {% if page.has_next %}
+            <a href="?q={{ query }}&amp;page={{ page.next_page_number }}">
+          {% endif %}
+          Next &raquo;
+          {% if page.has_next %}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% else %}
+      {# Show some example queries to run, maybe query syntax, something else? #}
+    {% endif %}
+  </form>
+{% endblock %}

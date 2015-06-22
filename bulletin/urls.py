@@ -1,4 +1,5 @@
 from django.conf.urls import include, patterns, url
+from haystack.generic_views import SearchView
 
 from . import views
 from bulletin.api import urls as api_urls
@@ -12,6 +13,8 @@ urlpatterns = patterns(
     url(r'^$',
         views.FrontPageView.as_view(),
         name='front-page'),
+
+    url(r'^search/', include('haystack.urls')),
 
     ####################
     # Newsletter views #
@@ -268,12 +271,12 @@ urlpatterns = patterns(
         name='ad-delete'),
 
     url(r'^issue-editor/', include(editor_urls,
-                     namespace='issue-editor',
-                     app_name='Issue Editor')),
+                                   namespace='issue-editor',
+                                   app_name='Issue Editor')),
 
     url(r'^posts/', include(plugin_urls,
-                   namespace='plugins',
-                   app_name='Plugins')),
+                            namespace='plugins',
+                            app_name='Plugins')),
 
     #######
     # API #

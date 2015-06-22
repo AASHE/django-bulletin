@@ -1,0 +1,3 @@
+{{ object.title }}
+{{ object.organization }}
+{{ object.location }}
