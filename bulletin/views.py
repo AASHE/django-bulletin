@@ -1182,6 +1182,8 @@ def get_most_recently_published_issue():
     If no issue has been published, returns None.
     """
     for issue in Issue.objects.order_by('-pub_date'):
+        if issue.pub_date is None:
+            continue
         if issue.pub_date > datetime.date.today():
             continue
         return issue
