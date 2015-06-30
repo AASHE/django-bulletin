@@ -19,4 +19,8 @@ Quick Start
 
     url(r'^bulletin/', include('bulletin.urls')),
 
-3. Run 'python manage.py syncdb' to create the bulletin models.
+3. Inside your project root, run 'pip install -r requirements.txt'
+
+3. Inside your project root, run 'python manage.py syncdb'.
+
+4. Inside your project root, run 'python manage.py migrate'.
