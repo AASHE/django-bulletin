@@ -12,79 +12,72 @@
 
   {% if query %}
     {% for result in page.object_list %}
-      <p>
-        {% if result.content_type == "plugins.event" %}
-          <!-- News story. -->
-          <div class="story_result">
-            <a href="{{ result.object.url }}">
-              <h3>
-                {{ result.object.title }}
-              </h3>
-            </a>
-            <blockquote>
-              <p>
-                {{ result.object.start_date }}
-              </p>
-            </blockquote>
-          </div>
-        {% endif %}
-        {% if result.content_type == "plugins.story" %}
-          <div class="story_result">
-            <a href="{{ result.object.url }}">
-              <h3>
-                {{ result.object.title }}
-              </h3>
-            </a>
-            <blockquote>
-              <p>
-                {{ result.object.blurb|truncatewords_html:30 }}
-              </p>
-            </blockquote>
-          </div>
-        {% endif %}
-        {% if result.content_type == "plugins.newresource" %}
-          <div class="newresource_result">
-            <a href="{{ result.object.url }}">
-              <h3>
-                {{ result.object.title }}
-              </h3>
-            </a>
-            <blockquote>
-              <p>
-                {{ result.object.blurb|truncatewords_html:30 }}
-              </p>
-            </blockquote>
-          </div>
-        {% endif %}
-        {% if result.content_type == "plugins.opportunity" %}
-          <div class="opportunity_result">
-            <a href="{{ result.object.url }}">
-              <h3>
-                {{ result.object.title }}
-              </h3>
-            </a>
-            <blockquote>
-              <p>
-                {{ result.object.blurb|truncatewords_html:30 }}
-              </p>
-            </blockquote>
-          </div>
-        {% endif %}
-        {% if result.content_type == "plugins.job" %}
-          <div class="job_result">
-            <a href="{{ result.object.url }}">
-              <h3>
-                {{ result.object.title }}
-              </h3>
-            </a>
-            <blockquote>
-              <p>
-                {{ result.object.organization }}
-              </p>
-            </blockquote>
-          </div>
-        {% endif %}
-      </p>
+          {% if result.content_type = 'plugins.story' %}
+            {% with result.object as story %}
+              <div class="row blog blog-medium">
+                <div class="col-sm-3 text-right">
+                </div>
+                <div class="col-sm-9">
+                  <h5>
+                    NEWS
+                  </h5>
+                </div>
+              </div>
+              {% include "plugins/story.html" %}
+            {% endwith %}
+          {% elif result.content_type = 'plugins.event' %}
+            {% with result.object as event %}
+              <div class="row blog blog-medium">
+                <div class="col-sm-3 text-right">
+                </div>
+                <div class="col-sm-9">
+                  <h5>
+                    EVENT
+                  </h5>
+                </div>
+              </div>
+              {% include "plugins/event.html" %}
+            {% endwith %}
+          {% elif result.content_type = 'plugins.job' %}
+            {% with result.object as job %}
+              <div class="row blog blog-medium">
+                <div class="col-sm-3 text-right">
+                </div>
+                <div class="col-sm-9">
+                  <h5>
+                    JOB
+                  </h5>
+                </div>
+              </div>
+              {% include "plugins/job.html" %}
+            {% endwith %}
+          {% elif result.content_type = 'plugins.newresource' %}
+            {% with result.object as new_resource %}
+              <div class="row blog blog-medium">
+                <div class="col-sm-3 text-right">
+                </div>
+                <div class="col-sm-9">
+                  <h5>
+                    RESOURCE
+                  </h5>
+                </div>
+              </div>
+              {% include "plugins/new_resource.html" %}
+            {% endwith %}
+          {% elif result.content_type = 'plugins.opportunity' %}
+            {% with result.object as opportunity %}
+              <div class="row blog blog-medium">
+                <div class="col-sm-3 text-right">
+                </div>
+                <div class="col-sm-9">
+                  <h5>
+                    OPPORTUNITY
+                  </h5>
+                </div>
+              </div>
+              {% include "plugins/opportunity.html" %}
+            {% endwith %}
+          {% endif %}
     {% empty %}
       <p>No results found.</p>
     {% endfor %}
