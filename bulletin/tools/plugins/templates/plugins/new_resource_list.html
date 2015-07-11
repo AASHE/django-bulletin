@@ -27,42 +27,8 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for new_resource in object_list %}
-        <!--New Resource-->
-        <div class="row blog blog-medium margin-bottom-40">
-          <div class="col-sm-3 text-right">
-            {% if new_resource.image %}
-              <img class="img-responsive" src="{{ new_resource.image.url }}" />
-            {% endif %}
-          </div>
-          <div class="col-sm-9">
-            <a href="{{ new_resource.url }}">
-              <h2>{{ new_resource.title }}</h2>
-            </a>
-            <div class="margin-bottom-10">
-              {{ new_resource.blurb|safe }}
-            </div>
-            <ul class="list-unstyled list-inline blog-info">
-              <li><span class="glyphicon glyphicon-calendar"></span>
-                Posted {{ new_resource.pub_date|date:"M j, Y" }}
-              </li>
-              {% if new_resource.category %}
-                <li><span class="glyphicon glyphicon-tag"></span>
-                  {{ new_resource.category }}
-                </li>
-              {% endif %}
-              {% if user.is_staff %}
-                <li>
-                  <a href="{% url "bulletin:plugins:update" new_resource.content_type.model new_resource.id %}?next={{ request.get_full_path }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <!--End New Resource-->
+        {% include "plugins/new_resource.html" %}
       {% endfor %}
-
     </div>
     <!-- End Left Sidebar -->
 

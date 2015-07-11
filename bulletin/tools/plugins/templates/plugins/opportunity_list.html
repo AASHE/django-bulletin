@@ -27,40 +27,7 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for opportunity in object_list %}
-        <!--New Resource-->
-        <div class="row blog blog-medium margin-bottom-40">
-          <div class="col-sm-3 text-right">
-            {% if opportunity.image %}
-              <img class="img-responsive" src="{{ opportunity.image.url }}" />
-            {% endif %}
-          </div>
-          <div class="col-sm-9">
-            <a href="{{ opportunity.url }}">
-              <h2>{{ opportunity.title }}</h2>
-            </a>
-            <div class="margin-bottom-10">
-              {{ opportunity.blurb|safe }}
-            </div>
-            <ul class="list-unstyled list-inline blog-info">
-              <li><span class="glyphicon glyphicon-calendar"></span>
-                Posted {{ opportunity.pub_date|date:"M j, Y" }}
-              </li>
-              {% if opportunity.category %}
-                <li><span class="glyphicon glyphicon-tag"></span>
-                  {{ opportunity.category }}
-                </li>
-              {% endif %}
-              {% if user.is_staff %}
-                <li>
-                  <a href="{% url "bulletin:plugins:update" opportunity.content_type.model opportunity.id %}?next={{ request.get_full_path }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <!--End New Resource-->
+        {% include "plugins/opportunity.html" %}
       {% endfor %}
 
     </div>

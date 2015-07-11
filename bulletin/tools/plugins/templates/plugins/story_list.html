@@ -57,53 +57,8 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for story in object_list %}
-        <!--Story-->
-        <div class="row blog blog-medium margin-bottom-40">
-          <div class="col-sm-3 text-right">
-            {% if story.image %}
-              <a href="{{ story.url }}">
-                <img class="img-responsive" src="{{ story.image.url }}" />
-              </a>
-            {% endif %}
-          </div>
-          <div class="col-sm-9">
-            <a href="{{ story.url }}">
-              <h2>{{ story.title }}</h2>
-            </a>
-            <div class="margin-bottom-10">
-              {{ story.blurb|safe }}
-            </div>
-            <ul class="list-unstyled list-inline blog-info">
-              <li><span class="glyphicon glyphicon-calendar"></span>
-                Posted {{ story.pub_date|date:"M j, Y" }}
-              </li>
-              {% if story.category %}
-                <li><span class="glyphicon glyphicon-tag"></span>
-                  <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
-                    {{ story.category.name|title }} News
-                  </a>
-                  {% if story.category.url %}
-                    <li><span class="glyphicon glyphicon-star"></span>
-                      <a href="{{ story.category.url }}">
-                        AASHE {{ story.category.name|title }} Resources
-                      </a>
-                    </li>
-                  {% endif %}
-                </li>
-              {% endif %}
-              {% if user.is_staff %}
-                <li>
-                  <a href="{% url "bulletin:plugins:update" story.content_type.model story.id %}?next={{ request.get_full_path }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <!--End Story-->
+        {% include "plugins/story.html" %}
       {% endfor %}
-
     </div>
     <!-- End Left Sidebar -->
 

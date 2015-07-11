@@ -27,39 +27,8 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for job in object_list %}
-        <!--Job-->
-        <div class="row blog blog-medium margin-bottom-40">
-          <div class="col-sm-3 text-right">
-            {% if job.image %}
-              <a href="{{ job.url }}">
-                <img class="img-responsive" src="{{ job.image.url }}" />
-              </a>
-            {% endif %}
-          </div>
-          <div class="col-sm-9">
-            <a href="{{ job.url }}">
-              <h2>{{ job.title }}</h2>
-            </a>
-            <div class="margin-bottom-10">
-              {{ job.organization }}
-            </div>
-            <ul class="list-unstyled list-inline blog-info">
-              <li><span class="glyphicon glyphicon-calendar"></span>
-                Posted {{ job.pub_date|date:"M j, Y" }}
-              </li>
-              {% if user.is_staff %}
-                <li>
-                  <a href="{% url "bulletin:plugins:update" job.content_type.model job.id %}?next={{ request.get_full_path }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <!--End Job-->
+        {% include "plugins/job.html" %}
       {% endfor %}
-
     </div>
     <!-- End Left Sidebar -->
 

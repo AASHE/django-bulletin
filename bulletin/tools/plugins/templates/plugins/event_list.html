@@ -27,56 +27,8 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for event in object_list %}
-        <!--Event-->
-        <div class="row blog blog-medium margin-bottom-40">
-          <div class="col-sm-3 text-right">
-          </div>
-          <div class="col-sm-9">
-            <a href="{{ event.url }}">
-              <h2>{{ event.title }}</h2>
-            </a>
-            <div class="margin-bottom-10">
-              {{ event.organization }}
-            </div>
-            {% if event.organization != event.location %}
-              {% if event.location != 'Unknown' %}
-                <div class="margin-bottom-10">
-                  {{ event.location }}
-                </div>
-              {% endif %}
-            {% endif %}
-            {% if event.start_date %}
-              <div class="margin-bottom-10">
-                {{ event.start_date|date }}
-                {% if event.end_date %}
-                  {% if event.end_date != event.start_date %}
-                    - {{ event.end_date|date }}
-                  {% endif %}
-                {% endif %}
-              </div>
-            {% endif %}
-            {% if event.time %}
-              <div class="margin-bottom-10">
-                {{ event.time }}
-              </div>
-            {% endif %}
-            <ul class="list-unstyled list-inline blog-info">
-              <li><span class="glyphicon glyphicon-calendar"></span>
-                Posted {{ event.pub_date|date:"M j, Y" }}
-              </li>
-              {% if user.is_staff %}
-                <li>
-                  <a href="{% url "bulletin:plugins:update" event.content_type.model event.id %}?next={{ request.get_full_path }}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <!--End Event-->
+        {% include "plugins/event.html" %}
       {% endfor %}
-
     </div>
     <!-- End Left Sidebar -->
 
