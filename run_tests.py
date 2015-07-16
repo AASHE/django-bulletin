@@ -4,10 +4,12 @@ import django
 
 BASE_PATH = os.path.dirname(__file__)
 
+
 def main():
     """
     Standalone django model test with a 'memory-only-django-installation'.
-    You can play with a django model without a complete django app installation.
+    You can play with a django model without a complete django app
+    installation.
     http://www.djangosnippets.org/snippets/1044/
     """
     sys.exc_clear()
@@ -50,10 +52,11 @@ def main():
         'django.contrib.sites',
 
         # AASHE Apps
-        # 'aashe.aasheauth',
         'bulletin',
         'bulletin.tools.plugins',
         'django_constant_contact',
+
+        'haystack',
 
         # required by bulletin
         'bootstrap3',
@@ -61,7 +64,7 @@ def main():
         'django_bootstrap_breadcrumbs',
     )
 
-    if django.VERSION > (1,2):
+    if django.VERSION > (1, 2):
         global_settings.DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
@@ -87,27 +90,42 @@ def main():
     )
 
     # django-constant-contact settings
-    global_settings.CONSTANT_CONTACT_API_KEY = os.environ.get('CONSTANT_CONTACT_API_KEY', None)
-    global_settings.CONSTANT_CONTACT_ACCESS_TOKEN = os.environ.get('CONSTANT_CONTACT_ACCESS_TOKEN', None)
-    global_settings.CONSTANT_CONTACT_FROM_EMAIL = os.environ.get('CONSTANT_CONTACT_FROM_EMAIL', None)
-    global_settings.CONSTANT_CONTACT_REPLY_TO_EMAIL = os.environ.get('CONSTANT_CONTACT_REPLY_TO_EMAIL', None)
-    global_settings.CONSTANT_CONTACT_USERNAME = os.environ.get('CONSTANT_CONTACT_USERNAME', None)
-    global_settings.CONSTANT_CONTACT_PASSWORD = os.environ.get('CONSTANT_CONTACT_PASSWORD', None)
-    global_settings.MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY', None)
+    global_settings.CONSTANT_CONTACT_API_KEY = os.environ.get(
+        'CONSTANT_CONTACT_API_KEY', None)
+    global_settings.CONSTANT_CONTACT_ACCESS_TOKEN = os.environ.get(
+        'CONSTANT_CONTACT_ACCESS_TOKEN', None)
+    global_settings.CONSTANT_CONTACT_FROM_EMAIL = os.environ.get(
+        'CONSTANT_CONTACT_FROM_EMAIL', None)
+    global_settings.CONSTANT_CONTACT_REPLY_TO_EMAIL = os.environ.get(
+        'CONSTANT_CONTACT_REPLY_TO_EMAIL', None)
+    global_settings.CONSTANT_CONTACT_USERNAME = os.environ.get(
+        'CONSTANT_CONTACT_USERNAME', None)
+    global_settings.CONSTANT_CONTACT_PASSWORD = os.environ.get(
+        'CONSTANT_CONTACT_PASSWORD', None)
+    global_settings.MAILCHIMP_API_KEY = os.environ.get(
+        'MAILCHIMP_API_KEY', None)
 
     global_settings.SECRET_KEY = "blahblah"
 
     global_settings.SITE_ID = 1
 
+    global_settings.HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.simple_backend.SimpleEngine'
+        },
+    }
+
+    global_settings.HAYSTACK_SIGNAL_PROCESSOR = (
+        'haystack.signals.RealtimeSignalProcessor')
 
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
-    if django.VERSION > (1,2):
+    if django.VERSION > (1, 2):
         test_runner = test_runner()
-        failures = test_runner.run_tests(['bulletin',], fail_fast=True)
+        failures = test_runner.run_tests(['bulletin'], fail_fast=True)
     else:
-        failures = test_runner(['bulletin',], verbosity=1, fail_fast=True)
+        failures = test_runner(['bulletin'], verbosity=1, fail_fast=True)
     sys.exit(failures)
 
 if __name__ == '__main__':
