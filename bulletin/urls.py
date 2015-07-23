@@ -1,11 +1,14 @@
 from django.conf.urls import include, patterns, url
-from haystack.generic_views import SearchView
+from haystack.views import SearchView
+from haystack.query import SearchQuerySet
 
 from . import views
 from bulletin.api import urls as api_urls
 from bulletin.tools.plugins import urls as plugin_urls
 from bulletin.tools.issue_editor import urls as editor_urls
 
+
+sqs = SearchQuerySet().order_by('-pub_date')
 
 urlpatterns = patterns(
     '',
@@ -14,7 +17,10 @@ urlpatterns = patterns(
         views.FrontPageView.as_view(),
         name='front-page'),
 
-    url(r'^search/', include('haystack.urls')),
+    # url(r'^search/', include('haystack.urls')),
+
+    url(r'^search/', SearchView(searchqueryset=sqs),
+        name='haystack_search'),
 
     ####################
     # Newsletter views #
