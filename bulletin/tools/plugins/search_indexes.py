@@ -5,7 +5,7 @@ import models
 class EventIndex(indexes.SearchIndex,
                  indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    pub_date = indexes.DateTimeField(model_attr='pub_date')
+    pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
         return models.Event
@@ -17,7 +17,7 @@ class EventIndex(indexes.SearchIndex,
 class JobIndex(indexes.SearchIndex,
                indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    pub_date = indexes.DateTimeField(model_attr='pub_date')
+    pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
         return models.Job
@@ -29,7 +29,7 @@ class JobIndex(indexes.SearchIndex,
 class NewResourceIndex(indexes.SearchIndex,
                        indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    pub_date = indexes.DateTimeField(model_attr='pub_date')
+    pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
         return models.NewResource
@@ -41,7 +41,7 @@ class NewResourceIndex(indexes.SearchIndex,
 class OpportunityIndex(indexes.SearchIndex,
                        indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    pub_date = indexes.DateTimeField(model_attr='pub_date')
+    pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
         return models.Opportunity
@@ -53,7 +53,7 @@ class OpportunityIndex(indexes.SearchIndex,
 class StoryIndex(indexes.SearchIndex,
                  indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    pub_date = indexes.DateTimeField(model_attr='pub_date')
+    pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
         return models.Story
