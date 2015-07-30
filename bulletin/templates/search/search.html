@@ -4,12 +4,71 @@
 
 {% block content %}
 
-  <div class="headline">
-    <h2>
-      Search Results
-    </h2>
+  <div class="row blog blog-medium">
+    <div class="col-sm-3 text-right">
+      <div class="headline">
+        <h2>
+          Search Results
+        </h2>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="panel-group acc-v1" id="accordion-1">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a class="accordion-toggle collapsed" data-toggle="collapse"
+                 data-parent="#accordion-1" href="#collapse-One">
+                Advanced Search
+              </a>
+            </h4>
+          </div>
+          <div id="collapse-One" class="panel-collapse collapse">
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                <form method="GET"
+                      action="{% url "bulletin:haystack_search" %}">
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="q" id="id_q">
+                    <span class="input-group-btn">
+                      <button class="btn" type="submit">
+                        <span style="font-size: 11px">
+                          <span class="glyphicon glyphicon-search"></span>
+                          <span style="text-transform: uppercase">
+                            Search
+                          </span>
+                        </span>
+                      </button>
+                    </span>
+                  </div>
+                  <div style="text-transform: uppercase" class="inline-group">
+                    Search Only:
+                    <input id="id_models_0" name="models" type="checkbox"
+                           value="plugins.event" />
+                    Events
+                    <input id="id_models_1" name="models" type="checkbox"
+                           value="plugins.job" />
+                    Jobs
+                    <input id="id_models_4" name="models" type="checkbox"
+                           value="plugins.story" />
+                    News
+                    <input id="id_models_3" name="models" type="checkbox"
+                           value="plugins.opportunity" />
+                    Opportunities
+                    <input id="id_models_2" name="models" type="checkbox"
+                           value="plugins.newresource" />
+                    Resources
+                  </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
   {% if query %}
     {% for result in page.object_list %}
       {% if result.object.url %}  {% comment %} Skip Posts with no URL. {% endcomment %}
