@@ -17,21 +17,26 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4 class="panel-title">
-              <a class="accordion-toggle collapsed" data-toggle="collapse"
-                 data-parent="#accordion-1" href="#collapse-One">
+              <a class="accordion-toggle collapsed"
+                 data-toggle="collapse" data-parent="#accordion-1"
+                 href="#collapse-One">
                 Advanced Search
               </a>
             </h4>
           </div>
-          <div id="collapse-One" class="panel-collapse collapse">
+          <!-- To open the accordion, add `in=in` to your query string -->
+          <div id="collapse-One"
+               class="panel-collapse collapse {{ request.GET.in }}">
             <div class="panel-body">
               <form method="GET"
                     action="{% url "bulletin:haystack_search" %}">
                 <div class="row">
                   <div class="col-md-12">
                     <div class="input-group">
+                      <input type="hidden" name="in"
+                             value="in" />
                       <input type="text" class="form-control" name="q" id="id_q"
-                             value="{{ request.GET.q }}">
+                             value="{{ request.GET.q }}" />
                       <span class="input-group-btn">
                         <button class="btn" type="submit">
                           <span style="font-size: 11px">
