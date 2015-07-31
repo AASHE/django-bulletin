@@ -25,45 +25,50 @@
           </div>
           <div id="collapse-One" class="panel-collapse collapse">
             <div class="panel-body">
-              <div class="row">
-                <div class="col-md-12">
-                <form method="GET"
-                      action="{% url "bulletin:haystack_search" %}">
-                  <div class="input-group">
-                    <input type="text" class="form-control" name="q" id="id_q"
-                           value="{{ request.GET.q }}">
-                    <span class="input-group-btn">
-                      <button class="btn" type="submit">
-                        <span style="font-size: 11px">
-                          <span class="glyphicon glyphicon-search"></span>
-                          <span style="text-transform: uppercase">
-                            Search
+              <form method="GET"
+                    action="{% url "bulletin:haystack_search" %}">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <input type="text" class="form-control" name="q" id="id_q"
+                             value="{{ request.GET.q }}">
+                      <span class="input-group-btn">
+                        <button class="btn" type="submit">
+                          <span style="font-size: 11px">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span style="text-transform: uppercase">
+                              Search
+                            </span>
                           </span>
-                        </span>
-                      </button>
-                    </span>
+                        </button>
+                      </span>
+                    </div>
                   </div>
-                  <div style="text-transform: uppercase" class="inline-group">
-                    Search Only:
-                    <input id="id_models_0" name="models" type="checkbox"
-                           value="plugins.event" />
-                    Events
-                    <input id="id_models_1" name="models" type="checkbox"
-                           value="plugins.job" />
-                    Jobs
-                    <input id="id_models_4" name="models" type="checkbox"
-                           value="plugins.story" />
-                    News
-                    <input id="id_models_3" name="models" type="checkbox"
-                           value="plugins.opportunity" />
-                    Opportunities
-                    <input id="id_models_2" name="models" type="checkbox"
-                           value="plugins.newresource" />
-                    Resources
-                  </div>
-                </form>
                 </div>
-              </div>
+                <br />
+                <div class="row">
+                  <div class="col-md-12">
+                    <div style="text-transform: uppercase" class="inline-group">
+                      Search Only:
+                      <input id="id_models_0" name="models" type="checkbox"
+                             value="plugins.event" />
+                      Events
+                      <input id="id_models_1" name="models" type="checkbox"
+                             value="plugins.job" />
+                      Jobs
+                      <input id="id_models_4" name="models" type="checkbox"
+                             value="plugins.story" />
+                      News
+                      <input id="id_models_3" name="models" type="checkbox"
+                             value="plugins.opportunity" />
+                      Opportunities
+                      <input id="id_models_2" name="models" type="checkbox"
+                             value="plugins.newresource" />
+                      Resources
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
