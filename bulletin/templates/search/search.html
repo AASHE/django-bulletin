@@ -30,7 +30,8 @@
                 <form method="GET"
                       action="{% url "bulletin:haystack_search" %}">
                   <div class="input-group">
-                    <input type="text" class="form-control" name="q" id="id_q">
+                    <input type="text" class="form-control" name="q" id="id_q"
+                           value="{{ request.GET.q }}">
                     <span class="input-group-btn">
                       <button class="btn" type="submit">
                         <span style="font-size: 11px">
