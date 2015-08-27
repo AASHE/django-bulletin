@@ -72,7 +72,7 @@ class PluginListView(SidebarView,
              'description': (
                  """
                  Opportunities for the campus sustainability
-                 community. We welcoms submissions on a national,
+                 community. We welcome submissions on a national,
                  regional and local level. Surveys directly related to
                  research on campus sustainability - both announcements
                  of such surveys as well as results available online -
