@@ -105,6 +105,15 @@ def main():
     global_settings.MAILCHIMP_API_KEY = os.environ.get(
         'MAILCHIMP_API_KEY', None)
 
+    global_settings.HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, '..', 'bulletin_index')
+        },
+    }
+
+    global_settings.HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
     global_settings.SECRET_KEY = "blahblah"
 
     global_settings.SITE_ID = 1
