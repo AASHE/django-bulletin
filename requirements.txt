@@ -33,5 +33,4 @@ pytz==2014.7
 sorl-thumbnail
 wsgiref==0.1.2
 -e git+https://github.com/AASHE/django-constant-contact.git#egg=django_constant_contact
-django-positions
 whoosh
