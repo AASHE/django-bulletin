@@ -1,0 +1,269 @@
+{% load static from staticfiles %}
+{% load django_bootstrap_breadcrumbs %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+  <head>
+    <title>Bulletin Demo</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% include "css.html" %}
+
+    <!-- JS Global Compulsory -->
+    <script
+            src="//code.jquery.com/jquery-1.11.3.min.js">
+    </script>
+    <script
+            src="//code.jquery.com/jquery-migrate-1.2.1.min.js">
+    </script>
+    <script
+            src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
+    </script>
+
+    <!-- For datetimepicker widget
+         https://github.com/asaglimbeni/django-datetime-widget -->
+    {{ form.media }}
+    <!-- End datetimepicker widget -->
+
+    {% block extra_css %}{% endblock %}
+
+    {% block extra_head %}{% endblock %}
+
+  </head>
+
+  <body>
+    <!--=== Top ===-->
+    <div class="top">
+      <div class="container">
+
+        <ul class="loginbar pull-right">
+          <li>
+            {% if user.is_authenticated %}
+              <a href="/accounts/logout/">
+                Logout
+              </a>
+            {% else %}
+              <a href="/accounts/login/?next={{ request.get_full_path }}">
+                Login
+              </a>
+            {% endif %}
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <!--=== End Top ===-->
+
+    <!--=== Header ===-->
+    <div class="header">
+      <div class="navbar navbar-default" role="navigation">
+        <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target=".navbar-responsive-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="fa fa-bars"></span>
+            </button>
+          </div>
+
+          <!-- Search form -->
+          <form method="GET" action="{% url "bulletin:haystack_search" %}">
+            <div class="input-group">
+              <input type="text" class="form-control" name="q" id="id_q">
+              <span class="input-group-btn">
+                <button class="btn" type="submit">
+                  <span class="glyphicon glyphicon-search"></span>
+                  Search
+                </button>
+              </span>
+            </div>
+          </form>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="navbar-collapse navbar-responsive-collapse collapse"
+               style="height: 0px;">
+            <ul id="navbar-list" class="nav navbar-nav">
+              <li class="{% block front_page_tab_class %}{% endblock %}">
+                <a href="{% url "bulletin:front-page" %}">
+                  Home
+                </a>
+              </li>
+              <li class="{% block news_tab_class %}{% endblock %}">
+                <a href="{% url "bulletin:plugins:story-list" %}">
+                  News
+                </a>
+              </li>
+              <li class="{% block opportunities_tab_class %}{% endblock %}">
+                <a href="{% url 'bulletin:plugins:opportunity-list' %}">
+                  Opportunities
+                </a>
+              </li>
+              <li class="{% block new_resources_tab_class %}{% endblock %}">
+                <a href="{% url 'bulletin:plugins:new-resource-list' %}">
+                  New Resources
+                </a>
+              </li>
+              <li class="{% block events_tab_class %}{% endblock %}">
+                <a href="{% url 'bulletin:plugins:event-list' %}">
+                  Events
+                </a>
+              </li>
+              <li class="{% block jobs_tab_class %}{% endblock %}">
+                <a href="{% url 'bulletin:plugins:job-list' %}">
+                  Jobs
+                </a>
+              </li>
+              <li class="{% block submissions_tab_class %}{% endblock %}">
+                <a href="{% url 'bulletin:plugins:plugin-list' %}">
+                  Submit
+                </a>
+              </li>
+              <li class="dropdown {% block help_tab_class %}{% endblock %}">
+                <a href="#" class="dropdown-toggle"
+                   data-toggle="dropdown" data-hover="dropdown"
+                   data-delay="0"
+                   data-close-others="false">
+                  Help &nbsp;
+                  <i class="icon-angle-down"></i>
+                </a>
+              </li>
+
+              {% if request.user.is_staff %}
+                <li class="dropdown {% block editorial_tab_class %}{% endblock %}">
+                  <a href="#" class="dropdown-toggle"
+                     data-toggle="dropdown" data-hover="dropdown"
+                     data-delay="0"
+                     data-close-others="false">
+                    Editorial &nbsp;
+                    <i class="icon-angle-down"></i>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "bulletin:plugins:moderation" %}">
+                      Moderation
+                    </a></li>
+                    <li><a href="{% url "bulletin:issue-editor:newsletter-issue-list" 1 %}">
+                      Issue Editor
+                    </a></li>
+                    <li><a href="{% url "bulletin:ad-list" %}">
+                      Ads
+                    </a></li>
+                  </ul>
+                </li>
+              {% endif %}
+
+            </ul>
+          </div><!--/navbar-collapse-->
+        </div>
+      </div>
+    </div>
+    <!--=== End Header ===-->
+
+    <!--=== Breadcrumbs ===-->
+    {% block breadcrumbs %}
+    {% endblock %}
+    <div class="breadcrumbs margin-bottom-40">
+      <div class="container">
+        <div class="pull-right">
+          {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+        </div>
+      </div>
+    </div>
+    <!--=== End Breadcrumbs ===-->
+
+    <!--=== Content Part ===-->
+    <div class="container">
+      {% if headline %}
+        <div class="row">
+          <div class="col-sm-4 col-xs-6 pull-right">
+            {% block before_headline %}
+            {% endblock %}
+          </div>
+          <div class="headline col-sm-8">
+            <h2>
+              {{ headline|title }}
+            </h2>
+            {% block after_headline %}
+            {% endblock %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if messages  %}
+        {% for message in messages %}
+          <div
+            {% if message.tags %}
+              class="{{ message.tags }}"
+            {% endif %}
+              >
+          <button class="close" data-dismiss="alert">×</button>
+          {{ message|safe }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+
+      {% block content %}
+        {% block main %}
+        {% endblock %}
+      {% endblock %}
+    </div><!--/container-->
+    <!--=== End Content Part ===-->
+
+    <!---=== Footer Part ===-->
+    {% block footer %}
+      <div class="footer-v2">
+        <div class="footer">
+          <div class="container">
+            <div class="row">
+              <!-- Subscribe -->
+              <div class="col-md-3 md-margin-bottom-40">
+                <div class="headline"><h2>Subscribe</h2></div>
+                <p>Subscribe to the email version of the Bulletin</p>
+                <form class="footer-subscribe margin-bottom-25 md-margin-bottom-40"
+                      method="post"
+                      action="{% url "bulletin:newsletter-subscribe" 1 %}">
+                  {% csrf_token %}
+                  <div class="input-group">
+                    <input type="email" class="form-control"
+                           required="true"
+                           placeholder="Email Address" name="email_address"
+                           id="id_email_address">
+                    <span class="input-group-btn">
+                      <button class="btn-u" type="submit">Subscribe</button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <!-- End Subscribe -->
+            </div>
+          </div>
+        </div><!--/footer-->
+    <!--=== End Footer ===-->
+    {% endblock footer %}
+
+    {% block copyright %}
+      <div class="copyright">
+        <div class="container">
+          <p class="text-center">
+            Copyright © 2015 •
+            Association for the Advancement of Sustainability in Higher
+            Education
+          </p>
+        </div>
+      </div><!--/copyright-->
+    {% endblock %}
+
+    {% block end_of_body %}
+    {% endblock %}
+
+  </body>
+
+</html>

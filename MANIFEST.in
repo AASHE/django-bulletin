@@ -1,0 +1,4 @@
+include LICENSE
+include README.rst
+recursive-include bulletin/static *
+recursive-include bulletin/templates *
