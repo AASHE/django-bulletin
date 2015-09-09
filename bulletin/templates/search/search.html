@@ -156,3 +156,15 @@
     {# Show some example queries to run, maybe query syntax, something else? #}
   {% endif %}
 {% endblock %}
+
+{% block end_of_body %}
+  <script type="text/javascript">
+   // Load initial checkbox state from query string:
+   $(document).ready(function () {
+     $("input[type=checkbox]").each(function () {
+       this.checked = new RegExp("(\\?|&)" + this.name + "=" + this.value).
+                                 test(document.location.search);
+     });
+   });
+  </script>
+{% endblock %}
