@@ -17,72 +17,51 @@
         </h2>
       </div>
     </div>
-    <div class="col-sm-9">
-      <div class="panel-group acc-v1" id="accordion-1">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-              <a class="accordion-toggle collapsed"
-                 data-toggle="collapse" data-parent="#accordion-1"
-                 href="#collapse-One">
-                Advanced Search
-              </a>
-            </h4>
-          </div>
-          <!-- To open the accordion, add `collapse=in` to your query string -->
-          <div id="collapse-One"
-               class="panel-collapse collapse {{ request.GET.collapse }}">
-            <div class="panel-body">
-              <form method="GET"
-                    action="{% url "bulletin:haystack_search" %}">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="input-group">
-                      <input type="hidden" name="in"
-                             value="in" />
-                      <input type="text" class="form-control" name="q" id="id_q"
-                             value="{{ request.GET.q }}" />
-                      <span class="input-group-btn">
-                        <button class="btn" type="submit">
-                          <span style="font-size: 11px">
-                            <span class="glyphicon glyphicon-search"></span>
-                            <span style="text-transform: uppercase">
-                              Search
-                            </span>
-                          </span>
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="col-md-12">
-                    <div style="text-transform: uppercase" class="inline-group">
-                      Search Only:
-                      <input id="id_models_0" name="models" type="checkbox"
-                             value="plugins.event" />
-                      Events
-                      <input id="id_models_1" name="models" type="checkbox"
-                             value="plugins.job" />
-                      Jobs
-                      <input id="id_models_4" name="models" type="checkbox"
-                             value="plugins.story" />
-                      News
-                      <input id="id_models_3" name="models" type="checkbox"
-                             value="plugins.opportunity" />
-                      Opportunities
-                      <input id="id_models_2" name="models" type="checkbox"
-                             value="plugins.newresource" />
-                      Resources
-                    </div>
-                  </div>
-                </div>
-              </form>
+    <div class="well col-sm-9">
+      <form method="GET"
+            action="{% url "bulletin:haystack_search" %}">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" class="form-control" name="q" id="id_q"
+                     value="{{ request.GET.q }}" />
+              <span class="input-group-btn">
+                <button class="btn" type="submit">
+                  <span style="font-size: 11px">
+                    <span class="glyphicon glyphicon-search"></span>
+                    <span style="text-transform: uppercase">
+                      Search
+                    </span>
+                  </span>
+                </button>
+              </span>
             </div>
           </div>
         </div>
-      </div>
+        <br />
+        <div class="row">
+          <div class="col-md-12">
+            <div style="text-transform: uppercase" class="inline-group">
+              Search Only: &nbsp;
+              <input id="id_models_0" name="models" type="checkbox"
+                     value="plugins.event" />
+              Events &nbsp; &nbsp;
+              <input id="id_models_1" name="models" type="checkbox"
+                     value="plugins.job" />
+              Jobs &nbsp; &nbsp;
+              <input id="id_models_4" name="models" type="checkbox"
+                     value="plugins.story" />
+              News &nbsp; &nbsp;
+              <input id="id_models_3" name="models" type="checkbox"
+                     value="plugins.opportunity" />
+              Opportunities &nbsp; &nbsp;
+              <input id="id_models_2" name="models" type="checkbox"
+                     value="plugins.newresource" />
+              Resources
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
   {% if query %}
@@ -156,7 +135,13 @@
         {% endif %}
       {% endif %}
     {% empty %}
-        <p>No results found.</p>
+      <div class="row blog blog-medium">
+        <div class="col-sm-3 text-right">
+        </div>
+        <div class="col-sm-9 well">
+          No results found.
+        </div>
+      </div>
     {% endfor %}
 
     <!--Pagination-->
