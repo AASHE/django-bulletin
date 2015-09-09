@@ -9,7 +9,11 @@
     <div class="col-sm-3 text-right">
       <div class="headline">
         <h2>
-          Search Results
+          {% if request.GET.q %}
+            Search Results
+          {% else %}
+            Search
+          {% endif %}
         </h2>
       </div>
     </div>
