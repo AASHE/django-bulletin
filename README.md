@@ -13,6 +13,15 @@ A simple newsletter application.
   - Constant Contact integration
   - Content type plugins
 
+## Installation
+
+1. Add 'django-bulletin' to your requirements.txt file.
+2. Add 'bulletin' to your INSTALLED_APPS setting.
+3. Run "pip install -r requirements.txt" from your project's directory to install required packages.
+4. Run "python manage.py syncdb".
+5. Run "python manage.py migrate django_constant_contact". If this is not run before the next command, migration of bulletin, which is before this alphabetically, will fail.
+6. Run "python manage.py migrate" to create models for the rest of the apps.
+
 ## Settings
 
 The following variables should be set in your settings.py:
