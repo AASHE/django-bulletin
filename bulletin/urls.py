@@ -1,14 +1,40 @@
+from django.conf import settings
 from django.conf.urls import include, patterns, url
-from haystack.views import SearchView
+from django.contrib.auth.decorators import login_required
 from haystack.query import SearchQuerySet
+import haystack.views
 
 from . import views
 from bulletin.api import urls as api_urls
+from bulletin.decorators import user_passes_test
 from bulletin.tools.plugins import urls as plugin_urls
 from bulletin.tools.issue_editor import urls as editor_urls
 
 
 sqs = SearchQuerySet().order_by('-pub_date')
+
+search_view = haystack.views.SearchView(searchqueryset=sqs)
+
+try:
+    user_test = settings.SEARCH_USER_PASSES_TEST
+except AttributeError:
+    user_test = lambda user: True
+
+try:
+    user_fails_test_url = settings.SEARCH_USER_FAILS_TEST_URL
+except AttributeError:
+    user_fails_test_url = settings.LOGIN_URL
+
+search_view = user_passes_test(function=search_view,
+                               test_func=user_test,
+                               fail_url=user_fails_test_url)
+
+try:
+    if settings.SEARCH_LOGIN_REQUIRED:
+        search_view = login_required(search_view)
+except AttributeError:
+    pass
+
 
 urlpatterns = patterns(
     '',
@@ -19,7 +45,8 @@ urlpatterns = patterns(
 
     # url(r'^search/', include('haystack.urls')),
 
-    url(r'^search/', SearchView(searchqueryset=sqs),
+    url(r'^search/',
+        search_view,
         name='haystack_search'),
 
     ####################
