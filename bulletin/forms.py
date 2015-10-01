@@ -134,6 +134,7 @@ class PostUpdateForm(ModelForm):
                   'approved',
                   'pub_date',
                   'include_in_newsletter',
+                  'feature',
                   'category']
         widgets = {
             'pub_date': DateWidget(usel10n=True, bootstrap_version=3)
