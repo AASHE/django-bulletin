@@ -275,6 +275,8 @@ class Post(polymorphic.PolymorphicModel):
     approved = models.NullBooleanField(null=True)
     include_in_newsletter = models.BooleanField(default=False,
                                                 blank=True)
+    feature = models.BooleanField(default=False,
+                                  blank=True)
     pub_date = models.DateTimeField(blank=True,
                                     null=True)
     category = models.ForeignKey(Category,
