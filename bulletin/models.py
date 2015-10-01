@@ -273,7 +273,7 @@ class Post(polymorphic.PolymorphicModel):
     submitter = models.ForeignKey(User)
     # Optional fields:
     approved = models.NullBooleanField(null=True)
-    include_in_newsletter = models.BooleanField(default=False,
+    include_in_newsletter = models.BooleanField(default=True,
                                                 blank=True)
     feature = models.BooleanField(default=False,
                                   blank=True)
