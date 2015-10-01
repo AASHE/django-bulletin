@@ -67,6 +67,7 @@ class StoryUpdateForm(django.forms.ModelForm):
                   'category',
                   'approved',
                   'include_in_newsletter',
+                  'feature',
                   'pub_date']
         labels = story_field_labels
         help_texts = story_help_texts
