@@ -183,6 +183,8 @@ class Category(models.Model):
     fully_qualified_name = models.CharField(max_length=1024,
                                             null=True,
                                             blank=True)
+    private = models.BooleanField(default=False,
+                                  blank=True)
     image = models.ImageField(max_length=512,
                               upload_to='django-bulletin/%Y/%m/%d/category',
                               null=True,
