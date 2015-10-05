@@ -52,7 +52,7 @@ class StorySubmitForm(django.forms.ModelForm):
         super(StorySubmitForm, self).__init__(*args, **kwargs)
         # Don't show categories, only subcategories:
         self.fields['category'].queryset = Category.objects.exclude(
-            parent=None).order_by('name')
+            parent=None).exclude(private=True).order_by('name')
 
 
 class StoryUpdateForm(django.forms.ModelForm):
