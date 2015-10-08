@@ -12,6 +12,11 @@ story_field_labels = {
     'date': 'Date originally published - if unknown, select today.'
 }
 if getattr(settings,
+           'MAX_STORY_TITLE_LENGTH',
+           False):
+    story_field_labels['title'] = 'Title - {0} characters maximum'.format(
+        settings.MAX_STORY_TITLE_LENGTH)
+if getattr(settings,
            'MAX_STORY_BLURB_LENGTH',
            False):
     story_field_labels['blurb'] = 'Blurb - {0} characters maximum'.format(
@@ -26,6 +31,12 @@ story_widgets = {
     'date': DateWidget(usel10n=True, bootstrap_version=3),
     'pub_date': DateTimeWidget(usel10n=True, bootstrap_version=3)
 }
+if getattr(settings,
+           'MAX_STORY_TITLE_LENGTH',
+           False):
+    story_widgets['title'] = django.forms.Textarea(
+        attrs={'maxlength': settings.MAX_STORY_TITLE_LENGTH,
+               'rows': 1})
 if getattr(settings,
            'MAX_STORY_BLURB_LENGTH',
            False):

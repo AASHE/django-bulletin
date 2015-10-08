@@ -629,6 +629,10 @@ class PostSubmitView(LoginRequiredMixin,
         queryset = self.get_queryset()
         model = queryset.model
         if model == Story:
+            context['max_story_title_length'] = getattr(
+                settings,
+                'MAX_STORY_TITLE_LENGTH',
+                -1)
             context['max_story_blurb_length'] = getattr(
                 settings,
                 'MAX_STORY_BLURB_LENGTH',
@@ -663,6 +667,10 @@ class PostUpdateView(StaffuserRequiredMixin,
         queryset = self.get_queryset()
         model = queryset.model
         if model == Story:
+            context['max_story_title_length'] = getattr(
+                settings,
+                'MAX_STORY_TITLE_LENGTH',
+                -1)
             context['max_story_blurb_length'] = getattr(
                 settings,
                 'MAX_STORY_BLURB_LENGTH',
