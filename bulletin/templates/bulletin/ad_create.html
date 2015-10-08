@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="row col-md-12">
-    <form method='post' action='.'>
+    <form enctype="multipart/form-data" method='post' action='.'>
       {% csrf_token %}
       {% bootstrap_form form %}
       <div class='form-actions'>
