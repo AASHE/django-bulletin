@@ -109,12 +109,14 @@ class IssueDeleteForm(ModelForm):
 
     class Meta:
         model = Issue
+        exclude = ['id']
 
 
 class SectionDeleteForm(ModelForm):
 
     class Meta:
         model = Section
+        exclude = ['id']
 
 
 class SubmitPostForm(ModelForm):
@@ -199,6 +201,7 @@ class SectionTemplateDeleteForm(ModelForm):
 
     class Meta:
         model = SectionTemplate
+        exclude = ['id']
 
 
 class SectionTemplateCategoryAddForm(ModelForm):
@@ -229,6 +232,7 @@ class AdCreateForm(ModelForm):
             'end': DateWidget(usel10n=True, bootstrap_version=3),
             'image': ImageWidget()
         }
+        exclude = ['id']
 
 
 class AdUpdateForm(ModelForm):
@@ -240,9 +244,11 @@ class AdUpdateForm(ModelForm):
             'end': DateWidget(usel10n=True, bootstrap_version=3),
             'image': ImageWidget()
         }
+        exclude = ['id']
 
 
 class AdDeleteForm(ModelForm):
 
     class Meta:
         model = Ad
+        exclude = ['id']
