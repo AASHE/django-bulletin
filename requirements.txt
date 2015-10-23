@@ -17,7 +17,7 @@ django-polymorphic==0.7.2
 django-positions==0.5.1
 django-premailer
 django-template-repl
-djangorestframework==2.4.2
+djangorestframework==3.0.2
 elpy
 fabric
 ipdb
