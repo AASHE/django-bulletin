@@ -109,12 +109,14 @@ class IssueDeleteForm(ModelForm):
 
     class Meta:
         model = Issue
+        fields = "__all__"
 
 
 class SectionDeleteForm(ModelForm):
 
     class Meta:
         model = Section
+        fields = "__all__"
 
 
 class SubmitPostForm(ModelForm):
@@ -199,6 +201,7 @@ class SectionTemplateDeleteForm(ModelForm):
 
     class Meta:
         model = SectionTemplate
+        fields = "__all__"
 
 
 class SectionTemplateCategoryAddForm(ModelForm):
@@ -229,6 +232,7 @@ class AdCreateForm(ModelForm):
             'end': DateWidget(usel10n=True, bootstrap_version=3),
             'image': ImageWidget()
         }
+        fields = "__all__"
 
 
 class AdUpdateForm(ModelForm):
@@ -240,9 +244,11 @@ class AdUpdateForm(ModelForm):
             'end': DateWidget(usel10n=True, bootstrap_version=3),
             'image': ImageWidget()
         }
+        fields = "__all__"
 
 
 class AdDeleteForm(ModelForm):
 
     class Meta:
         model = Ad
+        fields = "__all__"
