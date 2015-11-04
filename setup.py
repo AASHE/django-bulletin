@@ -51,9 +51,12 @@ setup(name='django-bulletin',
           "nap==2.0.0",
           "premailer",
           "psycopg2==2.5.2",
-          "python-constant-contact",
+          "python-constantcontact",
           "pytz",
           "sorl-thumbnail",
           "wsgiref==0.1.2",
           "django_constant_contact"],
+      dependency_links=[
+          "git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1-py2.7.egg",
+          "git+https://github.com/AASHE/django-constant-contact.git#egg=django_constant_contact"]
 )
