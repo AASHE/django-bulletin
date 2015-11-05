@@ -123,10 +123,9 @@ class PluginListView(SidebarView,
 
                  We do not include job opportunities available to
                  students/faculty/staff at only one school, or programs that
-                 are not new programs but are just seeking graduates. That's
-                 what our ads are for. (<a
-                 href="http://www.aashe.org/about/advertising-opportunities#advertising">
-                 http://www.aashe.org/about/advertising-opportunities#advertising</a>)
+                 are not new programs but are just seeking graduates. 
+                 <a href="http://www.aashe.org/about/advertising-opportunities#advertising">
+                 That's what our ads are for</a>.
                  """),
              'button_caption': 'Submit a Job',
              'submit_url': django.core.urlresolvers.reverse(
