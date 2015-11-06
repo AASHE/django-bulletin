@@ -1,4 +1,4 @@
-Django>=1.8.4, <1.9
+Django>=1.8.6, <1.9
 Pillow==2.5.3
 Werkzeug
 coverage
@@ -17,7 +17,7 @@ django-polymorphic==0.7.2
 django-positions==0.5.1
 django-premailer
 django-template-repl
-djangorestframework==3.0.2
+djangorestframework==3.3.1
 elpy
 fabric
 ipdb
