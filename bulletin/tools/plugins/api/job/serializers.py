@@ -4,7 +4,7 @@ from bulletin.tools.plugins.models import Job
 
 class JobSerializer(serializers.PostSerializer):
 
-    links = serializers.LinkSerializer(many=True, required=False)
+    links = serializers.LinkSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = Job

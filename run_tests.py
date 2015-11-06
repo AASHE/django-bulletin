@@ -118,6 +118,8 @@ def main():
     global_settings.HAYSTACK_SIGNAL_PROCESSOR = (
         'haystack.signals.RealtimeSignalProcessor')
 
+    django.setup()
+
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 

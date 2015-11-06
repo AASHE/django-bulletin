@@ -124,10 +124,9 @@ class PluginListView(SidebarView,
                  We do not include job opportunities available to
                  students/faculty/staff at only one school, or programs that
                  are not new programs but are just seeking graduates. That's
-                 what our ads are for. If you are interested in advertising
-                 through the AASHE Bulletin, contact Skyelar Habberfield
-                 at <a href="mailto:skyelar.habberfield@aashe.org">
-                 skyelar.habberfield@aashe.org</a>.
+                 what our ads are for. (<a
+                 href="http://www.aashe.org/about/advertising-opportunities#advertising">
+                 http://www.aashe.org/about/advertising-opportunities#advertising</a>)
                  """),
              'button_caption': 'Submit a Job',
              'submit_url': django.core.urlresolvers.reverse(
