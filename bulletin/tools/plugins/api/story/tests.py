@@ -95,13 +95,15 @@ class StoryTests(APITestCase):
 
         # GET to get all fields:
         response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK,
+                         response.content)
 
         story_json = json.loads(response.content)
         story_json['blurb'] = new_blurb
 
         response = self.client.put(url, story_json, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK,
+                         response.content)
 
         # We have a dirty story.
         story = Story.objects.get(pk=story.id)

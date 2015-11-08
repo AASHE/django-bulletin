@@ -1,6 +1,5 @@
-Django==1.6.10
+Django>=1.8.6
 Pillow==2.5.3
-South==1.0
 Werkzeug
 coverage
 django-bootstrap-breadcrumbs==0.7.0
@@ -14,11 +13,11 @@ django-form-utils
 django-haystack==2.4.0rc1
 django-jsonfield==0.9.13
 django-mathfilters
-django-polymorphic
+django-polymorphic==0.7.2
 django-positions==0.5.1
 django-premailer
 django-template-repl
-djangorestframework==2.4.2
+djangorestframework==3.3.1
 elpy
 fabric
 ipdb

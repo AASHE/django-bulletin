@@ -4,9 +4,9 @@ from bulletin.tools.plugins.models import NewResource
 
 class NewResourceSerializer(serializers.PostSerializer):
 
-    submitter = serializers.UserSerializer(many=False, required=False)
-    links = serializers.LinkSerializer(many=True, required=False)
-    category = serializers.CategorySerializer(many=True, required=False)
+    submitter = serializers.UserSerializer(many=False, required=False, read_only=True)
+    links = serializers.LinkSerializer(many=True, required=False, read_only=True)
+    category = serializers.CategorySerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = NewResource

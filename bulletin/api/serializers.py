@@ -22,8 +22,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
-    parent = serializers.RelatedField(many=False)
-    section_templates = serializers.RelatedField(many=True)
+    parent = serializers.PrimaryKeyRelatedField(
+        many=False,
+        default=None,
+        allow_null=True,
+        read_only=False,
+        queryset=Category.objects.all())
+    section_templates = serializers.StringRelatedField(many=True,
+                                                       required=False)
 
     class Meta:
         model = Category
@@ -40,8 +46,11 @@ class LinkSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 
-    submitter = UserSerializer(many=False, required=False)
-    links = LinkSerializer(many=True, required=False)
+    submitter = serializers.PrimaryKeyRelatedField(many=False,
+                                                   required=False,
+                                                   read_only=True)
+    links = LinkSerializer(many=True, required=False,
+                           read_only=True)
 
     class Meta:
         model = Post
@@ -60,7 +69,8 @@ class SectionPostReorderSerializer(serializers.HyperlinkedModelSerializer):
 
 class SectionSerializer(serializers.HyperlinkedModelSerializer):
 
-    posts = PostSerializer(many=True, required=False)
+    posts = PostSerializer(many=True, required=False,
+                           read_only=True)
 
     class Meta:
         model = Section
@@ -88,6 +98,13 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
                   'address_line_3', 'city', 'state', 'international_state',
                   'postal_code', 'country', 'html_template_name',
                   'text_template_name')
+
+    def create(self, validated_data):
+        sections_data = validated_data.pop('sections', [])
+        issue = Issue.objects.create(**validated_data)
+        for section_data in sections_data:
+            Section.objects.create(issue=issue, **section_data)
+        return issue
 
 
 class NewsletterSerializer(serializers.HyperlinkedModelSerializer):

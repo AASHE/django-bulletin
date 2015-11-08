@@ -29,9 +29,8 @@ setup(name='django-bulletin',
       ],
       test_suite='tests.main',
       install_requires=[
-          "Django==1.6.10",
+          "Django==1.8.6",
           "Pillow==2.5.3",
-          "South==1.0",
           "django-bootstrap-breadcrumbs==0.7.0",
           "django-bootstrap-pagination==1.5.0",
           "django-bootstrap3==4.11.0",
@@ -47,7 +46,7 @@ setup(name='django-bulletin',
           "django-positions==0.5.1",
           "django-premailer",
           "django-template-repl",
-          "djangorestframework==2.4.2",
+          "djangorestframework==3.3.1",
           "mailchimp",
           "nap==2.0.0",
           "premailer",
@@ -57,7 +56,7 @@ setup(name='django-bulletin',
           "sorl-thumbnail",
           "wsgiref==0.1.2",
           "django_constant_contact"],
-    dependency_links=[
+      dependency_links=[
           "git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1-py2.7.egg",
           "git+https://github.com/AASHE/django-constant-contact.git#egg=django_constant_contact"]
 )
