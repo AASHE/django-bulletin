@@ -22,9 +22,12 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
-    parent = serializers.StringRelatedField(many=False,
-                                            required=False,
-                                            allow_null=True)
+    parent = serializers.PrimaryKeyRelatedField(
+        many=False,
+        default=None,
+        allow_null=True,
+        read_only=False,
+        queryset=Category.objects.all())
     section_templates = serializers.StringRelatedField(many=True,
                                                        required=False)
 
