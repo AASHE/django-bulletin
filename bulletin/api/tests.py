@@ -338,6 +338,8 @@ class IssueTests(APITestCase):
                                                            is_staff=True))
 
         response = client.put(url)
+        if response.status_code != status.HTTP_202_ACCEPTED:
+            print response.content
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
         # We have a dirty read.
