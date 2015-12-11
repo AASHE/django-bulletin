@@ -1,4 +1,4 @@
-Django==1.8.6
+Django>=1.8,<1.9
 Pillow==2.5.3
 Werkzeug==0.10.1
 coverage==3.7.1
@@ -10,7 +10,7 @@ django-cors-headers==0.13
 django-datetime-widget==0.9.3
 django-extensions==1.5.1
 django-form-utils==1.0.2
-django-haystack==2.4.0rc1
+django-haystack==2.4.1
 django-jsonfield==0.9.13
 django-mathfilters==0.3.0
 django-polymorphic==0.7.2
