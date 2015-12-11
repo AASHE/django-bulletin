@@ -30,7 +30,7 @@ setup(name='django-bulletin',
       test_suite='tests.main',
       install_requires=[
           "Django>=1.8,<1.9",
-          "Pillow==2.5.3",
+          "Pillow==3.0.0",
           "django-bootstrap-breadcrumbs==0.7.0",
           "django-bootstrap-pagination==1.5.0",
           "django-bootstrap3==4.11.0",
