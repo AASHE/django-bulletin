@@ -22,8 +22,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
-    parent = serializers.RelatedField(read_only=True)
-    section_templates = serializers.RelatedField(read_only=True)
+    parent = serializers.PrimaryKeyRelatedField(
+        many=False,
+        default=None,
+        allow_null=True,
+        read_only=False,
+        queryset=Category.objects.all())
+    section_templates = serializers.StringRelatedField(many=True,
+                                                       required=False)
 
     class Meta:
         model = Category
@@ -40,8 +46,11 @@ class LinkSerializer(serializers.HyperlinkedModelSerializer):
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 
-    submitter = UserSerializer(required=False, read_only=True)
-    links = LinkSerializer(required=False, read_only=True)
+    submitter = serializers.PrimaryKeyRelatedField(many=False,
+                                                   required=False,
+                                                   read_only=True)
+    links = LinkSerializer(many=True, required=False,
+                           read_only=True)
 
     class Meta:
         model = Post
@@ -60,7 +69,8 @@ class SectionPostReorderSerializer(serializers.HyperlinkedModelSerializer):
 
 class SectionSerializer(serializers.HyperlinkedModelSerializer):
 
-    posts = PostSerializer(required=False, read_only=True)
+    posts = PostSerializer(many=True, required=False,
+                           read_only=True)
 
     class Meta:
         model = Section
@@ -78,7 +88,7 @@ class IssueSectionReorderSerializer(serializers.HyperlinkedModelSerializer):
 
 class IssueSerializer(serializers.HyperlinkedModelSerializer):
 
-    sections = SectionSerializer(required=False, read_only=True)
+    sections = SectionSerializer(many=True, required=False)
 
     class Meta:
         model = Issue
@@ -89,10 +99,17 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
                   'postal_code', 'country', 'html_template_name',
                   'text_template_name')
 
+    def create(self, validated_data):
+        sections_data = validated_data.pop('sections', [])
+        issue = Issue.objects.create(**validated_data)
+        for section_data in sections_data:
+            Section.objects.create(issue=issue, **section_data)
+        return issue
+
 
 class NewsletterSerializer(serializers.HyperlinkedModelSerializer):
 
-    issues = IssueSerializer(required=False, read_only=True)
+    issues = IssueSerializer(many=True, required=False)
 
     class Meta:
         model = Newsletter
@@ -101,7 +118,7 @@ class NewsletterSerializer(serializers.HyperlinkedModelSerializer):
 
 class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
-    categories = CategorySerializer(required=False, read_only=True)
+    categories = CategorySerializer(many=True, required=False)
 
     class Meta:
         model = SectionTemplate
@@ -110,7 +127,7 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
 class IssueTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
-    section_templates = SectionTemplateSerializer(required=False, read_only=True)
+    section_templates = SectionTemplateSerializer(many=True, required=False)
 
     class Meta:
         model = IssueTemplate
@@ -133,6 +150,7 @@ class AdSerializer(serializers.HyperlinkedModelSerializer):
 
     size = serializers.PrimaryKeyRelatedField(
         queryset=AdSize.objects.all(),
+        many=False,
         required=True)
 
     class Meta:

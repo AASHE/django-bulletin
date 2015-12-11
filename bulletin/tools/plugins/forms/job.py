@@ -5,12 +5,12 @@ from form_utils.widgets import ImageWidget
 from ..models import Job
 
 job_field_labels = {
-    'image': 'Image (10Mb Limit)',
+    'image': 'Institution Logo (10Mb Limit)',
     'url': 'URL'
 }
 
 job_help_texts = {
-    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full URL, e.g., "http://www.example.com/page.html"'
 }
 
 field_widgets = {

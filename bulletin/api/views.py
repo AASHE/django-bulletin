@@ -77,8 +77,8 @@ class NewsletterIssueList(generics.ListCreateAPIView):
     def get_queryset(self):
         return Issue.objects.filter(newsletter=self.get_newsletter())
 
-    def pre_save(self, obj):
-        obj.newsletter = self.get_newsletter()
+    def perform_create(self, serializer):
+        serializer.save(newsletter=self.get_newsletter())
 
 
 class IssueList(generics.ListCreateAPIView):
@@ -381,8 +381,8 @@ class IssueSectionList(generics.ListCreateAPIView):
     def get_queryset(self):
         return Section.objects.filter(issue=self.kwargs['pk'])
 
-    def pre_save(self, obj):
-        obj.issue = Issue.objects.get(pk=self.kwargs['pk'])
+    def perform_create(self, serializer):
+        serializer.save(issue=Issue.objects.get(pk=self.kwargs['pk']))
 
 
 class IssueSectionUp(generics.UpdateAPIView):
@@ -394,8 +394,9 @@ class IssueSectionUp(generics.UpdateAPIView):
     def get_object(self):
         return Section.objects.get(pk=self.kwargs['section_pk'])
 
-    def pre_save(self, obj):
-        obj.up()
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        instance.up()
 
 
 class IssueSectionDown(generics.UpdateAPIView):
@@ -407,8 +408,9 @@ class IssueSectionDown(generics.UpdateAPIView):
     def get_object(self):
         return Section.objects.get(pk=self.kwargs['section_pk'])
 
-    def pre_save(self, obj):
-        obj.down()
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        instance.down()
 
 
 class SectionList(generics.ListCreateAPIView):
@@ -432,8 +434,9 @@ class SectionPostList(generics.ListCreateAPIView):
     def get_queryset(self):
         return Post.objects.filter(section=self.kwargs['pk'])
 
-    def pre_save(self, obj):
-        obj.section = Section.objects.get(pk=self.kwargs['pk'])
+    def perform_create(self, serializer):
+        serializer.save(section=Section.objects.get(pk=self.kwargs['pk']),
+                        submitter=self.request.user)
 
 
 class SectionPostDelete(generics.DestroyAPIView):
@@ -456,8 +459,9 @@ class SectionPostUp(generics.UpdateAPIView):
     def get_object(self):
         return Post.objects.get(pk=self.kwargs['post_pk'])
 
-    def pre_save(self, obj):
-        obj.up()
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        instance.up()
 
 
 class SectionPostDown(generics.UpdateAPIView):
@@ -469,8 +473,9 @@ class SectionPostDown(generics.UpdateAPIView):
     def get_object(self):
         return Post.objects.get(pk=self.kwargs['post_pk'])
 
-    def pre_save(self, obj):
-        obj.down()
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        instance.down()
 
 
 class PostList(generics.ListCreateAPIView):
@@ -478,9 +483,8 @@ class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     permission_classes = (permissions.IsAdminUserOrReadOnly,)
 
-    def pre_save(self, post):
-        post.submitter = self.request.user
-        return super(PostList, self).pre_save(post)
+    def perform_create(self, serializer):
+        serializer.save(submitter=self.request.user)
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -577,14 +581,14 @@ class SectionTemplateCategoryList(generics.ListCreateAPIView):
         section_template = self.get_section_template()
         return section_template.categories.get_queryset()
 
-    def create(self, request, **kwargs):
+    def perform_create(self, serializer):
+        import ipdb; ipdb.set_trace()
         section_template = self.get_section_template()
-        category = Category.objects.get(pk=request.POST['category_id'])
+        category = Category.objects.get(pk=self.request.POST['category_id'])
         category.section_templates.add(section_template)
-        category.save()
+        serialized_category = serializer.save(category=category)
         location = reverse('bulletin:api:category-detail',
                            kwargs={'pk': category.id})
-        serialized_category = self.serializer_class(category)
         return Response(status=status.HTTP_201_CREATED,
                         headers={'Location': location},
                         data=serialized_category.data)

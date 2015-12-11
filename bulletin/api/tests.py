@@ -55,7 +55,8 @@ class CategoryTests(APITestCase):
         response = self.client.post(url,
                                     data,
                                     format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED,
+                         response.content)
 
     def test_create_category_only_for_admins(self):
         """Can only admins create a Category?
@@ -156,7 +157,8 @@ class PostTests(APITestCase):
                                     {'id': category.id,
                                      'name': category.name},
                                     format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED,
+                         response.content)
 
     def test_move_post_up(self):
         """Can we move a post up in an issue?
@@ -336,6 +338,8 @@ class IssueTests(APITestCase):
                                                            is_staff=True))
 
         response = client.put(url)
+        if response.status_code != status.HTTP_202_ACCEPTED:
+            print response.content
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
 
         # We have a dirty read.
@@ -375,7 +379,7 @@ class IssueTests(APITestCase):
                                           category=second_category)
 
         post_content_type = ContentType.objects.get(app_label="bulletin",
-                                                    name="post")
+                                                    model="post")
 
         section = Section.objects.create(issue=self.issue,
                                          name='First section')
@@ -473,10 +477,7 @@ class SectionTests(APITestCase):
         post_json = {
             'title': 'Dog Bites Man',
             'url': 'http://api.aashe.org',
-            'submitter': {
-                'id': 1,
-                'username': 'admin'
-            }
+            'submitter': 1
         }
 
         response = self.client.post(url, post_json, format='json')
