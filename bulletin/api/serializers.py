@@ -109,7 +109,10 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
 
 class NewsletterSerializer(serializers.HyperlinkedModelSerializer):
 
-    issues = IssueSerializer(many=True, required=False)
+    issues = serializers.HyperlinkedIdentityField(
+        many=True,
+        read_only=True,
+        view_name='bulletin:api:issue-detail')
 
     class Meta:
         model = Newsletter
