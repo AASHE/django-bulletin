@@ -223,10 +223,8 @@ class Section(models.Model):
                                    blank=True)
     categories = models.ManyToManyField(Category,
                                         related_name='sections',
-                                        null=True,
                                         blank=True)
     content_types = models.ManyToManyField(ContentType,
-                                           null=True,
                                            blank=True)
 
     class Meta:
@@ -412,10 +410,8 @@ class SectionTemplate(models.Model):
                              blank=True)
     categories = models.ManyToManyField(Category,
                                         related_name='section_templates',
-                                        null=True,
                                         blank=True)
     content_types = models.ManyToManyField(ContentType,
-                                           null=True,
                                            blank=True)
 
     def __unicode__(self):
