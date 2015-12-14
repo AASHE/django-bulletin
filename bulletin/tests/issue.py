@@ -21,8 +21,49 @@ class IssueTests(TestCase):
         self.client = Client()
         self.client.login(username=self.user.username,
                           password=password)
-        self.issue = Issue.objects.create(newsletter=self.newsletter,
-                                          pub_date=datetime.date.today())
+
+    def test_get_most_recently_published_issue_none_published(self):
+        """Does get_most_..._issue return None if no Issues are published?
+        """
+        self.assertIsNone(Issue.get_most_recently_published_issue())
+
+    def test_get_most_recently_published_issue(self):
+        """Does get_most_..._issue return the right Issue?
+        """
+        far_future = Issue.objects.create(
+            newsletter=self.newsletter,
+            pub_date=datetime.date(2560, 1, 1))
+        most_recent = Issue.objects.create(
+            newsletter=self.newsletter,
+            pub_date=datetime.date(2015, 1, 1))
+        first = Issue.objects.create(
+            newsletter=self.newsletter,
+            pub_date=datetime.date(2010, 1, 1))
+
+        self.assertEqual(Issue.get_most_recently_published_issue().id,
+                         most_recent.id)
+
+    def test_get_news_from_most_recent_issue(self):
+        """Does get_news_from_most_recent_issue work?
+        """
+        issue = Issue.objects.create(
+            newsletter=self.newsletter,
+            pub_date=datetime.date(2001, 1, 1))
+        news_section = Section.objects.create(issue=issue,
+                                              name="News")
+        comics_section = Section.objects.create(issue=issue,
+                                                name="Comics")
+        issue.sections.add(news_section, comics_section)
+        news_post = Post.objects.create(section=news_section,
+                                        title='Important!',
+                                        submitter=self.user)
+        comics_post = Post.objects.create(section=comics_section,
+                                          title='Ha!',
+                                          submitter=self.user)
+
+        most_recent_news = Issue.get_news_from_most_recent_issue()
+        self.assertIn(news_post, most_recent_news)
+        self.assertNotIn(comics_post, most_recent_news)
 
     def test_create_an_issue(self):
         """Can we create an issue?
@@ -47,8 +88,10 @@ class IssueTests(TestCase):
     def test_issue_update(self):
         """Can we pull up the issue update page?
         """
+        issue = Issue.objects.create(newsletter=self.newsletter,
+                                     pub_date=datetime.date.today())
         response = self.client.get(reverse('bulletin:issue-update',
-                                           kwargs={'pk': self.issue.id}),
+                                           kwargs={'pk': issue.id}),
                                    follow=True)
         # Did the editor come up?
         self.assertEqual(response.status_code, 200)
@@ -56,7 +99,9 @@ class IssueTests(TestCase):
     def test_render_to_html(self):
         """Does render_to_html work?
         """
-        html = self.issue.render_to_html(
+        issue = Issue.objects.create(newsletter=self.newsletter,
+                                     pub_date=datetime.date.today())
+        html = issue.render_to_html(
             html_template_name='bulletin/api/test/html_template.html')
 
         soup = BeautifulSoup(html)
@@ -68,7 +113,9 @@ class IssueTests(TestCase):
         marker = "TEMPLATESTRINGINVALID"
         settings.TEMPLATE_STRING_IF_INVALID = marker
 
-        html = self.issue.render_to_html(
+        issue = Issue.objects.create(newsletter=self.newsletter,
+                                     pub_date=datetime.date.today())
+        html = issue.render_to_html(
             html_template_name='bulletin/api/test/html_template.html')
 
         self.assertEqual(html.find(marker), -1)
@@ -92,7 +139,9 @@ class IssueTests(TestCase):
             country='US',
             html_template_name='pretty_email.html',
             text_template_name='utilitarian_email.html')
-        self.issue.init_from_issue_template(issue_template)
+        issue = Issue.objects.create(newsletter=self.newsletter,
+                                     pub_date=datetime.date.today())
+        issue.init_from_issue_template(issue_template)
 
         for field_name in ['subject',
                            'from_name',
@@ -109,7 +158,7 @@ class IssueTests(TestCase):
                            'html_template_name',
                            'text_template_name']:
             self.assertEqual(getattr(issue_template, field_name),
-                             getattr(self.issue, field_name))
+                             getattr(issue, field_name))
 
     def test_available_for_newsletter_includes_correctly(self):
         approved_post = Post.objects.create(
@@ -131,7 +180,9 @@ class IssueTests(TestCase):
         self.assertNotIn(unapproved_post, available_posts)
 
     def test_available_for_newsletter_excludes_already_included(self):
-        section = Section.objects.create(issue=self.issue,
+        issue = Issue.objects.create(newsletter=self.newsletter,
+                                     pub_date=datetime.date.today())
+        section = Section.objects.create(issue=issue,
                                          name='Not Too Bad')
 
         already_included_post = Post.objects.create(

@@ -173,6 +173,41 @@ class Issue(models.Model):
         text_template_name = text_template_name or self.text_template_name
         return self._render(template_name=text_template_name)
 
+    @classmethod
+    def get_most_recently_published_issue(cls):
+        """Returns the Issue that was most recently published.
+        If no issue has been published, returns None.
+        """
+        for issue in cls.objects.order_by('-pub_date'):
+            if issue.pub_date is None:
+                continue
+            if issue.pub_date > datetime.date.today():
+                continue
+            return issue
+
+        return None
+
+    @classmethod
+    def get_news_from_most_recent_issue(cls):
+        """Returns the news stories from the most recently published
+        issue of the newsletter.
+        """
+        issue = cls.get_most_recently_published_issue()
+
+        news_section = None
+        if issue:
+            for section in issue.sections.all():
+                if section.name.lower() == "news":
+                    news_section = section
+                    break
+
+        if news_section:
+            news_stories = news_section.posts.order_by('-pub_date')
+        else:
+            news_stories = None
+
+        return news_stories  # Will be empty before 1st issue is published.
+
 
 class Category(models.Model):
 
