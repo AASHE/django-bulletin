@@ -224,7 +224,7 @@ class Category(models.Model):
                               upload_to='django-bulletin/%Y/%m/%d/category',
                               null=True,
                               blank=True)
-    url = models.URLField(max_length=640,
+    url = models.URLField(max_length=1024,
                           null=True,
                           blank=True)
 
@@ -304,7 +304,7 @@ class Post(polymorphic.PolymorphicModel):
     date_submitted = models.DateTimeField(auto_now_add=True)
     # Required fields:
     title = models.CharField(max_length=255)
-    url = models.URLField(max_length=255)
+    url = models.URLField(max_length=1024)
     submitter = models.ForeignKey(User)
     # Optional fields:
     approved = models.NullBooleanField(null=True)
@@ -479,7 +479,7 @@ class Ad(models.Model):
                            blank=True)
 
     size = models.ForeignKey(AdSize)
-    url = models.URLField(max_length=255)
+    url = models.URLField(max_length=1024)
     image = models.ImageField(max_length=512,
                               upload_to='django-bulletin/%Y/%m/%d/ad',
                               null=True,
