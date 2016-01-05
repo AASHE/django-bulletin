@@ -23,10 +23,10 @@ def get_active_plugins():
 
     for plugin in installed_plugins:
 
-        if (plugin.app_label == 'plugins' and
-            plugin.name in settings.BULLETIN_CONTENT_TYPE_PLUGINS):
-
-            yield plugin
+        if plugin.app_label == 'plugins':
+            spaceless_plugin_name = plugin.name.replace(' ', '')
+            if spaceless_plugin_name in settings.BULLETIN_CONTENT_TYPE_PLUGINS:
+                yield plugin
 
 
 def get_active_plugins_choices():
