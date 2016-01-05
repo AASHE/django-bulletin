@@ -27,9 +27,11 @@
           {{ post.content_type.name }}
         </td>
         <td class="col-md-6">
-          <a href="{% url "bulletin:plugins:update" pk=post.pk post_type=post.content_type.name %}?next={{ next }}">
-            {{ post.title }}
-          </a>
+          {% with post.content_type.name.split|join:'' as spaceless_post_type %}
+            <a href="{% url "bulletin:plugins:update" pk=post.pk post_type=spaceless_post_type %}?next={{ next }}">
+              {{ post.title }}
+            </a>
+          {% endwith %}
         </td>
         <td class="col-md-3">
           {{ post.date_submitted }}
