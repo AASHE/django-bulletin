@@ -1,6 +1,7 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -41,6 +42,7 @@ class OpportunityListView(SetHeadlineMixin,
             '-pub_date',
             'title')
         if 'category' in self.request.GET:
-            category = Category.objects.get(name=self.request.GET['category'])
+            category = get_object_or_404(Category,
+                                         pk=self.request.GET['category'])
             queryset.filter(category_id=category.id)
         return queryset

@@ -1,6 +1,7 @@
 from braces.views import SetHeadlineMixin
 from django.conf import settings
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 
 from bulletin.models import Category
@@ -41,7 +42,8 @@ class StoryListView(SetHeadlineMixin,
                                                                 'title')
         category_id = self.request.GET.get('category')
         if category_id:
-            queryset = queryset.filter(category_id=category_id)
+            category = get_object_or_404(Category, pk=category_id)
+            queryset = queryset.filter(category_id=category.id)
 
         return queryset
 
