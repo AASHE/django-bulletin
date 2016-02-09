@@ -8,7 +8,7 @@ from ..models import Story
 
 story_field_labels = {
     'url': 'URL',
-    'image': 'Image (10Mb limit)',
+    'image': 'Image (Landscape orientation - 10Mb limit)',
     'date': 'Date originally published - if unknown, select today.'
 }
 
