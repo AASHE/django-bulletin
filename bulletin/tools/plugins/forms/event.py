@@ -7,14 +7,18 @@ event_field_labels = {
     'title': 'Title of Event',
     'url': 'URL of Event',
     'start_date': 'Start Date of Event',
-    'end_date': 'End Date of Event',
+    'end_date': 'End Date of Event (if different from Start Date)',
     'time': 'Time of Event',
     'organization': 'Organization Hosting Event',
     'location': 'Location of Event'
 }
 
 event_help_texts = {
-    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"',
+    'time': 'E.g., "2:00 p.m. Eastern"',
+    'location': ('If an online event, please enter "Online". If at a '
+                 'geographical location, please enter the City, State, '
+                 'e.g., "Baltimore, Maryland"')
 }
 
 
