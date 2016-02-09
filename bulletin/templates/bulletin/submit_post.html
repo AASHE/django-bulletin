@@ -76,7 +76,7 @@
 
   {% endif %}
 
-  {% if max_story_title_length > 0 or max_story_blurb_length > 0 %}
+  {% if max_post_title_length > 0 or max_post_blurb_length > 0 %}
 
     <script type="text/javascript"
             src="{% static "assets/js/bootstrap-maxlength.min.js" %}">
@@ -92,7 +92,7 @@
       </script>
     {% endif %}
 
-    {% if max_story_blurb_length > 0 %}
+    {% if max_post_blurb_length > 0 %}
       <script type="text/javascript">
        $(document).ready(function () {
          $("#id_blurb").maxlength({

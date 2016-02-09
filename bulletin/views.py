@@ -46,7 +46,9 @@ from .models import (Category,
                      Post,
                      Ad)
 from tools.plugins.utils import get_active_plugins
-from tools.plugins.models import Story
+from tools.plugins.models import (NewResource,
+                                  Opportunity,
+                                  Story)
 
 
 class SidebarView(ContextMixin):
@@ -626,21 +628,34 @@ class PostSubmitView(LoginRequiredMixin,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
 
-        queryset = self.get_queryset()
-        model = queryset.model
-        if model == Story:
-            context['max_story_title_length'] = getattr(
-                settings,
-                'MAX_STORY_TITLE_LENGTH',
-                -1)
-            context['max_story_blurb_length'] = getattr(
-                settings,
-                'MAX_STORY_BLURB_LENGTH',
-                -1)
+        context['max_post_title_length'] = self.get_max_post_title_length()
+        context['max_post_blurb_length'] = self.get_max_post_blurb_length()
+
 
         if 'next' in self.request.GET:
             context['next'] = self.request.GET['next']
         return context
+
+    def get_max_post_title_length(self):
+        queryset = self.get_queryset()
+        model = queryset.model
+        if model == Story:
+            return getattr(settings, 'MAX_STORY_TITLE_LENGTH', -1)
+        else:
+            return -1
+
+    def get_max_post_blurb_length(self):
+        queryset = self.get_queryset()
+        model = queryset.model
+
+        if model == Story:
+            return getattr(settings, 'MAX_STORY_BLURB_LENGTH', -1)
+        elif model == Opportunity:
+            return getattr(settings, 'MAX_OPPORTUNITY_BLURB_LENGTH', -1)
+        elif model == NewResource:
+            return getattr(settings, 'MAX_NEW_RESOURCE_BLURB_LENGTH', -1)
+        else:
+            return -1
 
 
 class PostUpdateView(StaffuserRequiredMixin,
