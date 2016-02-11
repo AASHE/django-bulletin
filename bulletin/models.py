@@ -314,11 +314,10 @@ class Post(polymorphic.PolymorphicModel):
                                   blank=True)
     pub_date = models.DateTimeField(blank=True,
                                     null=True)
-    category = models.ForeignKey(Category,
-                                 related_name='posts',
-                                 null=True,
-                                 blank=True,
-                                 on_delete=models.SET_NULL)
+    categories = models.ManyToManyField(Category,
+                                        through='PostCategory',
+                                        related_name='posts',
+                                        blank=True)
     section = models.ForeignKey(Section,
                                 related_name='posts',
                                 null=True,
@@ -380,6 +379,29 @@ class Post(polymorphic.PolymorphicModel):
             self.polymorphic_ctype_id)
         return content_type
 
+    @property
+    def primary_category(self):
+        try:
+            return PostCategory.objects.filter(post=self,
+                                               primary=True).first().category
+        except AttributeError:  # Is the the correct Error to catch?
+            return None
+
+    @primary_category.setter
+    def primary_category(self, category):
+        current_primary_post_category = PostCategory.objects.filter(
+            post=self, primary=True).first()
+        if current_primary_post_category:
+            current_primary_post_category.primary = False
+            current_primary_post_category.save()
+        try:
+            new_primary_post_category = PostCategory.objects.get(
+                post=self, category=category)
+        except PostCategory.DoesNotExist:
+            new_primary_post_category = PostCategory.objects.create(
+                post=self, category=category, primary=True)
+        new_primary_post_category.save()
+
     def save(self, *args, **kwargs):
         if self.approved and not self.pub_date:
             self.pub_date = datetime.datetime.now(pytz.utc)
@@ -388,6 +410,17 @@ class Post(polymorphic.PolymorphicModel):
         elif self.section is None:
             self.position = None
         return super(Post, self).save(*args, **kwargs)
+
+
+class PostCategory(models.Model):
+
+    class Meta:
+        ordering = ('post', '-primary')
+        unique_together = ('post', 'category')
+
+    post = models.ForeignKey(Post)
+    category = models.ForeignKey(Category)
+    primary = models.BooleanField(default=False)
 
 
 class Link(models.Model):

@@ -1,11 +1,9 @@
-import datetime
-
 from braces.views import (LoginRequiredMixin,
                           SetHeadlineMixin,
                           StaffuserRequiredMixin)
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (CreateView,
                                   DeleteView,
                                   FormView,
@@ -13,6 +11,7 @@ from django.views.generic import (CreateView,
                                   TemplateView,
                                   UpdateView)
 from django.views.generic.base import ContextMixin
+from django.views.generic.edit import FormMixin
 
 from .forms import (IssueCreateForm,
                     IssueDeleteForm,
@@ -32,7 +31,7 @@ from .forms import (IssueCreateForm,
                     SectionTemplateDeleteForm,
                     SectionTemplateForm,
                     PostUpdateForm,
-                    SubmitPostForm,
+                    PostSubmitForm,
                     AdCreateForm,
                     AdUpdateForm,
                     AdDeleteForm)
@@ -41,6 +40,7 @@ from .models import (Category,
                      IssueTemplate,
                      Link,
                      Newsletter,
+                     PostCategory,
                      Section,
                      SectionTemplate,
                      Post,
@@ -595,13 +595,87 @@ class FrontPageView(SetHeadlineMixin,
     headline = 'All Posts'
 
 
+class PostListView(SetHeadlineMixin,
+                   ListView,
+                   SidebarView):
+
+    paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
+
+    def get_queryset(self, *args, **kwargs):
+        model = getattr(self, 'model', Post)
+        queryset = model.objects.filter(approved=True).order_by('-pub_date',
+                                                                'title')
+        category_id = self.request.GET.get('category')
+        if category_id:
+            category = get_object_or_404(Category, pk=category_id)
+            queryset = queryset.filter(categories__in=[category])
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+
+        context['categories'] = Category.objects.all().order_by('name')
+
+        category_id = self.request.GET.get('category')
+        if category_id:
+            context['current_filter_name'] = Category.objects.get(
+                pk=category_id).name
+        else:
+            context['current_filter_name'] = 'All'
+
+        return context
+
+
 #######################
 # CRUD for Post:      #
 #######################
+def get_max_post_title_length(queryset):
+    model = queryset.model
+    if model == Story:
+        return getattr(settings, 'MAX_STORY_TITLE_LENGTH', -1)
+    else:
+        return -1
+
+
+def get_max_post_blurb_length(queryset):
+    model = queryset.model
+
+    if model == Story:
+        return getattr(settings, 'MAX_STORY_BLURB_LENGTH', -1)
+    elif model == Opportunity:
+        return getattr(settings, 'MAX_OPPORTUNITY_BLURB_LENGTH', -1)
+    elif model == NewResource:
+        return getattr(settings, 'MAX_NEW_RESOURCE_BLURB_LENGTH', -1)
+    else:
+        return -1
+
+
+class PostFormMixin(FormMixin):
+
+    def form_valid(self, form):
+        categories = form.cleaned_data.pop('categories')
+
+        self.object = form.save(commit=False)
+        self.object.save()
+
+        primary_category = self.object.primary_category
+        self.object.categories.clear()
+
+        for category in categories:
+            primary = category is primary_category
+            PostCategory.objects.create(post=self.object,
+                                        category=category,
+                                        primary=primary)
+
+        return super(PostFormMixin, self).form_valid(form)
+
+
 class PostSubmitView(LoginRequiredMixin,
                      SetHeadlineMixin,
+                     PostFormMixin,
                      CreateView):
-    form_class = SubmitPostForm
+    form_class = PostSubmitForm
     model = Post
     template_name = 'bulletin/submit_post.html'
     headline = 'Submit a Post'
@@ -628,38 +702,18 @@ class PostSubmitView(LoginRequiredMixin,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
 
-        context['max_post_title_length'] = self.get_max_post_title_length()
-        context['max_post_blurb_length'] = self.get_max_post_blurb_length()
+        queryset = self.get_queryset()
+        context['max_post_title_length'] = get_max_post_title_length(queryset)
+        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
 
+        context['next'] = self.request.GET.get('next', '')
 
-        if 'next' in self.request.GET:
-            context['next'] = self.request.GET['next']
         return context
-
-    def get_max_post_title_length(self):
-        queryset = self.get_queryset()
-        model = queryset.model
-        if model == Story:
-            return getattr(settings, 'MAX_STORY_TITLE_LENGTH', -1)
-        else:
-            return -1
-
-    def get_max_post_blurb_length(self):
-        queryset = self.get_queryset()
-        model = queryset.model
-
-        if model == Story:
-            return getattr(settings, 'MAX_STORY_BLURB_LENGTH', -1)
-        elif model == Opportunity:
-            return getattr(settings, 'MAX_OPPORTUNITY_BLURB_LENGTH', -1)
-        elif model == NewResource:
-            return getattr(settings, 'MAX_NEW_RESOURCE_BLURB_LENGTH', -1)
-        else:
-            return -1
 
 
 class PostUpdateView(StaffuserRequiredMixin,
                      SetHeadlineMixin,
+                     PostFormMixin,
                      UpdateView):
 
     form_class = PostUpdateForm
@@ -680,19 +734,14 @@ class PostUpdateView(StaffuserRequiredMixin,
         context['post'] = self.get_post()
 
         queryset = self.get_queryset()
-        model = queryset.model
-        if model == Story:
-            context['max_story_title_length'] = getattr(
-                settings,
-                'MAX_STORY_TITLE_LENGTH',
-                -1)
-            context['max_story_blurb_length'] = getattr(
-                settings,
-                'MAX_STORY_BLURB_LENGTH',
-                -1)
+        context['max_post_title_length'] = get_max_post_title_length(queryset)
+        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
 
         context['next'] = self.request.GET.get('next', '')
+
         return context
+
+
 ######################
 # End of Post CRUD. #
 ######################

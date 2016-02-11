@@ -16,11 +16,16 @@
       <li><span class="glyphicon glyphicon-calendar"></span>
         Posted {{ opportunity.pub_date|date:"M j, Y" }}
       </li>
-      {% if opportunity.category %}
-        <li><span class="glyphicon glyphicon-tag"></span>
-          {{ opportunity.category }}
-        </li>
-      {% endif %}
+      {% for category in opportunity.categories.all %}
+        {% if category.url %}
+          <li>
+            <span class="glyphicon glyphicon-star"></span>
+            <a href="{{ category.url }}">
+              AASHE {{ category.name|title }} Resources
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
       {% if user.is_staff %}
         <li>
           <a href="{% url "bulletin:plugins:update" opportunity.content_type.model opportunity.id %}?next={{ request.get_full_path }}">

@@ -1,7 +1,7 @@
 from datetimewidget.widgets import DateTimeWidget
-from django.forms import ModelForm
 from form_utils.widgets import ImageWidget
 
+from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import Job
 
 job_field_labels = {
@@ -18,20 +18,7 @@ field_widgets = {
 }
 
 
-class JobSubmitForm(ModelForm):
-
-    class Meta:
-        model = Job
-        fields = ['title',
-                  'url',
-                  'organization',
-                  'image']
-        labels = job_field_labels
-        help_texts = job_help_texts
-        widgets = field_widgets
-
-
-class JobUpdateForm(ModelForm):
+class JobSubmitForm(PostSubmitForm):
 
     class Meta:
         model = Job
@@ -39,6 +26,21 @@ class JobUpdateForm(ModelForm):
                   'url',
                   'organization',
                   'image',
+                  'categories']
+        labels = job_field_labels
+        help_texts = job_help_texts
+        widgets = field_widgets
+
+
+class JobUpdateForm(PostUpdateForm):
+
+    class Meta:
+        model = Job
+        fields = ['title',
+                  'url',
+                  'organization',
+                  'image',
+                  'categories',
                   'approved',
                   'include_in_newsletter',
                   'pub_date']

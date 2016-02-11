@@ -1,6 +1,6 @@
 from datetimewidget.widgets import DateTimeWidget, DateWidget
-from django.forms import ModelForm
 
+from ....forms import PostUpdateForm, PostSubmitForm
 from ..models import Event
 
 event_field_labels = {
@@ -22,26 +22,7 @@ event_help_texts = {
 }
 
 
-class EventSubmitForm(ModelForm):
-
-    class Meta:
-        model = Event
-        fields = ['title',
-                  'url',
-                  'start_date',
-                  'end_date',
-                  'time',
-                  'organization',
-                  'location']
-        labels = event_field_labels
-        widgets = {
-            'start_date': DateWidget(usel10n=True, bootstrap_version=3),
-            'end_date': DateWidget(usel10n=True, bootstrap_version=3)
-        }
-        help_texts = event_help_texts
-
-
-class EventUpdateForm(ModelForm):
+class EventSubmitForm(PostSubmitForm):
 
     class Meta:
         model = Event
@@ -52,6 +33,27 @@ class EventUpdateForm(ModelForm):
                   'time',
                   'organization',
                   'location',
+                  'categories']
+        labels = event_field_labels
+        widgets = {
+            'start_date': DateWidget(usel10n=True, bootstrap_version=3),
+            'end_date': DateWidget(usel10n=True, bootstrap_version=3)
+        }
+        help_texts = event_help_texts
+
+
+class EventUpdateForm(PostUpdateForm):
+
+    class Meta:
+        model = Event
+        fields = ['title',
+                  'url',
+                  'start_date',
+                  'end_date',
+                  'time',
+                  'organization',
+                  'location',
+                  'categories',
                   'approved',
                   'include_in_newsletter',
                   'pub_date']

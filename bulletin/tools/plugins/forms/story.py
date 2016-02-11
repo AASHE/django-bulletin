@@ -3,7 +3,7 @@ from django.conf import settings
 import django.forms
 from form_utils.widgets import ImageWidget
 
-from ....models import Category
+from ....forms import PostUpdateForm, PostSubmitForm
 from ..models import Story
 
 story_field_labels = {
@@ -31,7 +31,7 @@ story_help_texts = {
 story_widgets = {
     'image': ImageWidget(),
     'date': DateWidget(usel10n=True, bootstrap_version=3),
-    'pub_date': DateTimeWidget(usel10n=True, bootstrap_version=3)
+    'pub_date': DateTimeWidget(usel10n=True, bootstrap_version=3),
 }
 
 if getattr(settings,
@@ -49,7 +49,7 @@ if getattr(settings,
                'rows': 4})
 
 
-class StorySubmitForm(django.forms.ModelForm):
+class StorySubmitForm(PostSubmitForm):
 
     class Meta:
         model = Story
@@ -58,19 +58,13 @@ class StorySubmitForm(django.forms.ModelForm):
                   'blurb',
                   'image',
                   'date',
-                  'category']
+                  'categories']
         labels = story_field_labels
         help_texts = story_help_texts
         widgets = story_widgets
 
-    def __init__(self, *args, **kwargs):
-        super(StorySubmitForm, self).__init__(*args, **kwargs)
-        # Don't show categories, only subcategories:
-        self.fields['category'].queryset = Category.objects.exclude(
-            parent=None).exclude(private=True).order_by('name')
 
-
-class StoryUpdateForm(django.forms.ModelForm):
+class StoryUpdateForm(PostUpdateForm):
 
     class Meta:
         model = Story
@@ -79,7 +73,7 @@ class StoryUpdateForm(django.forms.ModelForm):
                   'blurb',
                   'image',
                   'date',
-                  'category',
+                  'categories',
                   'approved',
                   'include_in_newsletter',
                   'feature',
@@ -87,9 +81,3 @@ class StoryUpdateForm(django.forms.ModelForm):
         labels = story_field_labels
         help_texts = story_help_texts
         widgets = story_widgets
-
-    def __init__(self, *args, **kwargs):
-        super(StoryUpdateForm, self).__init__(*args, **kwargs)
-        # Don't show categories, only subcategories:
-        self.fields['category'].queryset = Category.objects.exclude(
-            parent=None).order_by('name')

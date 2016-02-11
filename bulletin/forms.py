@@ -6,7 +6,7 @@ from django.forms import (BooleanField,
                           ModelChoiceField,
                           ModelForm,
                           ModelMultipleChoiceField)
-from django.forms.widgets import HiddenInput
+from django.forms.widgets import HiddenInput, SelectMultiple
 from form_utils.widgets import ImageWidget
 
 from .models import (Category,
@@ -14,6 +14,7 @@ from .models import (Category,
                      IssueTemplate,
                      Link,
                      Newsletter,
+                     PostCategory,
                      Section,
                      SectionTemplate,
                      Post,
@@ -119,12 +120,19 @@ class SectionDeleteForm(ModelForm):
         exclude = ['id']
 
 
-class SubmitPostForm(ModelForm):
+class PostSubmitForm(ModelForm):
 
     class Meta:
         model = Post
         fields = ['title',
-                  'url']
+                  'url',
+                  'categories']
+
+    def __init__(self, *args, **kwargs):
+        super(PostSubmitForm, self).__init__(*args, **kwargs)
+        # Don't show categories, only subcategories:
+        self.fields['categories'].queryset = Category.objects.exclude(
+            parent=None).exclude(private=True).order_by('name')
 
 
 class PostUpdateForm(ModelForm):
@@ -137,10 +145,17 @@ class PostUpdateForm(ModelForm):
                   'pub_date',
                   'include_in_newsletter',
                   'feature',
-                  'category']
+                  'categories']
         widgets = {
-            'pub_date': DateWidget(usel10n=True, bootstrap_version=3)
+            'pub_date': DateWidget(usel10n=True, bootstrap_version=3),
+            'categories': SelectMultiple
         }
+
+    def __init__(self, *args, **kwargs):
+        super(PostUpdateForm, self).__init__(*args, **kwargs)
+        # Don't show categories, only subcategories:
+        self.fields['categories'].queryset = Category.objects.exclude(
+            parent=None).exclude(private=True).order_by('name')
 
 
 class LinkForm(ModelForm):

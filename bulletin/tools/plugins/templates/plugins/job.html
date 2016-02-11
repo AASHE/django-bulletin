@@ -18,6 +18,16 @@
       <li><span class="glyphicon glyphicon-calendar"></span>
         Posted {{ job.pub_date|date:"M j, Y" }}
       </li>
+      {% for category in job.categories.all %}
+        {% if category.url %}
+          <li>
+            <span class="glyphicon glyphicon-star"></span>
+            <a href="{{ category.url }}">
+              AASHE {{ category.name|title }} Resources
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
       {% if user.is_staff %}
         <li>
           <a href="{% url "bulletin:plugins:update" job.content_type.model job.id %}?next={{ request.get_full_path }}">

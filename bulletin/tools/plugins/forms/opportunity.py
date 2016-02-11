@@ -2,6 +2,7 @@ from datetimewidget.widgets import DateTimeWidget
 from django.conf import settings
 import django.forms
 
+from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import Opportunity
 
 opportunity_field_labels = {'url': 'URL'}
@@ -29,25 +30,27 @@ if getattr(settings,
                'rows': 4})
 
 
-class OpportunitySubmitForm(django.forms.ModelForm):
-
-    class Meta:
-        model = Opportunity
-        fields = ['title',
-                  'url',
-                  'blurb']
-        widgets = opportunity_widgets
-        labels = opportunity_field_labels
-        help_texts = opportunity_help_texts
-
-
-class OpportunityUpdateForm(django.forms.ModelForm):
+class OpportunitySubmitForm(PostSubmitForm):
 
     class Meta:
         model = Opportunity
         fields = ['title',
                   'url',
                   'blurb',
+                  'categories']
+        widgets = opportunity_widgets
+        labels = opportunity_field_labels
+        help_texts = opportunity_help_texts
+
+
+class OpportunityUpdateForm(PostUpdateForm):
+
+    class Meta:
+        model = Opportunity
+        fields = ['title',
+                  'url',
+                  'blurb',
+                  'categories',
                   'approved',
                   'include_in_newsletter',
                   'pub_date']

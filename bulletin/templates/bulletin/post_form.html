@@ -1,19 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-        <title>Inline Formset</title>
-</head>
-<body>
+{% extends "bulletin/base.html" %}
+{% load static from staticfiles %}
 
-<h1>Inline Formset</h1>
-<form action="." method="post">
+{% block extra_head %}
+  {{ block.super }}
+  <script type="text/javascript"
+          src="{% static 'vendor/selectize/js/standalone/selectize.js' %}">
+  </script>
+  <script type="text/javascript"
+          src="{% static 'assets/js/selectize-required-options.js' %}"></script>
+  <script type="text/javascript"
+          src="{% static 'assets/js/post-form.js' %}"></script>
+{% endblock %}
 
-{{ formset }}
+{% block extra_css %}
+  <link rel="stylesheet"
+        href="{% static 'vendor/selectize/css/selectize.css' %}"/>
+  <style>
+   .required-input label:after {
+     content:" *";
+     display:inline; }
 
+   .select-multiple ul {
+     margin: 0 0 0 5px;
+     padding: 0;
+     list-style: none; }
 
-<input type="submit" value="Submit" />
+   .select-multiple li {
+     margin: 0;
+     padding: 0;
+     list-style: none; }
+   .select-multiple li input {
+     margin-right: 5px; }
+   .select-multiple li label {
+     font-weight: normal; }
 
-</form>
+   .select-multiple .select-multiple-header span {
+     float: right;
+     color: #6BBC49;
+     font-size: 11px;
+     cursor: pointer; }
 
-</body>
-</html>
+   .select-multiple .select-multiple-header span.required {
+     color: #c00 !important;
+     float: none !important; }
+
+   .selectize-input {
+     border-radius: 0;
+     box-shadow: none; }
+   .selectize-input .item {
+     font-weight: normal; }
+   .selectize-input .item.active {
+     background-color: #0080CF !important;
+     color: white !important; }
+   .selectize-input input {
+     font-weight: normal;
+     line-height: 16px;
+     font-size: 11px; }
+
+   .selectize-dropdown {
+     line-height: 16px;
+     font-size: 12px;
+     font-weight: normal; }
+  </style>
+{% endblock %}

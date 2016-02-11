@@ -2,6 +2,7 @@ from datetimewidget.widgets import DateTimeWidget, DateWidget
 from django.conf import settings
 import django.forms
 
+from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import NewResource
 
 
@@ -30,25 +31,27 @@ new_resource_help_texts = {
 }
 
 
-class NewResourceSubmitForm(django.forms.ModelForm):
-
-    class Meta:
-        model = NewResource
-        fields = ['title',
-                  'url',
-                  'blurb']
-        widgets = new_resource_widgets
-        labels = new_resource_field_labels
-        help_texts = new_resource_help_texts
-
-
-class NewResourceUpdateForm(django.forms.ModelForm):
+class NewResourceSubmitForm(PostSubmitForm):
 
     class Meta:
         model = NewResource
         fields = ['title',
                   'url',
                   'blurb',
+                  'categories']
+        widgets = new_resource_widgets
+        labels = new_resource_field_labels
+        help_texts = new_resource_help_texts
+
+
+class NewResourceUpdateForm(PostUpdateForm):
+
+    class Meta:
+        model = NewResource
+        fields = ['title',
+                  'url',
+                  'blurb',
+                  'categories',
                   'approved',
                   'include_in_newsletter',
                   'pub_date']

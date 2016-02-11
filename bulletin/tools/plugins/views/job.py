@@ -1,11 +1,8 @@
-from braces.views import SetHeadlineMixin
-from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
 
-from bulletin.models import Category
-from bulletin.views import PostSubmitView, PostUpdateView, SidebarView
+from bulletin.views import (PostListView,
+                            PostSubmitView,
+                            PostUpdateView)
 from bulletin.tools.plugins.forms import job as forms
 from bulletin.tools.plugins.models import Job
 
@@ -28,20 +25,14 @@ class JobUpdateView(PostUpdateView):
         return super(JobUpdateView, self).form_valid(form)
 
 
-class JobListView(SetHeadlineMixin,
-                  ListView,
-                  SidebarView):
+class JobListView(PostListView):
 
     model = Job
     template_name = 'plugins/job_list.html'
-    paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'Jobs'
 
-    def get_queryset(self):
-        queryset = Job.objects.filter(approved=True).order_by('-pub_date',
-                                                              'title')
-        if 'category' in self.request.GET:
-            category = get_object_or_404(Category,
-                                         pk=self.request.GET['category'])
-            queryset.filter(category_id=category.id)
-        return queryset
+    def get_queryset(self, *args, **kwargs):
+        return super(JobListView, self).get_queryset(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        return super(JobListView, self).get_context_data(**kwargs)
