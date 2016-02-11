@@ -102,8 +102,8 @@ class IssueFill(generics.UpdateAPIView):
     have not yet been included are swept into the Issue.
 
     Posts are sorted into Sections of the Issue by matching
-    Post.category into Section.categories and the ContentType of the
-    Post into Section.content_types.
+    Post.primary_category into Section.categories and the ContentType
+    of the Post into Section.content_types.
 
     If there are eligible Posts that can't be mapped into a Section
     (because the Category maps to a non-existant Section, e.g.), a new
@@ -126,9 +126,9 @@ class IssueFill(generics.UpdateAPIView):
         matches = []
         misses = []
         for post in posts:
-            if (((post.category and
-                  post.category in section.categories.all()) or
-                 post.category is None) and
+            if (((post.primary_category and
+                  post.primary_category in section.categories.all()) or
+                 post.primary_category is None) and
                 post.content_type in section.content_types.all()):
 
                 matches.append(post)
@@ -508,7 +508,8 @@ class PostCategoryList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAdminUserOrReadOnly,)
 
     def get_queryset(self):
-        return Category.objects.filter(post=self.kwargs['pk'])
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        return post.categories.all()
 
 
 class CategoryList(generics.ListCreateAPIView):

@@ -368,15 +368,15 @@ class IssueTests(APITestCase):
                                          url='http://www.first.com',
                                          submitter=staff_user,
                                          approved=True,
-                                         include_in_newsletter=True,
-                                         category=first_category)
+                                         include_in_newsletter=True)
+        first_post.primary_category = first_category
 
         second_post = Post.objects.create(title='Second headline',
                                           url='http://www.second.com',
                                           submitter=staff_user,
                                           approved=True,
-                                          include_in_newsletter=True,
-                                          category=second_category)
+                                          include_in_newsletter=True)
+        second_post.primary_category = second_category
 
         post_content_type = ContentType.objects.get(app_label="bulletin",
                                                     model="post")
