@@ -656,19 +656,42 @@ class PostFormMixin(FormMixin):
     def form_valid(self, form):
         categories = form.cleaned_data.pop('categories')
 
+        try:
+            primary_category = form.cleaned_data.pop('primary_category')[0]
+        except (KeyError, IndexError):
+            primary_category = None
+
         self.object = form.save(commit=False)
         self.object.save()
 
-        primary_category = self.object.primary_category
         self.object.categories.clear()
 
         for category in categories:
-            primary = category is primary_category
             PostCategory.objects.create(post=self.object,
                                         category=category,
-                                        primary=primary)
+                                        primary=False)
+
+        if primary_category:
+            post_category, _ = PostCategory.objects.get_or_create(
+                post=self.object,
+                category=primary_category)
+            if not post_category.primary:
+                post_category.primary = True
+                post_category.save()
 
         return super(PostFormMixin, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(PostFormMixin, self).get_context_data(
+            **kwargs)
+
+        queryset = self.get_queryset()
+        context['max_post_title_length'] = get_max_post_title_length(queryset)
+        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
+
+        context['next'] = self.request.GET.get('next', '')
+
+        return context
 
 
 class PostSubmitView(LoginRequiredMixin,
@@ -702,12 +725,6 @@ class PostSubmitView(LoginRequiredMixin,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
 
-        queryset = self.get_queryset()
-        context['max_post_title_length'] = get_max_post_title_length(queryset)
-        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
-
-        context['next'] = self.request.GET.get('next', '')
-
         return context
 
 
@@ -731,13 +748,8 @@ class PostUpdateView(StaffuserRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(PostUpdateView, self).get_context_data(
             **kwargs)
+
         context['post'] = self.get_post()
-
-        queryset = self.get_queryset()
-        context['max_post_title_length'] = get_max_post_title_length(queryset)
-        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
-
-        context['next'] = self.request.GET.get('next', '')
 
         return context
 

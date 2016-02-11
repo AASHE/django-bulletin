@@ -1,7 +1,5 @@
-from django.conf import settings
 from django.contrib import messages
 
-from bulletin.models import Category
 from bulletin.views import (PostListView,
                             PostSubmitView,
                             PostUpdateView)

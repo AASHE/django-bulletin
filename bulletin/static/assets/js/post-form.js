@@ -5,15 +5,21 @@ jQuery(document).ready(function() {
     // -------------------------------------------------------------------------
     // Categories dropdowns
     // -------------------------------------------------------------------------
-    $('select[name*=categories]').selectize({
+    $('#id_categories').selectize({
         maxItems: 3
     });
 
-    $('select[name*=secondary-categories]').selectize({
+    $('#id_secondary_categories').selectize({
         maxItems: 2
     });
 
+    $('#id_primary_category').selectize({
+        maxItems: 1
+    });
+
+    // Remove 'form-control' so widget displays in the correct position:
     $('.selectize-control').removeClass('form-control');
 
+    // Remove 'form-control' so dropdown is opaque:
     $('.selectize-dropdown').removeClass('form-control');
 });

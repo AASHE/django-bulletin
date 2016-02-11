@@ -6,7 +6,8 @@ from ..models import Job
 
 job_field_labels = {
     'image': 'Institution Logo (10Mb Limit)',
-    'url': 'URL'
+    'url': 'URL',
+    'categories': 'Categories (choose up to 3)'
 }
 
 job_help_texts = {

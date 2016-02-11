@@ -5,7 +5,10 @@ import django.forms
 from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import Opportunity
 
-opportunity_field_labels = {'url': 'URL'}
+opportunity_field_labels = {
+    'url': 'URL',
+    'categories': 'Categories (choose up to 3)'
+}
 
 if getattr(settings,
            'MAX_OPPORTUNITY_BLURB_LENGTH',

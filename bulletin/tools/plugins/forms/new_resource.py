@@ -6,7 +6,10 @@ from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import NewResource
 
 
-new_resource_field_labels = {'url': 'URL'}
+new_resource_field_labels = {
+    'url': 'URL',
+    'categories': 'Categories (choose up to 3)'
+}
 
 if getattr(settings,
            'MAX_NEW_RESOURCE_BLURB_LENGTH',

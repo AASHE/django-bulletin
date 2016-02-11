@@ -10,7 +10,8 @@ event_field_labels = {
     'end_date': 'End Date of Event (if different from Start Date)',
     'time': 'Time of Event',
     'organization': 'Organization Hosting Event',
-    'location': 'Location of Event'
+    'location': 'Location of Event',
+    'categories': 'Categories (choose up to 3)'
 }
 
 event_help_texts = {
