@@ -6,14 +6,14 @@ jQuery(document).ready(function() {
     // Categories dropdowns
     // -------------------------------------------------------------------------
     $('select[name*=categories]').selectize({
-        maxItems: 3,
-        plugins: ['required-options'],
-        required_values: []
+        maxItems: 3
     });
 
     $('select[name*=secondary-categories]').selectize({
-        maxItems: 2,
-        plugins: ['required-options'],
-        required_values: []
+        maxItems: 2
     });
+
+    $('.selectize-control').removeClass('form-control');
+
+    $('.selectize-dropdown').removeClass('form-control');
 });

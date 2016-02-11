@@ -7,8 +7,6 @@
           src="{% static 'vendor/selectize/js/standalone/selectize.js' %}">
   </script>
   <script type="text/javascript"
-          src="{% static 'assets/js/selectize-required-options.js' %}"></script>
-  <script type="text/javascript"
           src="{% static 'assets/js/post-form.js' %}"></script>
 {% endblock %}
 
@@ -20,46 +18,8 @@
      content:" *";
      display:inline; }
 
-   .select-multiple ul {
-     margin: 0 0 0 5px;
-     padding: 0;
-     list-style: none; }
-
-   .select-multiple li {
-     margin: 0;
-     padding: 0;
-     list-style: none; }
-   .select-multiple li input {
-     margin-right: 5px; }
-   .select-multiple li label {
-     font-weight: normal; }
-
-   .select-multiple .select-multiple-header span {
-     float: right;
-     color: #6BBC49;
-     font-size: 11px;
-     cursor: pointer; }
-
-   .select-multiple .select-multiple-header span.required {
-     color: #c00 !important;
-     float: none !important; }
-
-   .selectize-input {
-     border-radius: 0;
-     box-shadow: none; }
-   .selectize-input .item {
-     font-weight: normal; }
    .selectize-input .item.active {
      background-color: #0080CF !important;
      color: white !important; }
-   .selectize-input input {
-     font-weight: normal;
-     line-height: 16px;
-     font-size: 11px; }
-
-   .selectize-dropdown {
-     line-height: 16px;
-     font-size: 12px;
-     font-weight: normal; }
   </style>
 {% endblock %}
