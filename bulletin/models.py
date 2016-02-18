@@ -411,6 +411,26 @@ class Post(polymorphic.PolymorphicModel):
             self.position = None
         return super(Post, self).save(*args, **kwargs)
 
+    def clone(self, new_post=None):
+        new_post = new_post or Post()
+        new_post.date_submitted = self.date_submitted
+        new_post.title = self.title
+        new_post.url = self.url
+        new_post.submitter = self.submitter
+        new_post.approved = self.approved
+        new_post.include_in_newsletter = self.include_in_newsletter
+        new_post.feature = self.feature
+        new_post.pub_date = datetime.datetime.now(pytz.utc)
+        new_post.image = self.image
+        new_post.save()
+        for post_category in PostCategory.objects.filter(
+                category__in=self.categories.all()).filter(
+                    post_id=self.id):
+            PostCategory.objects.create(post=new_post,
+                                        category=post_category.category,
+                                        primary=post_category.primary)
+        return new_post
+
 
 class PostCategory(models.Model):
 
