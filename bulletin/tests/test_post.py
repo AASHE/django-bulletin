@@ -45,7 +45,7 @@ class PostTests(TestCase):
     def test_clone_handles_simple_fields(self):
         """ Does clone() handle simple fields correctly? """
         clone = self.post.clone()
-        self.assertEqual(clone.date_submitted, self.post.date_submitted)
+        self.assertGreater(clone.date_submitted, self.post.date_submitted)
         self.assertEqual(clone.title, self.post.title)
         self.assertEqual(clone.url, self.post.url)
         self.assertEqual(clone.submitter, self.post.submitter)
@@ -53,15 +53,15 @@ class PostTests(TestCase):
         self.assertEqual(clone.include_in_newsletter,
                          self.post.include_in_newsletter)
         self.assertEqual(clone.feature, self.post.feature)
-        self.assertEqual(clone.pub_date, self.post.pub_date)
+        self.assertGreater(clone.pub_date, self.post.pub_date)
         self.assertEqual(clone.image.name, self.post.image.name)
 
     def test_clone_handles_categories(self):
         """ Does clone() handle Post.categories correctly? """
         clone = self.post.clone()
-        for i, post_category in enumerate(
-                PostCategory.objects.filter(post=clone)):
-            self.assertEqual(post_category.category,
-                             self.categories[i].category)
-            self.assertEqual(post_category.primary,
-                             self.categories[i].primary)
+        for post_post_category in PostCategory.objects.filter(post=self.post):
+            clone_post_category = PostCategory.objects.get(
+                post=clone,
+                category=post_post_category.category)
+            self.assertEqual(post_post_category.primary,
+                             clone_post_category.primary)
