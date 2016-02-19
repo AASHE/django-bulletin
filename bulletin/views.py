@@ -223,6 +223,7 @@ class IssueUpdateView(StaffuserRequiredMixin,
     model = Issue
     template_name = 'bulletin/issue_update.html'
     headline = 'update issue'
+    fields = ['name']
 
     def get_object(self):
         return Issue.objects.get(pk=self.kwargs['pk'])
