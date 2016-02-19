@@ -400,6 +400,8 @@ class Post(polymorphic.PolymorphicModel):
         except PostCategory.DoesNotExist:
             new_primary_post_category = PostCategory.objects.create(
                 post=self, category=category, primary=True)
+        else:
+            new_primary_post_category.primary = True
         new_primary_post_category.save()
 
     def save(self, *args, **kwargs):
