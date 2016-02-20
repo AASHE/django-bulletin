@@ -65,3 +65,8 @@ class PostTests(TestCase):
                 category=post_post_category.category)
             self.assertEqual(post_post_category.primary,
                              clone_post_category.primary)
+
+    def test_clone_links_clone_to_parent(self):
+        """ Does clone() link clone and parent? """
+        clone = self.post.clone()
+        self.assertEqual(self.post, clone.cloned_from)
