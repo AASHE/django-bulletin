@@ -208,6 +208,7 @@ class Issue(models.Model):
 
         return news_stories  # Will be empty before 1st issue is published.
 
+    @property
     def posts(self):
         """Returns a list of all Posts in this Issue.
         """
@@ -593,7 +594,7 @@ class ScheduledPost(models.Model):
         Note that the Post created is not linked to `issue` here.  That
         happens when `issue` is filled via the 'issue-fill' API endpoint.
         """
-        if self.post in [post.cloned_from for post in issue.posts()]:
+        if self.post in [post.cloned_from for post in issue.posts]:
             # A clone of this Post is already in `issue`.
             return None
         cloned_post = self.post.clone()
