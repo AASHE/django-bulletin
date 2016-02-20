@@ -8,31 +8,32 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from ..models import (Category,
+from ..models import (Ad,
+                      AdSize,
+                      Category,
                       Issue,
                       IssueTemplate,
                       Link,
                       Newsletter,
-                      Section,
-                      SectionTemplate,
                       Post,
-                      AdSize,
-                      Ad)
+                      ScheduledPost,
+                      Section,
+                      SectionTemplate)
 from django_constant_contact.models import (ConstantContact,
                                             ConstantContactAPIError)
-from .serializers import (CategorySerializer,
+from .serializers import (AdSerializer,
+                          AdSizeSerializer,
+                          CategorySerializer,
                           IssueSectionReorderSerializer,
+                          IssueSerializer,
                           IssueTemplateSerializer,
                           LinkSerializer,
                           NewsletterSerializer,
-                          SectionSerializer,
-                          SectionPostReorderSerializer,
-                          SectionTemplateSerializer,
                           PostSerializer,
-                          UserSerializer,
-                          IssueSerializer,
-                          AdSizeSerializer,
-                          AdSerializer)
+                          SectionPostReorderSerializer,
+                          SectionSerializer,
+                          SectionTemplateSerializer,
+                          UserSerializer)
 import permissions
 
 
@@ -98,8 +99,11 @@ class IssueDetail(generics.RetrieveUpdateDestroyAPIView):
 class IssueFill(generics.UpdateAPIView):
     """Fill an Issue with Posts.
 
+    Posts that have been scheduled to be included in an issue
+    with this Issue's pub_data are first created.
+
     Posts that have been approved for inclusion in a newsletter but
-    have not yet been included are swept into the Issue.
+    have not yet been included are then swept into the Issue.
 
     Posts are sorted into Sections of the Issue by matching
     Post.primary_category into Section.categories and the ContentType
@@ -140,11 +144,16 @@ class IssueFill(generics.UpdateAPIView):
         """Sorts Posts available for inclusion in an Issue into
         this Issue's Sections.
 
+        Before filling the Issue, any Posts scheduled for inclusion
+        in an Issue with this Issue's pub_date are created.
+
         Posts are placed into Sections by assigning to their
         section attribute.  So there's a bunch of maybe surprising
         side effects for you, lots of Posts updated in fill_issue.
         """
         issue = self.get_object()
+
+        ScheduledPost.make_all_available_to_issue(issue)
 
         remaining_posts = Post.available_for_newsletter()
 
@@ -583,7 +592,6 @@ class SectionTemplateCategoryList(generics.ListCreateAPIView):
         return section_template.categories.get_queryset()
 
     def perform_create(self, serializer):
-        import ipdb; ipdb.set_trace()
         section_template = self.get_section_template()
         category = Category.objects.get(pk=self.request.POST['category_id'])
         category.section_templates.add(section_template)
