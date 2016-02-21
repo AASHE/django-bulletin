@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.contrib.auth.models import User
@@ -502,6 +503,21 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return Post.objects.get(pk=self.kwargs['pk'])
+
+
+class SchedulePost(generics.GenericAPIView):
+    permission_classes = (permissions.IsAdminUserOrReadOnly,)
+
+    def get_object(self):
+        return Post.objects.get(pk=self.kwargs['pk'])
+
+    def post(self, request, **kwargs):
+        ScheduledPost.objects.create(
+            post=self.get_object(),
+            pub_date=datetime.datetime.strptime(
+                request.data['pub_date'],
+                '%Y-%m-%d').date())
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class LinkDetail(generics.RetrieveUpdateDestroyAPIView):

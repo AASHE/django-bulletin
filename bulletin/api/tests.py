@@ -1,5 +1,4 @@
 import datetime
-import operator
 import uuid
 
 from django.conf import settings
@@ -206,7 +205,7 @@ class IssueTests(APITestCase):
 
     def setUp(self):
         self.issue_data = {
-            'pub_date': '2014-01-04',
+            'pub_date': datetime.date.today(),
             'sections': [],
             'name': 'Test Issue {0}'.format(uuid.uuid4()),
             'subject': 'New Issue!',
@@ -454,6 +453,65 @@ class IssueTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         self.assertEqual(2, len(self.issue.posts))
+
+    def test_fill_issue_with_scheduled_post_but_not_all_scheduled_posts(self):
+        """Do the appropriate ScheduledPosts get included when an issue
+        is filled?
+        """
+        staff_user = User.objects.create(username='staff',
+                                         is_staff=True)
+
+        approved_post = Post.objects.create(
+            title='Blue headline',
+            url='http://www.blue.com',
+            submitter=staff_user,
+            approved=True,
+            include_in_newsletter=True)
+
+        ScheduledPost.objects.create(post=approved_post,
+                                     pub_date=self.issue.pub_date)
+
+        ScheduledPost.objects.create(
+            post=approved_post,
+            pub_date=self.issue.pub_date + datetime.timedelta(1))
+
+        url = reverse('bulletin:api:issue-fill',
+                      kwargs={'pk': self.issue.id})
+        client = APIClient()
+        client.force_authenticate(user=staff_user)
+
+        response = client.patch(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        self.assertEqual(2, len(self.issue.posts))
+
+
+class SchedulePostTests(APITestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.post = Post.objects.create(title='Blue headline',
+                                        url='http://www.agami.com',
+                                        submitter=User.objects.create(
+                                            username='Burroughs',
+                                            is_staff=True))
+        self.new_scheduled_post_data = {
+            'pub_date': datetime.date.today()
+        }
+
+    def test_create_scheduled_post(self):
+        """Can we create a ScheduledPost?
+        """
+        staff_user = User.objects.create(username='staff',
+                                         is_staff=True)
+        self.client.force_authenticate(user=staff_user)
+        url = reverse('bulletin:api:schedule-post',
+                      kwargs={'pk': self.post.id})
+        response = self.client.post(url,
+                                    self.new_scheduled_post_data,
+                                    format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class SectionTests(APITestCase):

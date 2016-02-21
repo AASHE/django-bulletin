@@ -73,6 +73,10 @@ urlpatterns = patterns(
         views.PostDetail.as_view(),
         name='post-detail'),
 
+    url(r'^post/(?P<pk>[0-9]+)/schedule/$',
+        views.SchedulePost.as_view(),
+        name='schedule-post'),
+
     url(r'link/(?P<pk>[0-9]+)/$',
         views.LinkDetail.as_view(),
         name='link-detail'),
