@@ -13,6 +13,8 @@ from django.views.generic import (CreateView,
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 
+from django_constant_contact.models import ConstantContact
+
 from .forms import (IssueCreateForm,
                     IssueDeleteForm,
                     IssueSettingsForm,
@@ -331,6 +333,15 @@ class IssuePreviewView(TemplateView):
         issue = self.get_issue()
         context = issue.get_context_data()
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        response = super(IssuePreviewView, self).render_to_response(
+            context,
+            **response_kwargs)
+        response.render()
+        cc = ConstantContact()
+        response.content = cc.inline_css(response.content)
+        return response
 
 
 class ChooseIssuePreviewTypeView(SetHeadlineMixin,
