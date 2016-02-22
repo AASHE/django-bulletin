@@ -14,8 +14,8 @@
 
     <label class="control-label" for="links">
       Reprints
-      <a href="{% url "bulletin:scheduled-post-create" post.id %}?next={{ request.get_full_path }}">
-        {% bootstrap_icon "plus" %}
+      <a class="btn btn-default btn-xs"
+         href="{% url "bulletin:scheduled-post-create" post.id %}?next={{ request.get_full_path }}">
         Schedule a Reprint
       </a>
     </label>
