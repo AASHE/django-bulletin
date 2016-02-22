@@ -510,7 +510,6 @@ class SchedulePostTests(APITestCase):
         response = self.client.post(url,
                                     self.new_scheduled_post_data,
                                     format='json')
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 

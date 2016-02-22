@@ -201,6 +201,22 @@ urlpatterns = patterns(
         views.LinkUpdateView.as_view(),
         name='link-update'),
 
+    #############################
+    # Post/ScheduledPost views  #
+    #############################
+    # Create a Link in a Post:
+    url(r'^post/(?P<pk>\w+)/scheduled-post/add/$',
+        views.ScheduledPostCreateView.as_view(),
+        name='scheduled-post-create'),
+
+    #######################
+    # ScheduledPost views #
+    #######################
+    # Update a ScheduledPost:
+    url(r'scheduled-post/(?P<pk>\d+)$',
+        views.ScheduledPostUpdateView.as_view(),
+        name='scheduled-post-update'),
+
     ##################################
     # Newsletter/IssueTemplate views #
     ##################################

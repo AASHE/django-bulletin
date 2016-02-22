@@ -45,6 +45,13 @@ class LinkSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'text', 'url')
 
 
+class ScheduledPostSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Link
+        fields = ('id', 'pub_date')
+
+
 class PostSerializer(serializers.HyperlinkedModelSerializer):
 
     submitter = serializers.PrimaryKeyRelatedField(many=False,

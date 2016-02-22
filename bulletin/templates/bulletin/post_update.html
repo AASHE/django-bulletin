@@ -12,6 +12,18 @@
 
     {% bootstrap_form form %}
 
+    <label class="control-label" for="links">
+      Reprints
+      <a href="{% url "bulletin:scheduled-post-create" post.id %}?next={{ request.get_full_path }}">
+        {% bootstrap_icon "plus" %}
+        Schedule a Reprint
+      </a>
+    </label>
+    <div id="reprints" class="row col-md-12">
+      {% for scheduled_post in post.scheduledpost_set.all %}
+        {% include "bulletin/post_scheduled_post.html" %}
+      {% endfor %}
+    </div>
     <div class="form-group">
       <a class="btn btn-default" href="mailto:{{ post.submitter.first_name }}%20{{ post.submitter.last_name}}&lt;{{ post.submitter.email }}&gt;" role="button" target="blank">
         Email Submitter

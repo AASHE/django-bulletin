@@ -31,6 +31,7 @@ from .serializers import (AdSerializer,
                           LinkSerializer,
                           NewsletterSerializer,
                           PostSerializer,
+                          ScheduledPostSerializer,
                           SectionPostReorderSerializer,
                           SectionSerializer,
                           SectionTemplateSerializer,
@@ -526,6 +527,14 @@ class LinkDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return Link.objects.get(pk=self.kwargs['pk'])
+
+
+class ScheduledPostDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ScheduledPostSerializer
+    permission_classes = (permissions.IsAdminUserOrReadOnly,)
+
+    def get_object(self):
+        return ScheduledPost.objects.get(pk=self.kwargs['pk'])
 
 
 class PostCategoryList(generics.ListCreateAPIView):
