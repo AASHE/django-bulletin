@@ -22,6 +22,7 @@ from .forms import (IssueCreateForm,
                     LinkForm,
                     NewsletterForm,
                     NewsletterSubscribeForm,
+                    ScheduledPostForm,
                     SectionDeleteForm,
                     SectionForm,
                     SectionPostForm,
@@ -41,6 +42,7 @@ from .models import (Category,
                      Link,
                      Newsletter,
                      PostCategory,
+                     ScheduledPost,
                      Section,
                      SectionTemplate,
                      Post,
@@ -754,7 +756,6 @@ class PostUpdateView(StaffuserRequiredMixin,
 
         return context
 
-
 ######################
 # End of Post CRUD. #
 ######################
@@ -854,6 +855,61 @@ class LinkUpdateView(StaffuserRequiredMixin,
 #####################
 # End of Link CRUD. #
 #####################
+
+###############################
+# CRUD for ScheduledPost:     #
+###############################
+class ScheduledPostCreateView(StaffuserRequiredMixin,
+                              SetHeadlineMixin,
+                              CreateView):
+
+    model = ScheduledPost
+    form_class = ScheduledPostForm
+    headline = 'new scheduled post'
+    template_name = 'bulletin/scheduled_post.html'
+
+    def get_post(self):
+        return Post.objects.get(pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return self.request.POST['next']
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduledPostCreateView, self).get_context_data(
+            **kwargs)
+        context['post'] = self.get_post()
+        context['next'] = self.request.GET['next']
+        return context
+
+    def form_valid(self, form):
+        scheduled_post = form.save(commit=False)
+        scheduled_post.post = self.get_post()
+        return super(ScheduledPostCreateView, self).form_valid(form)
+
+
+class ScheduledPostUpdateView(StaffuserRequiredMixin,
+                              SetHeadlineMixin,
+                              UpdateView):
+
+    model = ScheduledPost
+    form_class = ScheduledPostForm
+    headline = 'update scheduled post'
+    template_name = 'bulletin/scheduled_post.html'
+
+    def get_success_url(self):
+        return self.request.POST['next']
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduledPostUpdateView, self).get_context_data(
+            **kwargs)
+        context['scheduled_post'] = self.get_object()
+        context['next'] = self.request.GET['next']
+        return context
+
+
+##############################
+# End of ScheduledPost CRUD. #
+##############################
 
 
 ###########################

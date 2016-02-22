@@ -208,6 +208,15 @@ class Issue(models.Model):
 
         return news_stories  # Will be empty before 1st issue is published.
 
+    @property
+    def posts(self):
+        """Returns a list of all Posts in this Issue.
+        """
+        posts = []
+        for section in self.sections.all():
+            posts += section.posts.all()
+        return posts
+
 
 class Category(models.Model):
 
@@ -329,6 +338,9 @@ class Post(polymorphic.PolymorphicModel):
                               upload_to='django-bulletin/%Y/%m/%d/post',
                               null=True,
                               blank=True)
+    cloned_from = models.ForeignKey('self',
+                                    null=True,
+                                    blank=True)
 
     class Meta:
         ordering = ('section', 'position')
@@ -424,6 +436,7 @@ class Post(polymorphic.PolymorphicModel):
         new_post.feature = self.feature
         new_post.pub_date = datetime.datetime.now(pytz.utc)
         new_post.image = self.image
+        new_post.cloned_from = self
         new_post.save()
         for post_category in PostCategory.objects.filter(
                 category__in=self.categories.all()).filter(
@@ -566,47 +579,35 @@ class Ad(models.Model):
         return ads
 
 
-# class SponsoredPost(models.Model):
-#     """Here's one way to do a sponsored post. Another
-#     way would be to subclass Post. This SponsoredPost
-#     though, is so different from a regular Post, that
-#     it seems safe to make it its own thing.
+class ScheduledPost(models.Model):
 
-#     'Course, I'm going on vacation now and haven't worked
-#     with SponsoredPost yet, so the other way might turn
-#     out to be better.
+    post = models.ForeignKey(Post)
+    pub_date = models.DateField()
 
+    def make_available_to_issue(self, issue):
+        """Make this Post available to `issue`, unless it's already in
+        `issue`.
 
-#     """
+        A Post is available for an issue if it's approved, marked for
+        inclusion in the newsletter, and not already in an Issue.
 
-#     title = models.CharField(max_length=255,
-#                              unique=True)
-#     url = models.URLField(max_length=255)
+        Note that the Post created is not linked to `issue` here.  That
+        happens when `issue` is filled via the 'issue-fill' API endpoint.
+        """
+        if self.post in [post.cloned_from for post in issue.posts]:
+            # A clone of this Post is already in `issue`.
+            return None
+        cloned_post = self.post.clone()
+        return cloned_post
 
-#     start = models.DateField(null=True,
-#                              blank=True)
-#     end = models.DateField(null=True,
-#                            blank=True)
-
-#     image = models.ImageField(
-#         max_length=512,
-#         upload_to='django-bulletin/%Y/%m/%d/sponsored-post',
-#         null=True,
-#         blank=True)
-
-#     blurb = models.TextField()
-
-#     show_on_website = models.BooleanField(default=False)
-#     include_in_newsletter = models.BooleanField(default=False)
-
-#     category = models.ForeignKey(Category,
-#                                  related_name='posts',
-#                                  null=True,
-#                                  blank=True,
-#                                  on_delete=models.SET_NULL)
-
-#     class Meta:
-#         ordering = ('title')
-
-#     def __unicode__(self):
-#         return self.title
+    @classmethod
+    def make_all_available_to_issue(cls, issue):
+        """Make all ScheduledPosts scheduled to be published on
+        `issue`.pub_date available for inclusion in `issue`.
+        """
+        available_posts = []
+        for scheduled_post in cls.objects.filter(pub_date=issue.pub_date):
+            post = scheduled_post.make_available_to_issue(issue)
+            if post:
+                available_posts.append(post)
+        return available_posts

@@ -19,7 +19,8 @@ event_help_texts = {
     'time': 'E.g., "2:00 p.m. Eastern"',
     'location': ('If an online event, please enter "Online". If at a '
                  'geographical location, please enter the City, State, '
-                 'e.g., "Baltimore, Maryland"')
+                 'e.g., "Baltimore, Maryland"'),
+    'pub_date': 'Date event originally appeared on website'
 }
 
 

@@ -30,7 +30,8 @@ if getattr(settings,
                'rows': 4})
 
 new_resource_help_texts = {
-    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"',
+    'pub_date': 'Date resource originally appeared on website'
 }
 
 

@@ -14,6 +14,7 @@ from .models import (Category,
                      IssueTemplate,
                      Link,
                      Newsletter,
+                     ScheduledPost,
                      Section,
                      SectionTemplate,
                      Post,
@@ -201,6 +202,16 @@ class IssueTemplateDeleteForm(ModelForm):
     class Meta:
         model = IssueTemplate
         fields = ['confirmation']
+
+
+class ScheduledPostForm(ModelForm):
+
+    class Meta:
+        model = ScheduledPost
+        fields = ['pub_date']
+        widgets = {
+            'pub_date': DateWidget(usel10n=True, bootstrap_version=3),
+        }
 
 
 class SectionTemplateForm(ModelForm):

@@ -27,7 +27,8 @@ if getattr(settings,
         settings.MAX_STORY_BLURB_LENGTH)
 
 story_help_texts = {
-    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"',
+    'pub_date': 'Date story originally appeared on website'
 }
 
 story_widgets = {

@@ -18,7 +18,8 @@ if getattr(settings,
             settings.MAX_OPPORTUNITY_BLURB_LENGTH))
 
 opportunity_help_texts = {
-    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full url, e.g., "http://www.example.com/page.html"',
+    'pub_date': 'Date opportunity originally appeared on website'
 }
 
 opportunity_widgets = {
