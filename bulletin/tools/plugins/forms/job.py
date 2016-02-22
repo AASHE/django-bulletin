@@ -11,7 +11,8 @@ job_field_labels = {
 }
 
 job_help_texts = {
-    'url': 'Provide a full URL, e.g., "http://www.example.com/page.html"'
+    'url': 'Provide a full URL, e.g., "http://www.example.com/page.html"',
+    'pub_date': 'Date job originally appeared on website'
 }
 
 field_widgets = {
