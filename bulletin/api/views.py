@@ -437,6 +437,12 @@ class SectionDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return Section.objects.get(pk=self.kwargs['pk'])
 
+    def delete(self, request, **kwargs):
+        section = self.get_object()
+        section.posts.clear()
+        section.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class SectionPostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
