@@ -357,7 +357,8 @@ class Post(polymorphic.PolymorphicModel):
         """
         available_posts = Post.objects.filter(approved=True,
                                               include_in_newsletter=True,
-                                              section=None)
+                                              section=None).order_by(
+                                                  '-feature', 'title')
         return available_posts
 
     def __unicode__(self):
