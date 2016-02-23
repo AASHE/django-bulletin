@@ -46,7 +46,31 @@
            class="panel-collapse collapse">
         <div class="panel-body">
           <p>
-            {{ post.body }}
+            {% with post.content_type.model as model %}
+              {% if model == 'story' %}
+                {% with post as story %}
+                  {% include "plugins/story.html" %}
+                {% endwith %}
+              {% elif model == 'opportunity' %}
+                {% with post as opportunity %}
+                  {% include "plugins/opportunity.html" %}
+                {% endwith %}
+              {% elif model == 'newresource' %}
+                {% with post as new_resource %}
+                  {% include "plugins/new_resource.html" %}
+                {% endwith %}
+              {% elif model == 'event' %}
+                {% with post as event %}
+                  {% include "plugins/event.html" %}
+                {% endwith %}
+              {% elif model == 'job' %}
+                {% with post as job %}
+                  {% include "plugins/job.html" %}
+                {% endwith %}
+              {% else %}
+                {% include "bulletin/post.html" %}
+              {% endif %}
+            {% endwith %}
           </p>
         </div>
       </div>
