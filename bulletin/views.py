@@ -1162,7 +1162,7 @@ class SectionTemplateDeleteView(StaffuserRequiredMixin,
         return context
 
     def get_headline(self):
-        return 'Delete Section "{name}"?'.format(
+        return 'Delete Section Template "{name}"?'.format(
             name=self.get_object().name)
 ################################
 # End of SectionTemplate CRUD. #
