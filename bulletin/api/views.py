@@ -97,6 +97,14 @@ class IssueDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return Issue.objects.get(pk=self.kwargs['pk'])
 
+    def delete(self, request, **kwargs):
+        issue = self.get_object()
+        for section in issue.sections.all():
+            section.posts.clear()
+            section.delete()
+        issue.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class IssueFill(generics.UpdateAPIView):
     """Fill an Issue with Posts.
