@@ -33,6 +33,12 @@
         </li>
       {% endfor %}
       {% if user.is_staff %}
+        {% if story.feature %}
+          <li>
+            <span class="glyphicon glyphicon-heart"></span>
+            Featured
+          </li>
+        {% endif %}
         <li>
           <a href="{% url "bulletin:plugins:update" story.content_type.model story.id %}?next={{ request.get_full_path }}">
             <span class="glyphicon glyphicon-pencil"></span>
