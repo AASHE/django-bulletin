@@ -13,23 +13,31 @@
              href="#collapsePost{{ post.id }}">
             {{ post.title }}
           </a>
-          <div class="pull-right">
-            <a href="{% url "bulletin:plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}"
+          <div class="pull-right btn-group btn-group-xs" role="group" class="btn btn-default">
+            <a class="btn btn-default"
+               href="{% url "bulletin:plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}"
                title="Edit post">
               {% bootstrap_icon "pencil" %}
+              Edit Post
             </a>
-            <a id="move-post-up-{{ post.id }}"
+            <a class="btn btn-default"
+               id="move-post-up-{{ post.id }}"
                title="Move post up">
               {% bootstrap_icon "arrow-up" %}
+              Move Up
             </a>
-            <a id="move-post-down-{{ post.id }}"
+            <a class="btn btn-default"
+               id="move-post-down-{{ post.id }}"
                title="Move post down">
               {% bootstrap_icon "arrow-down" %}
+              Move Down
             </a>
-            <a data-toggle="modal"
+            <a class="btn btn-default"
+               data-toggle="modal"
                data-target="#confirm-removal-{{ post.id }}"
                title="Remove post from issue">
               {% bootstrap_icon "remove" %}
+              Remove Post
             </a>
           </div>
         </h4>

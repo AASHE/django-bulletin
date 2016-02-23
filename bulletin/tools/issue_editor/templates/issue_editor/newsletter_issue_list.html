@@ -9,8 +9,8 @@
 
 {% block content %}
   <span class="container">
-    <a href="{% url "bulletin:issue-create" newsletter.id %}?next={{ request.get_full_path }}"
-       class="btn">
+    <a class="btn btn-default"
+       href="{% url "bulletin:issue-create" newsletter.id %}?next={{ request.get_full_path }}">
       {% bootstrap_icon "plus" %}
       New issue
     </a>
