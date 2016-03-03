@@ -721,7 +721,7 @@ class PostSubmitView(LoginRequiredMixin,
     def get_success_url(self):
         return '{url}?next={next}'.format(
             url=reverse('bulletin:thanks-for-submitting-post'),
-            next=self.request.POST.get('next') or '/')
+            next=self.request.POST.get('next', '/'))
 
     def get_context_data(self, **kwargs):
         context = super(PostSubmitView, self).get_context_data(
@@ -804,7 +804,7 @@ class ThankYouForSubmittingPostView(TemplateView,
     def get_context_data(self, **kwargs):
         context = super(ThankYouForSubmittingPostView,
                         self).get_context_data(**kwargs)
-        context['next'] = self.request.GET['next']
+        context['next'] = self.request.GET.get('next', '/')
         return context
 
 
