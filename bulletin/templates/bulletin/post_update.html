@@ -1,4 +1,4 @@
-{% extends "bulletin/base.html" %}
+{% extends "bulletin/post_form.html" %}
 
 {% load i18n %}
 {% load bootstrap3 %}
@@ -12,6 +12,24 @@
 
     {% bootstrap_form form %}
 
+    <label class="control-label" for="links">
+      Reprints
+      <a class="btn btn-default btn-xs"
+         href="{% url "bulletin:scheduled-post-create" post.id %}?next={{ request.get_full_path }}">
+        Schedule a Reprint
+      </a>
+    </label>
+    <div id="reprints" class="row col-md-12">
+      {% for scheduled_post in post.scheduledpost_set.all %}
+        {% include "bulletin/post_scheduled_post.html" %}
+      {% empty %}
+        <div class="well well-sm">
+          <p>
+            No reprints scheduled
+          </p>
+        </div>
+      {% endfor %}
+    </div>
     <div class="form-group">
       <a class="btn btn-default" href="mailto:{{ post.submitter.first_name }}%20{{ post.submitter.last_name}}&lt;{{ post.submitter.email }}&gt;" role="button" target="blank">
         Email Submitter
@@ -21,18 +39,6 @@
           (name unavailable)
         {% endif %}
       </a>
-    </div>
-    <label class="control-label" for="links">
-      Supplemental Links
-      <a href="{% url "bulletin:link-create" post.id %}?next={{ request.get_full_path }}">
-        {% bootstrap_icon "plus" %}
-        New link
-      </a>
-    </label>
-    <div id="links" class="row col-md-12">
-      {% for link in post.links.all %}
-        {% include "bulletin/post_link.html" %}
-      {% endfor %}
     </div>
     <br />
     <input type="hidden" name="next" value="{{ next }}" />
@@ -50,13 +56,13 @@
 
 {% block end_of_body %}
 
-  {% if max_story_title_length > 0 or max_story_blurb_length > 0 %}
+  {% if max_post_title_length > 0 or max_post_blurb_length > 0 %}
 
     <script type="text/javascript"
             src="{% static "assets/js/bootstrap-maxlength.min.js" %}">
     </script>
 
-    {% if max_story_title_length > 0 %}
+    {% if max_post_title_length > 0 %}
       <script type="text/javascript">
        $(document).ready(function () {
          $("#id_title").maxlength({
@@ -66,7 +72,7 @@
       </script>
     {% endif %}
 
-    {% if max_story_blurb_length > 0 %}
+    {% if max_post_blurb_length > 0 %}
       <script type="text/javascript">
        $(document).ready(function () {
          $("#id_blurb").maxlength({

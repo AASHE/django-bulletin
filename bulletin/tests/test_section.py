@@ -14,9 +14,9 @@ class SectionTests(TestCase):
         self.user = User.objects.create_superuser('user',
                                                   'user@user.com',
                                                   password)
-        newsletter = Newsletter(name='Test Newsletter')
-        newsletter.save()
-        self.issue = Issue(newsletter=newsletter,
+        self.newsletter = Newsletter(name='Test Newsletter')
+        self.newsletter.save()
+        self.issue = Issue(newsletter=self.newsletter,
                            pub_date=datetime.date.today())
         self.issue.save()
         self.client = Client()
@@ -75,9 +75,15 @@ class SectionTests(TestCase):
         """Is Section.position set correctly when a section is added to
         an issue?
         """
-        blue_section = Section.objects.create(name="Blue",
+        issue = Issue(newsletter=self.newsletter,
+                      pub_date=datetime.date.today())
+        issue.save()
+
+        blue_section = Section.objects.create(issue=issue,
+                                              name="Blue",
                                               position=1)
-        red_section = Section.objects.create(name="Red",
+        red_section = Section.objects.create(issue=issue,
+                                             name="Red",
                                              position=2)
         self.issue.sections.add(blue_section)
         self.issue.sections.add(red_section)

@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.contrib.auth.models import User
@@ -8,31 +9,33 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from ..models import (Category,
+from ..models import (Ad,
+                      AdSize,
+                      Category,
                       Issue,
                       IssueTemplate,
                       Link,
                       Newsletter,
-                      Section,
-                      SectionTemplate,
                       Post,
-                      AdSize,
-                      Ad)
+                      ScheduledPost,
+                      Section,
+                      SectionTemplate)
 from django_constant_contact.models import (ConstantContact,
                                             ConstantContactAPIError)
-from .serializers import (CategorySerializer,
+from .serializers import (AdSerializer,
+                          AdSizeSerializer,
+                          CategorySerializer,
                           IssueSectionReorderSerializer,
+                          IssueSerializer,
                           IssueTemplateSerializer,
                           LinkSerializer,
                           NewsletterSerializer,
-                          SectionSerializer,
-                          SectionPostReorderSerializer,
-                          SectionTemplateSerializer,
                           PostSerializer,
-                          UserSerializer,
-                          IssueSerializer,
-                          AdSizeSerializer,
-                          AdSerializer)
+                          ScheduledPostSerializer,
+                          SectionPostReorderSerializer,
+                          SectionSerializer,
+                          SectionTemplateSerializer,
+                          UserSerializer)
 import permissions
 
 
@@ -94,16 +97,27 @@ class IssueDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return Issue.objects.get(pk=self.kwargs['pk'])
 
+    def delete(self, request, **kwargs):
+        issue = self.get_object()
+        for section in issue.sections.all():
+            section.posts.clear()
+            section.delete()
+        issue.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class IssueFill(generics.UpdateAPIView):
     """Fill an Issue with Posts.
 
+    Posts that have been scheduled to be included in an issue
+    with this Issue's pub_data are first created.
+
     Posts that have been approved for inclusion in a newsletter but
-    have not yet been included are swept into the Issue.
+    have not yet been included are then swept into the Issue.
 
     Posts are sorted into Sections of the Issue by matching
-    Post.category into Section.categories and the ContentType of the
-    Post into Section.content_types.
+    Post.primary_category into Section.categories and the ContentType
+    of the Post into Section.content_types.
 
     If there are eligible Posts that can't be mapped into a Section
     (because the Category maps to a non-existant Section, e.g.), a new
@@ -126,9 +140,9 @@ class IssueFill(generics.UpdateAPIView):
         matches = []
         misses = []
         for post in posts:
-            if (((post.category and
-                  post.category in section.categories.all()) or
-                 post.category is None) and
+            if (((post.primary_category and
+                  post.primary_category in section.categories.all()) or
+                 post.primary_category is None) and
                 post.content_type in section.content_types.all()):
 
                 matches.append(post)
@@ -140,11 +154,16 @@ class IssueFill(generics.UpdateAPIView):
         """Sorts Posts available for inclusion in an Issue into
         this Issue's Sections.
 
+        Before filling the Issue, any Posts scheduled for inclusion
+        in an Issue with this Issue's pub_date are created.
+
         Posts are placed into Sections by assigning to their
         section attribute.  So there's a bunch of maybe surprising
         side effects for you, lots of Posts updated in fill_issue.
         """
         issue = self.get_object()
+
+        ScheduledPost.make_all_available_to_issue(issue)
 
         remaining_posts = Post.available_for_newsletter()
 
@@ -426,6 +445,12 @@ class SectionDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         return Section.objects.get(pk=self.kwargs['pk'])
 
+    def delete(self, request, **kwargs):
+        section = self.get_object()
+        section.posts.clear()
+        section.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class SectionPostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
@@ -495,6 +520,21 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         return Post.objects.get(pk=self.kwargs['pk'])
 
 
+class SchedulePost(generics.GenericAPIView):
+    permission_classes = (permissions.IsAdminUserOrReadOnly,)
+
+    def get_object(self):
+        return Post.objects.get(pk=self.kwargs['pk'])
+
+    def post(self, request, **kwargs):
+        ScheduledPost.objects.create(
+            post=self.get_object(),
+            pub_date=datetime.datetime.strptime(
+                request.data['pub_date'],
+                '%Y-%m-%d').date())
+        return Response(status=status.HTTP_201_CREATED)
+
+
 class LinkDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LinkSerializer
     permission_classes = (permissions.IsAdminUserOrReadOnly,)
@@ -503,12 +543,21 @@ class LinkDetail(generics.RetrieveUpdateDestroyAPIView):
         return Link.objects.get(pk=self.kwargs['pk'])
 
 
+class ScheduledPostDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ScheduledPostSerializer
+    permission_classes = (permissions.IsAdminUserOrReadOnly,)
+
+    def get_object(self):
+        return ScheduledPost.objects.get(pk=self.kwargs['pk'])
+
+
 class PostCategoryList(generics.ListCreateAPIView):
     serializer_class = CategorySerializer
     permission_classes = (permissions.IsAdminUserOrReadOnly,)
 
     def get_queryset(self):
-        return Category.objects.filter(post=self.kwargs['pk'])
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        return post.categories.all()
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -582,7 +631,6 @@ class SectionTemplateCategoryList(generics.ListCreateAPIView):
         return section_template.categories.get_queryset()
 
     def perform_create(self, serializer):
-        import ipdb; ipdb.set_trace()
         section_template = self.get_section_template()
         category = Category.objects.get(pk=self.request.POST['category_id'])
         category.section_templates.add(section_template)

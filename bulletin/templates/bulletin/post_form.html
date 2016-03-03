@@ -1,19 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-        <title>Inline Formset</title>
-</head>
-<body>
+{% extends "bulletin/base.html" %}
+{% load static from staticfiles %}
 
-<h1>Inline Formset</h1>
-<form action="." method="post">
+{% block extra_head %}
+  {{ block.super }}
+  <script type="text/javascript"
+          src="{% static 'vendor/selectize/js/standalone/selectize.js' %}">
+  </script>
+  <script type="text/javascript"
+          src="{% static 'assets/js/post-form.js' %}"></script>
+{% endblock %}
 
-{{ formset }}
+{% block extra_css %}
+  <link rel="stylesheet"
+        href="{% static 'vendor/selectize/css/selectize.css' %}"/>
+  <style>
+   .required-input label:after {
+     content:" *";
+     display:inline; }
 
-
-<input type="submit" value="Submit" />
-
-</form>
-
-</body>
-</html>
+   .selectize-input .item.active {
+     background-color: #0080CF !important;
+     color: white !important; }
+  </style>
+{% endblock %}

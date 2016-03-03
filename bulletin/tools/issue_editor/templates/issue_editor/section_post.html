@@ -13,23 +13,31 @@
              href="#collapsePost{{ post.id }}">
             {{ post.title }}
           </a>
-          <div class="pull-right">
-            <a href="{% url "bulletin:plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}"
+          <div class="pull-right btn-group btn-group-xs" role="group" class="btn btn-default">
+            <a class="btn btn-default"
+               href="{% url "bulletin:plugins:update" post.content_type.model post.id %}?next={{ request.get_full_path }}"
                title="Edit post">
               {% bootstrap_icon "pencil" %}
+              Edit Post
             </a>
-            <a id="move-post-up-{{ post.id }}"
+            <a class="btn btn-default"
+               id="move-post-up-{{ post.id }}"
                title="Move post up">
               {% bootstrap_icon "arrow-up" %}
+              Move Up
             </a>
-            <a id="move-post-down-{{ post.id }}"
+            <a class="btn btn-default"
+               id="move-post-down-{{ post.id }}"
                title="Move post down">
               {% bootstrap_icon "arrow-down" %}
+              Move Down
             </a>
-            <a data-toggle="modal"
+            <a class="btn btn-default"
+               data-toggle="modal"
                data-target="#confirm-removal-{{ post.id }}"
                title="Remove post from issue">
               {% bootstrap_icon "remove" %}
+              Remove Post
             </a>
           </div>
         </h4>
@@ -38,7 +46,31 @@
            class="panel-collapse collapse">
         <div class="panel-body">
           <p>
-            {{ post.body }}
+            {% with post.content_type.model as model %}
+              {% if model == 'story' %}
+                {% with post as story %}
+                  {% include "plugins/story.html" %}
+                {% endwith %}
+              {% elif model == 'opportunity' %}
+                {% with post as opportunity %}
+                  {% include "plugins/opportunity.html" %}
+                {% endwith %}
+              {% elif model == 'newresource' %}
+                {% with post as new_resource %}
+                  {% include "plugins/new_resource.html" %}
+                {% endwith %}
+              {% elif model == 'event' %}
+                {% with post as event %}
+                  {% include "plugins/event.html" %}
+                {% endwith %}
+              {% elif model == 'job' %}
+                {% with post as job %}
+                  {% include "plugins/job.html" %}
+                {% endwith %}
+              {% else %}
+                {% include "bulletin/post.html" %}
+              {% endif %}
+            {% endwith %}
           </p>
         </div>
       </div>

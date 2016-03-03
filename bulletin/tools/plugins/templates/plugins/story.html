@@ -14,32 +14,9 @@
     <div class="margin-bottom-10">
       {{ story.blurb|safe }}
     </div>
-    <ul class="list-unstyled list-inline blog-info">
-      <li><span class="glyphicon glyphicon-calendar"></span>
-        Posted {{ story.pub_date|date:"M j, Y" }}
-      </li>
-      {% if story.category %}
-        <li><span class="glyphicon glyphicon-tag"></span>
-          <a href="{% url "bulletin:plugins:story-list" %}?category={{ story.category.id }}">
-            {{ story.category.name|title }} News
-          </a>
-          {% if story.category.url %}
-            <li><span class="glyphicon glyphicon-star"></span>
-              <a href="{{ story.category.url }}">
-                AASHE {{ story.category.name|title }} Resources
-              </a>
-            </li>
-          {% endif %}
-        </li>
-      {% endif %}
-      {% if user.is_staff %}
-        <li>
-          <a href="{% url "bulletin:plugins:update" story.content_type.model story.id %}?next={{ request.get_full_path }}">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </a>
-        </li>
-      {% endif %}
-    </ul>
+    {% with story as post %}
+      {% include 'bulletin/common_post_details.html' %}
+    {% endwith %}
   </div>
 </div>
 <!--End Story-->

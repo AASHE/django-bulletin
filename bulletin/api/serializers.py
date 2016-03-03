@@ -1,16 +1,17 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from ..models import (Category,
+from ..models import (Ad,
+                      AdSize,
+                      Category,
                       Issue,
                       IssueTemplate,
                       Link,
                       Newsletter,
-                      Section,
-                      SectionTemplate,
                       Post,
-                      AdSize,
-                      Ad)
+                      ScheduledPost,
+                      Section,
+                      SectionTemplate)
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,6 +43,13 @@ class LinkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Link
         fields = ('id', 'text', 'url')
+
+
+class ScheduledPostSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Link
+        fields = ('id', 'pub_date')
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):

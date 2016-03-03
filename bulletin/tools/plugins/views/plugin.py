@@ -33,6 +33,7 @@ class PluginUpdateView(braces.views.LoginRequiredMixin,
     specific to the type of Post specified.
     """
     query_string = True
+    permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
         post_type = kwargs['post_type']

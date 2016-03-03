@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "bulletin/post_form.html" %}
 
 {% load i18n %}
 {% load bootstrap3 %}
@@ -76,13 +76,13 @@
 
   {% endif %}
 
-  {% if max_story_title_length > 0 or max_story_blurb_length > 0 %}
+  {% if max_post_title_length > 0 or max_post_blurb_length > 0 %}
 
     <script type="text/javascript"
             src="{% static "assets/js/bootstrap-maxlength.min.js" %}">
     </script>
 
-    {% if max_story_title_length > 0 %}
+    {% if max_post_title_length > 0 %}
       <script type="text/javascript">
        $(document).ready(function () {
          $("#id_title").maxlength({
@@ -92,7 +92,7 @@
       </script>
     {% endif %}
 
-    {% if max_story_blurb_length > 0 %}
+    {% if max_post_blurb_length > 0 %}
       <script type="text/javascript">
        $(document).ready(function () {
          $("#id_blurb").maxlength({

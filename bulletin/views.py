@@ -1,11 +1,9 @@
-import datetime
-
 from braces.views import (LoginRequiredMixin,
                           SetHeadlineMixin,
                           StaffuserRequiredMixin)
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (CreateView,
                                   DeleteView,
                                   FormView,
@@ -13,6 +11,9 @@ from django.views.generic import (CreateView,
                                   TemplateView,
                                   UpdateView)
 from django.views.generic.base import ContextMixin
+from django.views.generic.edit import FormMixin
+
+from django_constant_contact.models import ConstantContact
 
 from .forms import (IssueCreateForm,
                     IssueDeleteForm,
@@ -23,6 +24,7 @@ from .forms import (IssueCreateForm,
                     LinkForm,
                     NewsletterForm,
                     NewsletterSubscribeForm,
+                    ScheduledPostForm,
                     SectionDeleteForm,
                     SectionForm,
                     SectionPostForm,
@@ -32,7 +34,7 @@ from .forms import (IssueCreateForm,
                     SectionTemplateDeleteForm,
                     SectionTemplateForm,
                     PostUpdateForm,
-                    SubmitPostForm,
+                    PostSubmitForm,
                     AdCreateForm,
                     AdUpdateForm,
                     AdDeleteForm)
@@ -41,12 +43,16 @@ from .models import (Category,
                      IssueTemplate,
                      Link,
                      Newsletter,
+                     PostCategory,
+                     ScheduledPost,
                      Section,
                      SectionTemplate,
                      Post,
                      Ad)
 from tools.plugins.utils import get_active_plugins
-from tools.plugins.models import Story
+from tools.plugins.models import (NewResource,
+                                  Opportunity,
+                                  Story)
 
 
 class SidebarView(ContextMixin):
@@ -61,19 +67,15 @@ class SidebarView(ContextMixin):
          ...}
 
     5 most recent (by pub_date) accepted Posts of each type are
-    provided, except for Stories. Stories provided are those included
-    in the most recently published issue of the newsletter.
+    provided.
     """
     def get_context_data(self, **kwargs):
         context = super(SidebarView, self).get_context_data(**kwargs)
 
         for plugin in get_active_plugins():
-            if plugin.model != 'story':
-                plugin_instances = plugin.model_class().objects.filter(
-                    approved=True).order_by(
-                        '-pub_date', 'title')[:5]
-            else:
-                plugin_instances = Issue.get_news_from_most_recent_issue()
+            plugin_instances = plugin.model_class().objects.filter(
+                approved=True).order_by(
+                    '-pub_date', 'title')[:5]
 
             context[plugin.model] = plugin_instances
 
@@ -221,6 +223,7 @@ class IssueUpdateView(StaffuserRequiredMixin,
     model = Issue
     template_name = 'bulletin/issue_update.html'
     headline = 'update issue'
+    fields = ['name']
 
     def get_object(self):
         return Issue.objects.get(pk=self.kwargs['pk'])
@@ -326,6 +329,15 @@ class IssuePreviewView(TemplateView):
         issue = self.get_issue()
         context = issue.get_context_data()
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        response = super(IssuePreviewView, self).render_to_response(
+            context,
+            **response_kwargs)
+        response.render()
+        cc = ConstantContact()
+        response.content = cc.inline_css(response.content)
+        return response
 
 
 class ChooseIssuePreviewTypeView(SetHeadlineMixin,
@@ -593,13 +605,110 @@ class FrontPageView(SetHeadlineMixin,
     headline = 'All Posts'
 
 
+class PostListView(SetHeadlineMixin,
+                   ListView,
+                   SidebarView):
+
+    paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
+
+    def get_queryset(self, *args, **kwargs):
+        model = getattr(self, 'model', Post)
+        queryset = model.objects.filter(approved=True).order_by('-pub_date',
+                                                                'title')
+        category_id = self.request.GET.get('category')
+        if category_id:
+            category = get_object_or_404(Category, pk=category_id)
+            queryset = queryset.filter(categories__in=[category])
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+
+        context['categories'] = Category.objects.all().order_by('name')
+
+        category_id = self.request.GET.get('category')
+        if category_id:
+            context['current_filter_name'] = Category.objects.get(
+                pk=category_id).name
+        else:
+            context['current_filter_name'] = 'All'
+
+        return context
+
+
 #######################
 # CRUD for Post:      #
 #######################
+def get_max_post_title_length(queryset):
+    model = queryset.model
+    if model == Story:
+        return getattr(settings, 'MAX_STORY_TITLE_LENGTH', -1)
+    else:
+        return -1
+
+
+def get_max_post_blurb_length(queryset):
+    model = queryset.model
+
+    if model == Story:
+        return getattr(settings, 'MAX_STORY_BLURB_LENGTH', -1)
+    elif model == Opportunity:
+        return getattr(settings, 'MAX_OPPORTUNITY_BLURB_LENGTH', -1)
+    elif model == NewResource:
+        return getattr(settings, 'MAX_NEW_RESOURCE_BLURB_LENGTH', -1)
+    else:
+        return -1
+
+
+class PostFormMixin(FormMixin):
+
+    def form_valid(self, form):
+        categories = form.cleaned_data.pop('categories')
+
+        try:
+            primary_category = form.cleaned_data.pop('primary_category')[0]
+        except (KeyError, IndexError):
+            primary_category = None
+
+        self.object = form.save(commit=False)
+        self.object.save()
+
+        self.object.categories.clear()
+
+        for category in categories:
+            PostCategory.objects.create(post=self.object,
+                                        category=category,
+                                        primary=False)
+
+        if primary_category:
+            post_category, _ = PostCategory.objects.get_or_create(
+                post=self.object,
+                category=primary_category)
+            if not post_category.primary:
+                post_category.primary = True
+                post_category.save()
+
+        return super(PostFormMixin, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(PostFormMixin, self).get_context_data(
+            **kwargs)
+
+        queryset = self.get_queryset()
+        context['max_post_title_length'] = get_max_post_title_length(queryset)
+        context['max_post_blurb_length'] = get_max_post_blurb_length(queryset)
+
+        context['next'] = self.request.GET.get('next', '')
+
+        return context
+
+
 class PostSubmitView(LoginRequiredMixin,
                      SetHeadlineMixin,
+                     PostFormMixin,
                      CreateView):
-    form_class = SubmitPostForm
+    form_class = PostSubmitForm
     model = Post
     template_name = 'bulletin/submit_post.html'
     headline = 'Submit a Post'
@@ -612,7 +721,7 @@ class PostSubmitView(LoginRequiredMixin,
     def get_success_url(self):
         return '{url}?next={next}'.format(
             url=reverse('bulletin:thanks-for-submitting-post'),
-            next=self.request.POST.get('next') or '/')
+            next=self.request.POST.get('next', '/'))
 
     def get_context_data(self, **kwargs):
         context = super(PostSubmitView, self).get_context_data(
@@ -626,25 +735,12 @@ class PostSubmitView(LoginRequiredMixin,
             'SCREEN_IMAGE_LICENSE_TEXT',
             'You should set SCREEN_IMAGE_LICENSE_TEXT in settings.py.')
 
-        queryset = self.get_queryset()
-        model = queryset.model
-        if model == Story:
-            context['max_story_title_length'] = getattr(
-                settings,
-                'MAX_STORY_TITLE_LENGTH',
-                -1)
-            context['max_story_blurb_length'] = getattr(
-                settings,
-                'MAX_STORY_BLURB_LENGTH',
-                -1)
-
-        if 'next' in self.request.GET:
-            context['next'] = self.request.GET['next']
         return context
 
 
 class PostUpdateView(StaffuserRequiredMixin,
                      SetHeadlineMixin,
+                     PostFormMixin,
                      UpdateView):
 
     form_class = PostUpdateForm
@@ -662,22 +758,11 @@ class PostUpdateView(StaffuserRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(PostUpdateView, self).get_context_data(
             **kwargs)
+
         context['post'] = self.get_post()
 
-        queryset = self.get_queryset()
-        model = queryset.model
-        if model == Story:
-            context['max_story_title_length'] = getattr(
-                settings,
-                'MAX_STORY_TITLE_LENGTH',
-                -1)
-            context['max_story_blurb_length'] = getattr(
-                settings,
-                'MAX_STORY_BLURB_LENGTH',
-                -1)
-
-        context['next'] = self.request.GET.get('next', '')
         return context
+
 ######################
 # End of Post CRUD. #
 ######################
@@ -719,7 +804,7 @@ class ThankYouForSubmittingPostView(TemplateView,
     def get_context_data(self, **kwargs):
         context = super(ThankYouForSubmittingPostView,
                         self).get_context_data(**kwargs)
-        context['next'] = self.request.GET['next']
+        context['next'] = self.request.GET.get('next', '/')
         return context
 
 
@@ -777,6 +862,61 @@ class LinkUpdateView(StaffuserRequiredMixin,
 #####################
 # End of Link CRUD. #
 #####################
+
+###############################
+# CRUD for ScheduledPost:     #
+###############################
+class ScheduledPostCreateView(StaffuserRequiredMixin,
+                              SetHeadlineMixin,
+                              CreateView):
+
+    model = ScheduledPost
+    form_class = ScheduledPostForm
+    headline = 'new scheduled post'
+    template_name = 'bulletin/scheduled_post.html'
+
+    def get_post(self):
+        return Post.objects.get(pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return self.request.POST['next']
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduledPostCreateView, self).get_context_data(
+            **kwargs)
+        context['post'] = self.get_post()
+        context['next'] = self.request.GET['next']
+        return context
+
+    def form_valid(self, form):
+        scheduled_post = form.save(commit=False)
+        scheduled_post.post = self.get_post()
+        return super(ScheduledPostCreateView, self).form_valid(form)
+
+
+class ScheduledPostUpdateView(StaffuserRequiredMixin,
+                              SetHeadlineMixin,
+                              UpdateView):
+
+    model = ScheduledPost
+    form_class = ScheduledPostForm
+    headline = 'update scheduled post'
+    template_name = 'bulletin/scheduled_post.html'
+
+    def get_success_url(self):
+        return self.request.POST['next']
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduledPostUpdateView, self).get_context_data(
+            **kwargs)
+        context['scheduled_post'] = self.get_object()
+        context['next'] = self.request.GET['next']
+        return context
+
+
+##############################
+# End of ScheduledPost CRUD. #
+##############################
 
 
 ###########################
@@ -1018,7 +1158,7 @@ class SectionTemplateDeleteView(StaffuserRequiredMixin,
         return context
 
     def get_headline(self):
-        return 'Delete Section "{name}"?'.format(
+        return 'Delete Section Template "{name}"?'.format(
             name=self.get_object().name)
 ################################
 # End of SectionTemplate CRUD. #

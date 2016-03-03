@@ -13,32 +13,39 @@
              href="#collapseSection{{ section.id }}">
             {{ section.name }} ({{ section.posts.count }})
           </a>
-          <div class="pull-right">
-            <h5>
-            <a id="move-section-up-{{ section.id }}"
+          <div class="pull-right btn-group btn-group-xs" role="group">
+            <a class="btn btn-default"
+               id="move-section-up-{{ section.id }}"
                title="Move section up">
               {% bootstrap_icon "arrow-up" %}
+              Move Up
             </a>
-            <a id="move-section-down-{{ section.id }}"
+            <a class="btn btn-default"
+               id="move-section-down-{{ section.id }}"
                title="Move section down">
               {% bootstrap_icon "arrow-down" %}
+              Move Down
             </a>
-            <a data-toggle="modal"
+            <a class="btn btn-default"
+               data-toggle="modal"
                data-target="#confirmDeleteSection{{ section.id }}"
                title="Delete section">
               {% bootstrap_icon "remove" %}
+              Delete
             </a>
-            </h5>
           </div>
         </h4>
       </div>
       <div id="collapseSection{{ section.id }}"
            class="panel-collapse collapse">
         <div class="panel-body">
-          <a href="{% url "bulletin:section-post-add" section.id %}?next={{ request.get_full_path }}">
-            {% bootstrap_icon "plus" %}
-            Add a post
-          </a>
+          <div class="margin-bottom-10">
+            <a class="btn btn-default btn-xs"
+              href="{% url "bulletin:section-post-add" section.id %}?next={{ request.get_full_path }}">
+              {% bootstrap_icon "plus" %}
+              Add a post
+            </a>
+          </div>
           {% for post in section.posts.all %}
             {% include "issue_editor/section_post.html" %}
           {% endfor %}
