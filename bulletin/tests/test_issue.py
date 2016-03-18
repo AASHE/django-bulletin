@@ -104,7 +104,7 @@ class IssueTests(TestCase):
         html = issue.render_to_html(
             html_template_name='bulletin/api/test/html_template.html')
 
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html, "lxml")
         self.assertTrue(soup.find('html').find('body'))
 
     def test_render_to_html_valid_variables(self):

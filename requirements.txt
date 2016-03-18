@@ -6,28 +6,17 @@ django-bootstrap-breadcrumbs==0.7.0
 django-bootstrap-pagination==1.5.0
 django-bootstrap3==7.0.0
 django-braces==1.4.0
+django-constant-contact==1.0.3
 django-cors-headers==1.1.0
 django-datetime-widget==0.9.3
-django-extensions==1.5.1
 django-form-utils==1.0.2
 django-haystack==2.4.1
 django-jsonfield==0.9.13
 django-mathfilters==0.3.0
 django-polymorphic==0.7.2
 django-positions==0.5.1
-django-premailer==0.1.0
-django-template-repl==0.3.0
 djangorestframework==3.3.1
-elpy==1.7.1
-ipdb==0.8
-ipython==3.0.0
-mailchimp==2.0.9
-mkdocs==0.11.1
-nap==2.0.0
-premailer==2.8.3
-psycopg2==2.5.2
 -e git+https://github.com/riltsken/python-constant-contact.git#egg=python-constant-contact
 pytz==2014.7
 sorl-thumbnail==12.3
 wsgiref==0.1.2
--e git+https://github.com/AASHE/django-constant-contact.git#egg=django_constant_contact

@@ -12,7 +12,7 @@ env:
   - secure: ZpPVz2a0eHOJbzTA6CUKCboxHghoMezetC6xskX6HIEscVjRk3UP7AIT5njVakCS8YSiR0k9foGloBxwXDrcVacfwAmjIqUt9yn0X7mHsZGjOui8w00x7LkoeRGQ9uxsxlE+0dPYnpl+xGxeSQTViHHeMMW4RyhkanWGfhXQNRc=
 install:
 - pip install -r requirements.txt
-- pip install -r test_requirements.txt
+- pip install -r requirements_test.txt
 script: coverage run run_tests.py
 after_success: coveralls
 notifications:
