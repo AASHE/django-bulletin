@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [2.0.5] - 2016-03-18
+### Changed
+- Setup bug fixed.
+
 ## [2.0.3] - 2016-03-18
 ### Changed
 - Trimmed some more requirements.

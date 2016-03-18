@@ -8,7 +8,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='django-bulletin',
-      version='2.0.4',
+      version='2.0.5',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -50,4 +50,4 @@ setup(name='django-bulletin',
           "sorl-thumbnail",
           "wsgiref==0.1.2"],
       dependency_links=[
-          "git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1-py2.7.egg"])
+          "git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1.egg"])
