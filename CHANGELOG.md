@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [2.0.6] - 2016-03-18
+### Changed
+- Set zip_safe = False in setup.py.
+
 ## [2.0.5] - 2016-03-18
 ### Changed
 - Setup bug fixed.

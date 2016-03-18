@@ -8,7 +8,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='django-bulletin',
-      version='2.0.5',
+      version='2.0.6',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -35,19 +35,18 @@ setup(name='django-bulletin',
           "django-bootstrap-pagination==1.5.0",
           "django-bootstrap3==4.11.0",
           "django-braces==1.4.0",
-          "django-constant-contact==1.0.3",
+          "django-constant-contact==1.0.4",
           "django-cors-headers==0.13",
           "django-datetime-widget",
           "django-form-utils",
           "django-haystack==2.4.1",
-          "django-jsonfield==0.9.13",
+          "django-jsonfield==0.9.15",
           "django-mathfilters",
           "django-polymorphic==0.7.2",
           "django-positions==0.5.1",
           "djangorestframework==3.3.1",
-          "python-constant-contact",
+          "python-constantcontact",
           "pytz",
           "sorl-thumbnail",
           "wsgiref==0.1.2"],
-      dependency_links=[
-          "git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1.egg"])
+      zip_save=False)
