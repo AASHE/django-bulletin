@@ -1,7 +1,5 @@
 Django>=1.8,<1.9
 Pillow==3.1.1
-Werkzeug==0.10.1
-coverage==3.7.1
 django-bootstrap-breadcrumbs==0.7.0
 django-bootstrap-pagination==1.5.0
 django-bootstrap3==7.0.0
@@ -16,7 +14,7 @@ django-mathfilters==0.3.0
 django-polymorphic==0.7.2
 django-positions==0.5.1
 djangorestframework==3.3.1
--e git+https://github.com/riltsken/python-constant-contact.git#egg=python-constant-contact
+-e git+https://github.com/riltsken/python-constant-contact.git#egg=python_constantcontact-0.1.egg
 pytz==2014.7
 sorl-thumbnail==12.3
 wsgiref==0.1.2
