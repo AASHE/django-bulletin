@@ -336,7 +336,7 @@ class IssuePreviewView(TemplateView):
             **response_kwargs)
         response.render()
         cc = ConstantContact()
-        response.content = cc.inline_css(response.content)
+        response.content = cc.inline_css(response.content.decode('utf-8'))
         return response
 
 

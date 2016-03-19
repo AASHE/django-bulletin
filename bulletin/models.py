@@ -151,7 +151,7 @@ class Issue(models.Model):
             template=template_name,
             context=self.get_context_data())
         response.render()
-        return response.content
+        return response.content.decode('utf-8')
 
     def render_to_html(self, html_template_name=None):
         """Returns an HTML representation of this Issue.
