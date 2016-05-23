@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 ### Changed
+
+## [2.1] - 2016-05-23
 ### Removed
 - Admin scripts. Let users decide which (and how) django-bulletin
   models should be exposed in the admin interface.
