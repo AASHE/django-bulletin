@@ -6,16 +6,7 @@
 {% endblock %}
 
 {% block before_headline %}
-  <a class="btn-u btn-u-blue btn-block visible-xs"
-     href="{% url 'bulletin:plugins:plugin-list' %}?next={{ request.path }}"
-     type="button">
-    Submit an Item
-  </a>
-  <a class="btn-u btn-u-blue btn-block btn-u-lg visible-s hidden-xs"
-     href="{% url 'bulletin:plugins:plugin-list' %}?next={{ request.path }}"
-     type="button">
-    Submit an Item
-  </a>
+  {% include "submit_an_item_button.html" %}
 {% endblock %}
 
 {% block after_headline %}
