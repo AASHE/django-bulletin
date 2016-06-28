@@ -18,12 +18,16 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for job in object_list %}
+        {% block before_job %}{% endblock %}
         {% include "plugins/job.html" %}
+        {% block after_job %}{% endblock %}
       {% endfor %}
     </div>
     <!-- End Left Sidebar -->
 
+    {% block before_right_sidebar %}{% endblock %}
     {% include "bulletin/sidebar.html" %}
+    {% block after_right_sidebar %}{% endblock %}
 
     <!--Pagination-->
     <div class="col-md-12 md-margin-bottom-40">

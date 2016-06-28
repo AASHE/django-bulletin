@@ -33,7 +33,9 @@
       {% endfor %}
     </div>
 
+    {% block before_right_sidebar %}{% endblock %}
     {% include "bulletin/sidebar.html" %}
+    {% block after_right_sidebar %}{% endblock %}
 
   </div>
 {% endblock %}

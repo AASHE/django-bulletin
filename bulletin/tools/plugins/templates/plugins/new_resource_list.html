@@ -18,12 +18,16 @@
     <!-- Left Sidebar -->
     <div class="col-md-9 md-margin-bottom-40">
       {% for new_resource in object_list %}
+        {% block before_new %}{% endblock %}
         {% include "plugins/new_resource.html" %}
+        {% block after_new_resource %}{% endblock %}
       {% endfor %}
     </div>
     <!-- End Left Sidebar -->
 
+    {% block before_right_sidebar %}{% endblock %}
     {% include "bulletin/sidebar.html" %}
+    {% block after_right_sidebar %}{% endblock %}
 
     <!--Pagination-->
     <div class="col-md-12 md-margin-bottom-40">
