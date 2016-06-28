@@ -1,13 +1,13 @@
 <!--Event-->
 <div class="row blog blog-medium margin-bottom-40">
-  <div class="col-sm-3 text-right">
-    {% if job.image %}
-      <a href="{{ job.url }}">
-        <img class="img-responsive" src="{{ job.image.url }}" />
+  <div class="{% if event.image %} col-sm-3 {% else %} col-sm-1 {% endif %} text-right">
+    {% if event.image %}
+      <a href="{{ event.url }}">
+        <img class="img-responsive" src="{{ event.image.url }}" />
       </a>
     {% endif %}
   </div>
-  <div class="col-sm-9">
+  <div class="{% if event.image %} col-sm-9 {% else %} col-sm-11 {% endif %}">
     <a href="{{ event.url }}">
       <h2>{{ event.title }}</h2>
     </a>

@@ -1,11 +1,11 @@
 <!--New Resource-->
 <div class="row blog blog-medium margin-bottom-40">
-  <div class="col-sm-3 text-right">
+  <div class="{% if new_resource.image %} col-sm-3 {% else %} col-sm-1 {% endif %} text-right">
     {% if new_resource.image %}
       <img class="img-responsive" src="{{ new_resource.image.url }}" />
     {% endif %}
   </div>
-  <div class="col-sm-9">
+  <div class="{% if new_resource.image %} col-sm-9 {% else %} col-sm-11 {% endif %}">
     <a href="{{ new_resource.url }}">
       <h2>{{ new_resource.title }}</h2>
     </a>
