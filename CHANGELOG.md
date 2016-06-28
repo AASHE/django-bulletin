@@ -3,6 +3,16 @@
 ## [Unreleased]
 ### Changed
 
+## [2.2] - 2016-06-28
+### Changed
+- "Submit an Item" button is shorter.
+- Add before and after post hooks (blocks) in list views.
+- Add before and after right sidebar hooks (blocks).
+
+## [2.1.1] - 2016-05-24
+### Fixed
+- Version in setup.py.
+
 ## [2.1] - 2016-05-23
 ### Removed
 - Admin scripts. Let users decide which (and how) django-bulletin
