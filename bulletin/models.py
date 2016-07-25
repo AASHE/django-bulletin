@@ -557,6 +557,10 @@ class Ad(models.Model):
     show_on_website = models.BooleanField(default=False)
     include_in_newsletter = models.BooleanField(default=False)
 
+    display_weight = models.SmallIntegerField(
+        default=1,
+        help_text="Ads appear in ascending order of Display Weight")
+
     def __unicode__(self):
         return self.name
 
@@ -575,7 +579,8 @@ class Ad(models.Model):
         if show_on_website:
             ads.filter(show_on_website=True)
 
-        ads = ads.filter(start__lte=date).filter(end__gte=date)
+        ads = ads.filter(start__lte=date).filter(end__gte=date).order_by(
+            "display_weight")
 
         return ads
 
