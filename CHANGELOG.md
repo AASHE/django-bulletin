@@ -3,6 +3,11 @@
 ## [Unreleased]
 ### Changed
 
+## [2.3] - 2016-07-25
+### Added
+- Field `display_weight` to `Ad`. Ads are displayed in ascending order
+  of `display_weight`.
+
 ## [2.2] - 2016-06-28
 ### Changed
 - "Submit an Item" button is shorter.
