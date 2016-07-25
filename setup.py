@@ -8,7 +8,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='django-bulletin',
-      version='2.2.2',
+      version='2.2.3',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -16,7 +16,8 @@ setup(name='django-bulletin',
       long_description=read("README.rst"),
       packages=[
           'bulletin',
-          'bulletin.migrations'
+          'bulletin.migrations',
+          'bulletin.tools'
       ],
       classifiers=[
           'Environment :: Web Environment',
