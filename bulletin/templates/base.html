@@ -1,5 +1,4 @@
 {% load static from staticfiles %}
-{% load django_bootstrap_breadcrumbs %}
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
@@ -162,18 +161,6 @@
       </div>
     </div>
     <!--=== End Header ===-->
-
-    <!--=== Breadcrumbs ===-->
-    {% block breadcrumbs %}
-    {% endblock %}
-    <div class="breadcrumbs margin-bottom-40">
-      <div class="container">
-        <div class="pull-right">
-          {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
-        </div>
-      </div>
-    </div>
-    <!--=== End Breadcrumbs ===-->
 
     <!--=== Content Part ===-->
     <div class="container">

@@ -1,6 +1,5 @@
 Django==1.8.14
 Pillow==3.3.0
-django-bootstrap-breadcrumbs==0.7.0
 django-bootstrap-pagination==1.5.0
 django-bootstrap3==7.0.0
 django-braces==1.4.0

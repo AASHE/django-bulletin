@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [3.0] - 2016-07-25
+### Removed
+- Django bootstrap breadcrumbs. Weren't using them anyway.
+
 ## [2.3] - 2016-07-25
 ### Added
 - Field `display_weight` to `Ad`. Ads are displayed in ascending order

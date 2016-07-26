@@ -8,7 +8,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='django-bulletin',
-      version='2.3.3',
+      version='3.0',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -33,7 +33,6 @@ setup(name='django-bulletin',
           "Pillow==3.3.0",
           "django-bootstrap-breadcrumbs==0.7.0",
           "django-bootstrap-pagination==1.5.0",
-          "django-bootstrap3==4.11.0",
           "django-braces==1.4.0",
           "django-constant-contact==1.0.6",
           "django-cors-headers==0.13",
