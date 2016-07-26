@@ -65,8 +65,7 @@ def main():
 
         # required by bulletin
         'bootstrap3',
-        'bootstrap_pagination',
-        'django_bootstrap_breadcrumbs',
+        'bootstrap_pagination'
     )
 
     if django.VERSION > (1, 2):

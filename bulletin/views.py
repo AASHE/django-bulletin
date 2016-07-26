@@ -412,9 +412,6 @@ class SectionCreateView(StaffuserRequiredMixin,
     def get_context_data(self, **kwargs):
         context = super(SectionCreateView, self).get_context_data(
             **kwargs)
-        # issue and newsletter for breadcrumbs:
-        context['issue'] = self.get_issue()
-        context['newsletter'] = self.get_issue().newsletter
         # if user specified next URL on GET, push it into the form so
         # we have it on the POST:
         if 'next' in self.request.GET:
