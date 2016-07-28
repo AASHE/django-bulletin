@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [3.1] - 2016-07-28
+### Changed
+- Allow footer to show on editorial pages.
+
 ## [3.0] - 2016-07-25
 ### Removed
 - Django bootstrap breadcrumbs. Weren't using them anyway.
