@@ -5,7 +5,8 @@
 {% block content %}
   <div class="row col-md-12">
     <form method='post' action='.'
-          enctype="multipart/form-data">
+          enctype="multipart/form-data"
+          class="margin-bottom-40">
       {% csrf_token %}
       {% bootstrap_form form %}
       <input type="hidden" name="next" value="{{ next }}" />
