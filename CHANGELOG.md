@@ -3,6 +3,11 @@
 ## [Unreleased]
 ### Changed
 
+## [3.1.1] - 2016-00-09
+### Changed
+- Updated version of django-constant-contact to get
+  HTML minification of email sent to Constant Contact.
+
 ## [3.1] - 2016-07-28
 ### Changed
 - Allow footer to show on editorial pages.
