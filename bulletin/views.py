@@ -1332,6 +1332,7 @@ class AdListView(SetHeadlineMixin,
     model = Ad
     template_name = 'bulletin/ad_list.html'
     headline = 'ads'
+    paginate_by = getattr(settings, "NUM_ADS_ON_ADS_LIST", 10)
 
 
 class AdCreateView(StaffuserRequiredMixin,

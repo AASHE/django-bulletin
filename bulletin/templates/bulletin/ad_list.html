@@ -1,31 +1,45 @@
 {% extends "bulletin/base.html" %}
-
 {% load bootstrap3 %}
+{% load bootstrap_pagination %}
 
 {% block editorial_tab_class %}
   active
 {% endblock %}
 
 {% block content %}
-  <div class="row col-md-12 margin-bottom-40">
-    </ul>
-    <div class='form-actions'>
-      <a href="{% url "bulletin:ad-create" %}"
-         class="btn btn-default">
-        {% bootstrap_icon "plus" %}
-        new ad
-      </a>
+  <div class="container">
+    <div class="row col-md-12 margin-bottom-40">
+      <div class="form-actions">
+        <a href="{% url "bulletin:ad-create" %}"
+           class="btn btn-default">
+          {% bootstrap_icon "plus" %}
+          new ad
+        </a>
+      </div>
     </div>
-    <ul>
-      {% for ad in object_list %}
-        <li>
+    {% for ad in object_list %}
+      <div class="row margin-bottom-30">
+        <div class="col-sm-5">
+          {% if ad.image %}
+            <a href="{% url "bulletin:ad-update" ad.id %}">
+              <img class="img-responsive" src="{{ ad.image.url }}" />
+            </a>
+          {% endif %}
+        </div>
+        <div class="col-sm-7">
           <a href="{% url "bulletin:ad-update" ad.id %}">
             {{ ad.name }}
           </a>
-        </li>
+        </div>
+      </div>
       {% empty %}
         no ads ...
       {% endfor %}
-    </ul>
+
+      <!--Pagination-->
+      <div class="text-center">
+        {% bootstrap_paginate page_obj range=10 show_first_last="true" %}
+      </div>
+      <!--End Pagination-->
   </div>
 {% endblock %}

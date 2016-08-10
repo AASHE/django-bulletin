@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [3.2] - 2016-08-10
+### Changed
+- Ad images now displayed in editorial ad list.
+
 ## [3.1.2] - 2016-08-09
 ### Changed
 - Upgrade version of django-constant-contact.
