@@ -1330,6 +1330,7 @@ class AdListView(SetHeadlineMixin,
     """List Ads.
     """
     model = Ad
+    queryset = Ad.objects.order_by('-pk')
     template_name = 'bulletin/ad_list.html'
     headline = 'ads'
     paginate_by = getattr(settings, "NUM_ADS_ON_ADS_LIST", 10)
