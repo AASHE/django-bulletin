@@ -7,3 +7,7 @@ ratings:
   - "**.py"
 exclude_paths:
   - "**/migrations/*"
+  - "**/static/*"
+  - "bulletin/tools/react_issue_editor"  # not in production
+  - "bulletin/tools/react_issue_template_editor"  # not in production
+  - "bulletin/tools/om_issue_editor"  # not in production
