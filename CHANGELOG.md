@@ -3,6 +3,12 @@
 ## [Unreleased]
 ### Changed
 
+## [3.3] - 2017-01-07
+###
+- Updated version of django-constant-contact.
+- Updated version of Django.
+- Updated version of Pillow.
+
 ## [3.2.1] - 2016-08-18
 ### Changed
 - Updated version of django-constant-contact used.
