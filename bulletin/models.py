@@ -604,6 +604,8 @@ class ScheduledPost(models.Model):
             # A clone of this Post is already in `issue`.
             return None
         cloned_post = self.post.clone()
+        cloned_post.pub_date = issue.pub_date
+        cloned_post.save()
         return cloned_post
 
     @classmethod
