@@ -3,8 +3,12 @@
 ## [Unreleased]
 ### Changed
 
-## [3.3] - 2017-01-07
-###
+## [3.3.1] - 2017-01-19
+### Fixed
+- ScheduledPosts weren't getting inserted into Issues.
+
+## [3.3] - 2017-01-17
+### Changed
 - Updated version of django-constant-contact.
 - Updated version of Django.
 - Updated version of Pillow.
