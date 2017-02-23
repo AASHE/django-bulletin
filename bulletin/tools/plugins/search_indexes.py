@@ -1,4 +1,7 @@
+import datetime
+
 from haystack import indexes
+
 import models
 
 
@@ -11,7 +14,8 @@ class EventIndex(indexes.SearchIndex,
         return models.Event
 
     def index_queryset(self, **kwargs):
-        return models.Event.objects.filter(approved=True)
+        return models.Event.objects.filter(approved=True,
+                                           pub_date__lte=datetime.date.today())
 
 
 class JobIndex(indexes.SearchIndex,
@@ -23,7 +27,8 @@ class JobIndex(indexes.SearchIndex,
         return models.Job
 
     def index_queryset(self, **kwargs):
-        return models.Job.objects.filter(approved=True)
+        return models.Job.objects.filter(approved=True,
+                                         pub_date__lte=datetime.date.today())
 
 
 class NewResourceIndex(indexes.SearchIndex,
@@ -35,7 +40,9 @@ class NewResourceIndex(indexes.SearchIndex,
         return models.NewResource
 
     def index_queryset(self, **kwargs):
-        return models.NewResource.objects.filter(approved=True)
+        return models.NewResource.objects.filter(
+            approved=True,
+            pub_date__lte=datetime.date.today())
 
 
 class OpportunityIndex(indexes.SearchIndex,
@@ -47,7 +54,9 @@ class OpportunityIndex(indexes.SearchIndex,
         return models.Opportunity
 
     def index_queryset(self, **kwargs):
-        return models.Opportunity.objects.filter(approved=True)
+        return models.Opportunity.objects.filter(
+            approved=True,
+            pub_date__lte=datetime.date.today())
 
 
 class StoryIndex(indexes.SearchIndex,
@@ -59,4 +68,5 @@ class StoryIndex(indexes.SearchIndex,
         return models.Story
 
     def index_queryset(self, **kwargs):
-        return models.Story.objects.filter(approved=True)
+        return models.Story.objects.filter(approved=True,
+                                           pub_date__lte=datetime.date.today())

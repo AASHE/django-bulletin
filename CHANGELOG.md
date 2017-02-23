@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [3.3.2] - 2017-02-23
+### Fixed
+- Exclude posts with pub_date < today from most views and search.
+
 ## [3.3.1] - 2017-01-19
 ### Fixed
 - ScheduledPosts weren't getting inserted into Issues.

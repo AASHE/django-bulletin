@@ -1,3 +1,5 @@
+import datetime
+
 from braces.views import (LoginRequiredMixin,
                           SetHeadlineMixin,
                           StaffuserRequiredMixin)
@@ -74,7 +76,8 @@ class SidebarView(ContextMixin):
 
         for plugin in get_active_plugins():
             plugin_instances = plugin.model_class().objects.filter(
-                approved=True).order_by(
+                approved=True,
+                pub_date__lte=datetime.date.today()).order_by(
                     '-pub_date', 'title')[:5]
 
             context[plugin.model] = plugin_instances
@@ -596,7 +599,9 @@ class FrontPageView(SetHeadlineMixin,
                     ListView):
 
     model = Post
-    queryset = Post.objects.filter(approved=True).order_by('-pub_date')
+    queryset = Post.objects.filter(
+        approved=True,
+        pub_date__lte=datetime.date.today()).order_by('-pub_date')
     template_name = 'bulletin/front_page.html'
     paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'All Posts'
@@ -610,8 +615,10 @@ class PostListView(SetHeadlineMixin,
 
     def get_queryset(self, *args, **kwargs):
         model = getattr(self, 'model', Post)
-        queryset = model.objects.filter(approved=True).order_by('-pub_date',
-                                                                'title')
+        queryset = model.objects.filter(
+            approved=True,
+            pub_date__lte=datetime.date.today()).order_by('-pub_date',
+                                                          'title')
         category_id = self.request.GET.get('category')
         if category_id:
             category = get_object_or_404(Category, pk=category_id)
@@ -759,6 +766,22 @@ class PostUpdateView(StaffuserRequiredMixin,
         context['post'] = self.get_post()
 
         return context
+
+    # def form_valid(self, form):
+    #     import ipdb; ipdb.set_trace()
+    #     if "approved" in form.changed_data:
+    #         if form.cleaned_data["approved"]:
+    #             # Yay! Post was approved!
+    #             # Send congratulatory email (unless submitter was editor)
+    #             pass
+    #         elif form.cleaned_data["approved"] is False:
+    #             send_sorry_post_was_rejected_email(
+    #                 submitter=self.object.submitter)
+    #         else:
+    #             pass  # not approved and not rejected!
+
+    #     return super(PostUpdateView, self).form_valid(form)
+
 
 ######################
 # End of Post CRUD. #
