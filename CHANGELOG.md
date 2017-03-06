@@ -3,6 +3,10 @@
 ## [Unreleased]
 ### Changed
 
+## [3.3.3] - 2014-03-06
+### Changed
+- Added db indices to increase performance.
+
 ## [3.3.2] - 2017-02-23
 ### Fixed
 - Exclude posts with pub_date < today from most views and search.

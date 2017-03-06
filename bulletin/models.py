@@ -66,7 +66,8 @@ class Issue(models.Model):
     newsletter = models.ForeignKey(Newsletter,
                                    related_name='issues')
     pub_date = models.DateField(null=True,
-                                blank=True)
+                                blank=True,
+                                db_index=True)
     html_template_name = models.CharField(max_length=1024,
                                           null=True,
                                           blank=True)
@@ -220,13 +221,15 @@ class Issue(models.Model):
 
 class Category(models.Model):
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,
+                            db_index=True)
     parent = models.ForeignKey("self",
                                null=True,
                                blank=True)
     fully_qualified_name = models.CharField(max_length=1024,
                                             null=True,
-                                            blank=True)
+                                            blank=True,
+                                            db_index=True)
     private = models.BooleanField(default=False,
                                   blank=True)
     image = models.ImageField(max_length=512,
@@ -240,7 +243,7 @@ class Category(models.Model):
     class Meta:
         ordering = ['fully_qualified_name']
         verbose_name_plural = 'categories'
-        unique_together = ('parent', 'name')
+        index_together = ['parent', 'name']
 
     def _fully_qualified_name(self, delimiter='/'):
         if self.parent:
@@ -260,7 +263,8 @@ class Category(models.Model):
 
 class Section(models.Model):
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,
+                            db_index=True)
     issue = models.ForeignKey(Issue,
                               related_name='sections')
     position = models.IntegerField(null=True,
@@ -273,10 +277,11 @@ class Section(models.Model):
 
     class Meta:
         ordering = ('issue', 'position')
-        unique_together = ('issue', 'name')
+        index_together = ['issue', 'position']
 
     def __unicode__(self):
-        return unicode(self.issue) + ': ' + self.name
+        return "{issue}: {section_name}".format(
+            issue=self.issue, section_name=self.name)
 
     def up(self):
         previous_section = self.issue.sections.filter(
@@ -310,19 +315,24 @@ class Section(models.Model):
 
 class Post(polymorphic.PolymorphicModel):
 
-    date_submitted = models.DateTimeField(auto_now_add=True)
+    date_submitted = models.DateTimeField(auto_now_add=True,
+                                          db_index=True)
     # Required fields:
     title = models.CharField(max_length=255)
     url = models.URLField(max_length=1024)
     submitter = models.ForeignKey(User)
     # Optional fields:
-    approved = models.NullBooleanField(null=True)
+    approved = models.NullBooleanField(null=True,
+                                       db_index=True)
     include_in_newsletter = models.BooleanField(default=True,
-                                                blank=True)
+                                                blank=True,
+                                                db_index=True)
     feature = models.BooleanField(default=False,
-                                  blank=True)
+                                  blank=True,
+                                  db_index=True)
     pub_date = models.DateTimeField(blank=True,
-                                    null=True)
+                                    null=True,
+                                    db_index=True)
     categories = models.ManyToManyField(Category,
                                         through='PostCategory',
                                         related_name='posts',
@@ -333,7 +343,8 @@ class Post(polymorphic.PolymorphicModel):
                                 blank=True,
                                 on_delete=models.SET_NULL)
     position = models.IntegerField(null=True,
-                                   blank=True)
+                                   blank=True,
+                                   db_index=True)
     image = models.ImageField(max_length=512,
                               upload_to='django-bulletin/%Y/%m/%d/post',
                               null=True,
@@ -452,7 +463,7 @@ class PostCategory(models.Model):
 
     class Meta:
         ordering = ('post', '-primary')
-        unique_together = ('post', 'category')
+        index_together = ['post', 'category']
 
     post = models.ForeignKey(Post)
     category = models.ForeignKey(Category)
@@ -475,7 +486,6 @@ class IssueTemplate(models.Model):
 
     newsletter = models.ForeignKey(Newsletter, blank=True,
                                    related_name='issue_templates')
-    # NB: `name` is the name of this IssueTemplate.
     name = models.CharField(max_length=128,
                             unique=True)
 
@@ -523,9 +533,11 @@ class SectionTemplate(models.Model):
 
     class Meta:
         ordering = ('issue_template', 'position')
+        index_together = ['issue_template', 'position']
 
 
 class AdSize(models.Model):
+
     name = models.CharField(max_length=128,
                             unique=True)
     height = models.PositiveSmallIntegerField()
@@ -539,13 +551,15 @@ class AdSize(models.Model):
 
 
 class Ad(models.Model):
+
     name = models.CharField(max_length=128,
                             unique=True)
-
     start = models.DateField(null=True,
-                             blank=True)
+                             blank=True,
+                             db_index=True)
     end = models.DateField(null=True,
-                           blank=True)
+                           blank=True,
+                           db_index=True)
 
     size = models.ForeignKey(AdSize)
     url = models.URLField(max_length=1024)
@@ -554,12 +568,15 @@ class Ad(models.Model):
                               null=True,
                               blank=True)
 
-    show_on_website = models.BooleanField(default=False)
-    include_in_newsletter = models.BooleanField(default=False)
+    show_on_website = models.BooleanField(default=False,
+                                          db_index=True)
+    include_in_newsletter = models.BooleanField(default=False,
+                                                db_index=True)
 
     display_weight = models.SmallIntegerField(
         default=1,
-        help_text="Ads appear in ascending order of Display Weight")
+        help_text="Ads appear in ascending order of Display Weight",
+        db_index=True)
 
     def __unicode__(self):
         return self.name
@@ -588,7 +605,7 @@ class Ad(models.Model):
 class ScheduledPost(models.Model):
 
     post = models.ForeignKey(Post)
-    pub_date = models.DateField()
+    pub_date = models.DateField(db_index=True)
 
     def make_available_to_issue(self, issue):
         """Make this Post available to `issue`, unless it's already in
