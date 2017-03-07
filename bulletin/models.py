@@ -1,15 +1,13 @@
-import datetime
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.contrib.contenttypes.models import ContentType
 from django.db import models, transaction
 from django.template.response import SimpleTemplateResponse
+from django.utils import timezone
 import polymorphic
 from positions.fields import PositionField
 from python_constantcontact import cc
-import pytz
 
 from django_constant_contact.models import EmailMarketingCampaign
 
@@ -182,7 +180,7 @@ class Issue(models.Model):
         for issue in cls.objects.order_by('-pub_date'):
             if issue.pub_date is None:
                 continue
-            if issue.pub_date > datetime.date.today():
+            if issue.pub_date > timezone.now().date():  # Fear the timezone!
                 continue
             return issue
 
@@ -430,7 +428,7 @@ class Post(polymorphic.PolymorphicModel):
 
     def save(self, *args, **kwargs):
         if self.approved and not self.pub_date:
-            self.pub_date = datetime.datetime.now(pytz.utc)
+            self.pub_date = timezone.now()
         if self.section and self.position is None:
             self.position = self.section.posts.count() + 1
         elif self.section is None:
@@ -446,7 +444,7 @@ class Post(polymorphic.PolymorphicModel):
         new_post.approved = self.approved
         new_post.include_in_newsletter = self.include_in_newsletter
         new_post.feature = self.feature
-        new_post.pub_date = datetime.datetime.now(pytz.utc)
+        new_post.pub_date = timezone.now()
         new_post.image = self.image
         new_post.cloned_from = self
         new_post.save()

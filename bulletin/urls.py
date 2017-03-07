@@ -18,7 +18,7 @@ search_view = haystack.views.SearchView(searchqueryset=sqs)
 try:
     user_test = settings.SEARCH_USER_PASSES_TEST
 except AttributeError:
-    user_test = lambda user: True
+    user_test = lambda user: True  # noqa because looks fine to me oh
 
 try:
     user_fails_test_url = settings.SEARCH_USER_FAILS_TEST_URL

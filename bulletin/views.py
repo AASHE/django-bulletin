@@ -1,11 +1,10 @@
-import datetime
-
 from braces.views import (LoginRequiredMixin,
                           SetHeadlineMixin,
                           StaffuserRequiredMixin)
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
+from django.utils import timezone
 from django.views.generic import (CreateView,
                                   DeleteView,
                                   FormView,
@@ -77,8 +76,8 @@ class SidebarView(ContextMixin):
         for plugin in get_active_plugins():
             plugin_instances = plugin.model_class().objects.filter(
                 approved=True,
-                pub_date__lte=datetime.date.today()).order_by(
-                    '-pub_date', 'title')[:5]
+                pub_date__lte=timezone.now()).order_by('-pub_date',
+                                                       'title')[:5]
 
             context[plugin.model] = plugin_instances
 
@@ -601,7 +600,7 @@ class FrontPageView(SetHeadlineMixin,
     model = Post
     queryset = Post.objects.filter(
         approved=True,
-        pub_date__lte=datetime.date.today()).order_by('-pub_date')
+        pub_date__lte=timezone.now()).order_by('-pub_date')
     template_name = 'bulletin/front_page.html'
     paginate_by = settings.NUM_POSTS_ON_FRONT_PAGE
     headline = 'All Posts'
@@ -617,8 +616,7 @@ class PostListView(SetHeadlineMixin,
         model = getattr(self, 'model', Post)
         queryset = model.objects.filter(
             approved=True,
-            pub_date__lte=datetime.date.today()).order_by('-pub_date',
-                                                          'title')
+            pub_date__lte=timezone.now()).order_by('-pub_date', 'title')
         category_id = self.request.GET.get('category')
         if category_id:
             category = get_object_or_404(Category, pk=category_id)

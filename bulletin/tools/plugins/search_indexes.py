@@ -1,5 +1,4 @@
-import datetime
-
+from django.utils import timezone
 from haystack import indexes
 
 import models
@@ -15,7 +14,7 @@ class EventIndex(indexes.SearchIndex,
 
     def index_queryset(self, **kwargs):
         return models.Event.objects.filter(approved=True,
-                                           pub_date__lte=datetime.date.today())
+                                           pub_date__lte=timezone.now())
 
 
 class JobIndex(indexes.SearchIndex,
@@ -28,7 +27,7 @@ class JobIndex(indexes.SearchIndex,
 
     def index_queryset(self, **kwargs):
         return models.Job.objects.filter(approved=True,
-                                         pub_date__lte=datetime.date.today())
+                                         pub_date__lte=timezone.now())
 
 
 class NewResourceIndex(indexes.SearchIndex,
@@ -42,7 +41,7 @@ class NewResourceIndex(indexes.SearchIndex,
     def index_queryset(self, **kwargs):
         return models.NewResource.objects.filter(
             approved=True,
-            pub_date__lte=datetime.date.today())
+            pub_date__lte=timezone.now())
 
 
 class OpportunityIndex(indexes.SearchIndex,
@@ -56,7 +55,7 @@ class OpportunityIndex(indexes.SearchIndex,
     def index_queryset(self, **kwargs):
         return models.Opportunity.objects.filter(
             approved=True,
-            pub_date__lte=datetime.date.today())
+            pub_date__lte=timezone.now())
 
 
 class StoryIndex(indexes.SearchIndex,
@@ -69,4 +68,4 @@ class StoryIndex(indexes.SearchIndex,
 
     def index_queryset(self, **kwargs):
         return models.Story.objects.filter(approved=True,
-                                           pub_date__lte=datetime.date.today())
+                                           pub_date__lte=timezone.now())
