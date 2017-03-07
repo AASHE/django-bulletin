@@ -3,7 +3,12 @@
 ## [Unreleased]
 ### Changed
 
-## [3.3.3] - 2014-03-06
+## [3.3.4] - 2017-03-07
+### Fixed
+- Replaced use of naive datetimes with, ones that know about time
+  zones.
+
+## [3.3.3] - 2017-03-06
 ### Changed
 - Added db indices to increase performance.
 
