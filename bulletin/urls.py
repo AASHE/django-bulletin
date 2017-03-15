@@ -15,26 +15,22 @@ sqs = SearchQuerySet().order_by('-pub_date')
 
 search_view = haystack.views.SearchView(searchqueryset=sqs)
 
-try:
-    user_test = settings.SEARCH_USER_PASSES_TEST
-except AttributeError:
-    user_test = lambda user: True  # noqa because looks fine to me oh
+if getattr(settings, "SEARCH_LOGIN_REQUIRED", False):
+    try:
+        user_test = settings.SEARCH_USER_PASSES_TEST
+    except AttributeError:
+        user_test = lambda user: True  # noqa because looks fine to me oh
 
-try:
-    user_fails_test_url = settings.SEARCH_USER_FAILS_TEST_URL
-except AttributeError:
-    user_fails_test_url = settings.LOGIN_URL
+    try:
+        user_fails_test_url = settings.SEARCH_USER_FAILS_TEST_URL
+    except AttributeError:
+        user_fails_test_url = settings.LOGIN_URL
 
-search_view = user_passes_test(function=search_view,
-                               test_func=user_test,
-                               fail_url=user_fails_test_url)
+    search_view = user_passes_test(function=search_view,
+                                   test_func=user_test,
+                                   fail_url=user_fails_test_url)
 
-try:
-    if settings.SEARCH_LOGIN_REQUIRED:
-        search_view = login_required(search_view)
-except AttributeError:
-    pass
-
+    search_view = login_required(search_view)
 
 urlpatterns = patterns(
     '',
