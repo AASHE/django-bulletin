@@ -634,3 +634,6 @@ class ScheduledPost(models.Model):
             if post:
                 available_posts.append(post)
         return available_posts
+
+    def is_published(self):
+        return Post.objects.filter(cloned_from=self.post).count() > 0
