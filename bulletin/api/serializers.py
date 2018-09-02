@@ -9,7 +9,6 @@ from ..models import (Ad,
                       Link,
                       Newsletter,
                       Post,
-                      ScheduledPost,
                       Section,
                       SectionTemplate)
 
