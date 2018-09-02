@@ -5,11 +5,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models, transaction
 from django.template.response import SimpleTemplateResponse
 from django.utils import timezone
-import polymorphic
-from positions.fields import PositionField
-from python_constantcontact import cc
+
+import polymorphic.models
 
 from django_constant_contact.models import EmailMarketingCampaign
+from positions.fields import PositionField
+from python_constantcontact import cc
 
 
 class BadEmailAddress(Exception):
@@ -311,7 +312,7 @@ class Section(models.Model):
         return super(Section, self).save(*args, **kwargs)
 
 
-class Post(polymorphic.PolymorphicModel):
+class Post(polymorphic.models.PolymorphicModel):
 
     date_submitted = models.DateTimeField(auto_now_add=True,
                                           db_index=True)
