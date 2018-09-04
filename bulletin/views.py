@@ -50,10 +50,10 @@ from .models import (Category,
                      SectionTemplate,
                      Post,
                      Ad)
-from tools.plugins.utils import get_active_plugins
-from tools.plugins.models import (NewResource,
-                                  Opportunity,
-                                  Story)
+from bulletin.tools.plugins.utils import get_active_plugins
+from bulletin.tools.plugins.models import (NewResource,
+                                           Opportunity,
+                                           Story)
 
 
 class SidebarView(ContextMixin):
