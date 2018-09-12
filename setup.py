@@ -9,7 +9,7 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.4',
+      version='3.4.5',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -32,7 +32,7 @@ setup(name='django-bulletin',
           "Django==1.9.13",
           "Pillow<5",
           "django-bootstrap-pagination==1.5.0",
-          "django-bootstrap3==4.11.0",
+          "django-bootstrap3==7.0.0",
           "django-braces==1.4.0",
           "django-constant-contact==1.4.1",
           "django-cors-headers==0.13",
