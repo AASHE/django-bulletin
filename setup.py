@@ -9,7 +9,7 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.5',
+      version='3.4.6',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
