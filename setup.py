@@ -9,14 +9,16 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.7',
+      version='3.4.8',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
       url='https://github.com/aashe/django-bulletin',
       long_description=read("README.rst"),
       packages=[
-          'bulletin'
+          'bulletin',
+          'bulletin.tools',
+          'bulletin.tools.plugins'
       ],
       classifiers=[
           'Environment :: Web Environment',
@@ -48,4 +50,4 @@ setup(name='django-bulletin',
           "pytz",
           "sorl-thumbnail",
           "wsgiref==0.1.2"],
-      zip_save=False)
+      zip_safe=False)

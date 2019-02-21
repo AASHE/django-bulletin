@@ -1,7 +1,12 @@
 # Change Log
 
 ## [Unreleased]
-### Changed
+## Changed
+
+## [3.4.8] - 2019-02-21
+### Fixed
+- bulletin.tools and bulletin.tools.plugins were not being installed.
+- `zip_safe` option in setup.py was misspelled (as `zip_save`).
 
 ## [3.3.4] - 2017-03-07
 ### Fixed
