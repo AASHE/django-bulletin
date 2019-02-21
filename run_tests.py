@@ -4,7 +4,6 @@ import os
 import sys
 
 import django
-import dj_database_url
 
 
 BASE_PATH = os.path.dirname(__file__)
@@ -70,7 +69,16 @@ def main():
         'bootstrap_pagination'
     )
 
-    global_settings.DATABASES = {'default': dj_database_url.config()}
+    global_settings.DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_PATH, 'connpass.sqlite'),
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        }
+    }
 
     global_settings.MIDDLEWARE_CLASSES = (
         'django.contrib.sessions.middleware.SessionMiddleware',
@@ -125,11 +133,9 @@ def main():
     from django.test.utils import get_runner
     test_runner = get_runner(global_settings)
 
-    if django.VERSION > (1, 2):
-        test_runner = test_runner()
-        failures = test_runner.run_tests(['bulletin'], fail_fast=True)
-    else:
-        failures = test_runner(['bulletin'], verbosity=1, fail_fast=True)
+    test_runner = test_runner()
+    failures = test_runner.run_tests(['bulletin'], fail_fast=True)
+
     sys.exit(failures)
 
 if __name__ == '__main__':
