@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-from setuptools import setup
+from setuptools import find_packages, setup
 import os
-
 
 # Utility function to read README file
 def read(fname):
@@ -9,17 +8,13 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.8',
+      version='3.4.9',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
       url='https://github.com/aashe/django-bulletin',
       long_description=read("README.rst"),
-      packages=[
-          'bulletin',
-          'bulletin.tools',
-          'bulletin.tools.plugins'
-      ],
+      packages=find_packages(exclude=('tests',)),
       classifiers=[
           'Environment :: Web Environment',
           'Intended Audience :: Developers',
