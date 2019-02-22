@@ -102,18 +102,18 @@ def main():
     )
 
     # django-constant-contact settings
-    global_settings.CONSTANT_CONTACT_API_KEY = os.environ.get(
-        'CONSTANT_CONTACT_API_KEY', None)
-    global_settings.CONSTANT_CONTACT_ACCESS_TOKEN = os.environ.get(
-        'CONSTANT_CONTACT_ACCESS_TOKEN', None)
-    global_settings.CONSTANT_CONTACT_FROM_EMAIL = os.environ.get(
-        'CONSTANT_CONTACT_FROM_EMAIL', None)
-    global_settings.CONSTANT_CONTACT_REPLY_TO_EMAIL = os.environ.get(
-        'CONSTANT_CONTACT_REPLY_TO_EMAIL', None)
-    global_settings.CONSTANT_CONTACT_USERNAME = os.environ.get(
-        'CONSTANT_CONTACT_USERNAME', None)
-    global_settings.CONSTANT_CONTACT_PASSWORD = os.environ.get(
-        'CONSTANT_CONTACT_PASSWORD', None)
+    global_settings.CONSTANT_CONTACT_API_KEY = (
+        os.environ['CONSTANT_CONTACT_API_KEY'])
+    global_settings.CONSTANT_CONTACT_ACCESS_TOKEN = (
+        os.environ['CONSTANT_CONTACT_ACCESS_TOKEN'])
+    global_settings.CONSTANT_CONTACT_FROM_EMAIL = (
+        os.environ['CONSTANT_CONTACT_FROM_EMAIL'])
+    global_settings.CONSTANT_CONTACT_REPLY_TO_EMAIL = (
+        os.environ['CONSTANT_CONTACT_REPLY_TO_EMAIL'])
+    global_settings.CONSTANT_CONTACT_USERNAME = (
+        os.environ['CONSTANT_CONTACT_USERNAME'])
+    global_settings.CONSTANT_CONTACT_PASSWORD = (
+        os.environ['CONSTANT_CONTACT_PASSWORD'])
 
     global_settings.SECRET_KEY = "blahblah"
 
