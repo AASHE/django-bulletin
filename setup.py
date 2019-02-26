@@ -8,7 +8,7 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.9',
+      version='3.4.10',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
