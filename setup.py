@@ -8,13 +8,14 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.9b1',
+      version='3.4.9',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
       url='https://github.com/aashe/django-bulletin',
       long_description=read("README.rst"),
       packages=find_packages(exclude=('tests',)),
+      include_package_data=True,
       classifiers=[
           'Environment :: Web Environment',
           'Intended Audience :: Developers',

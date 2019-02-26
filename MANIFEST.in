@@ -2,3 +2,6 @@ include LICENSE
 include README.rst
 recursive-include bulletin/static *
 recursive-include bulletin/templates *
+recursive-include bulletin/tools/plugins/templates *
+recursive-include bulletin/tools/issue_editor/templates *
+recursive-include bulletin/api/templates *
