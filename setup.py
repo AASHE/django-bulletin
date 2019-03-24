@@ -8,7 +8,7 @@ def read(fname):
 
 
 setup(name='django-bulletin',
-      version='3.4.10',
+      version='3.4.11',
       description="A simple newsletter application.",
       author='Bob Erb',
       author_email='bob.erb@aashe.org',
@@ -36,7 +36,7 @@ setup(name='django-bulletin',
           "django-cors-headers==1.1.0",
           "django-datetime-widget==0.9.3",
           "django-form-utils==1.0.2",
-          "django-haystack==2.4.1",
+          "django-haystack==2.5.1",
           "django-jsonfield==0.9.15",
           "django-mathfilters==0.3.0",
           "django-polymorphic==1.1",
