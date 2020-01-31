@@ -15,5 +15,5 @@ django-positions==0.5.1
 djangorestframework==3.3.1
 python-constantcontact
 pytz==2014.7
-sorl-thumbnail==12.3
+sorl-thumbnail==12.6.2
 wsgiref==0.1.2
