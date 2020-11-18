@@ -92,14 +92,15 @@
       </script>
     {% endif %}
 
-    <script type="text/javascript">
-     $(document).ready(function () {
-       console.log($("#id_blurb"))
-       $("#id_blurb").maxlength({
-         alwaysShow:true
+    {% if max_post_blurb_length > 0 %}
+      <script type="text/javascript">
+       $(document).ready(function () {
+         $("#id_blurb").maxlength({
+           alwaysShow:true
+         });
        });
-     });
-    </script>
+      </script>
+    {% endif %}
 
   {% endif %}
 
