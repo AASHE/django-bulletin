@@ -4,7 +4,7 @@
 
 # django-bulletin
 
-A simple newsletter application. TEST.
+A simple newsletter application.
 
 ## Features
 
