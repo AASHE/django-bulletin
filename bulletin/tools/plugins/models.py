@@ -63,8 +63,9 @@ class Opportunity(Post):
 
 class Story(Post):
 
-    blurb = models.TextField(required=False)
+    blurb = models.TextField()
     date = models.DateTimeField()
+    dir(blurb)
 
     class Meta:
         verbose_name_plural = 'stories'
