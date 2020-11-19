@@ -51,7 +51,8 @@ if getattr(settings,
            False):
     story_widgets['blurb'] = django.forms.Textarea(
         attrs={'maxlength': settings.MAX_STORY_BLURB_LENGTH,
-               'rows': 6})
+               'rows': 6,
+               'required': False})
 
 
 class StorySubmitForm(PostSubmitForm):
