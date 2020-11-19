@@ -70,7 +70,7 @@ class StorySubmitForm(PostSubmitForm):
                   'date',
                   'primary_category',
                   'categories']
-        self.fields['blurb'].required = False
+        fields['blurb'].required = False
         labels = story_field_labels
         help_texts = story_help_texts
         widgets = story_widgets
