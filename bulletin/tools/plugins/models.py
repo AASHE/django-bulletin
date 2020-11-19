@@ -65,7 +65,7 @@ class Story(Post):
 
     blurb = models.TextField()
     date = models.DateTimeField()
-    dir(blurb)
+    print(dir(blurb))
 
     class Meta:
         verbose_name_plural = 'stories'
