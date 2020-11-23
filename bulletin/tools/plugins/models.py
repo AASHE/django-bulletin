@@ -7,10 +7,8 @@ class Event(Post):
 
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(null=True, blank=True)
-    time = models.CharField(max_length=255,
-                            null=True, blank=True)
-    organization = models.CharField(max_length=255,
-                                    null=True, blank=True)
+    time = models.CharField(max_length=255, null=True, blank=True)
+    organization = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=255)
 
     def clone(self):
@@ -38,7 +36,7 @@ class Job(Post):
 class NewResource(Post):
 
     blurb = models.TextField()
-    verbose_name = 'newresource'
+    verbose_name = "newresource"
 
     def clone(self):
         new_new_resource = NewResource()
@@ -52,7 +50,7 @@ class Opportunity(Post):
     blurb = models.TextField()
 
     class Meta:
-        verbose_name_plural = 'opportunities'
+        verbose_name_plural = "opportunities"
 
     def clone(self):
         new_opportunity = Opportunity()
@@ -63,11 +61,11 @@ class Opportunity(Post):
 
 class Story(Post):
 
-    blurb = models.TextField(is_required=False)
+    blurb = models.TextField()
     date = models.DateTimeField()
 
     class Meta:
-        verbose_name_plural = 'stories'
+        verbose_name_plural = "stories"
 
     def clone(self):
         new_story = Story()
