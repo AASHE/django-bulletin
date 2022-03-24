@@ -5,7 +5,7 @@ from ....forms import PostSubmitForm, PostUpdateForm
 from ..models import Job
 
 job_field_labels = {
-    'image': 'Institution Logo (10Mb Limit)',
+    'image': 'Institution Logo (1MB Limit)',
     'url': 'URL',
     'categories': 'Categories (choose up to 3)'
 }

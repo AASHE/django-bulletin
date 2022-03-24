@@ -79,7 +79,7 @@ class PluginListView(SidebarView,
                  of such surveys as well as results available online -
                  will be considered for publication. Jobs, as well as
                  internships and fellowships, should not be submitted
-                 as Opportunities; they should be submitted as Jobs.
+                 as Opportunities; they should be submitted as Jobs. Unpaid internships will not be accepted.
                  """),
              'button_caption': 'Submit an Opportunity',
              'submit_url': django.core.urlresolvers.reverse(
