@@ -115,6 +115,7 @@ class PluginListView(SidebarView,
                  sustainability (faculty positions in a
                  sustainability-related field can be included) and have
                  sustainability concepts as part of their job descriptions.
+                 Unpaid internships will not be accepted.
 
                  Jobs are included on the Bulletin website and in one
                  issue of the newsletter.
