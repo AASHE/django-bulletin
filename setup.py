@@ -43,7 +43,7 @@ setup(name='django-bulletin',
           "django-positions==0.5.1",
           "djangorestframework==3.3.1",
           "python-constantcontact",
-          "pytz==2014.7",
+          "pytz",
           "sorl-thumbnail==12.3",
           "wsgiref==0.1.2"],
       zip_safe=False)
