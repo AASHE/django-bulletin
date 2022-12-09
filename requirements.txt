@@ -16,4 +16,3 @@ djangorestframework==3.3.1
 python-constantcontact
 pytz==2022.6
 sorl-thumbnail==12.3
-wsgiref==0.1.2
