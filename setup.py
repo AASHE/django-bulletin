@@ -44,6 +44,5 @@ setup(name='django-bulletin',
           "djangorestframework==3.3.1",
           "python-constantcontact",
           "pytz",
-          "sorl-thumbnail==12.3",
-          "wsgiref==0.1.2"],
+          "sorl-thumbnail==12.3"],
       zip_safe=False)
