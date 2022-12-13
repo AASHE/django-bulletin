@@ -304,6 +304,15 @@ class Section(models.Model):
                 next_section.save()
         # else, already at end of list
 
+    def fix_post_positions(self):
+        """Ensures that the positions of all Posts in this Section
+        are sequential, starting at 1.
+        """
+        for position, post in enumerate(self.posts.all().order_by('position'), start=1):
+            if post.position != position:
+                post.position = position
+                post.save()
+
     def save(self, *args, **kwargs):
         if self.issue and self.position is None:
             self.position = self.issue.sections.count() + 1
@@ -375,6 +384,9 @@ class Post(polymorphic.models.PolymorphicModel):
         return self.title
 
     def up(self):
+        if self.section.posts.filter(position=self.position).count() > 1:
+            self.section.fix_post_positions()
+
         previous_post = self.section.posts.filter(
             position__lt=self.position).last()
         if previous_post:
@@ -386,6 +398,9 @@ class Post(polymorphic.models.PolymorphicModel):
         # else, already at start of list
 
     def down(self):
+        if self.section.posts.filter(position=self.position).count() > 1:
+            self.section.fix_post_positions()
+
         next_post = self.section.posts.filter(
             position__gt=self.position).first()
         if next_post:
