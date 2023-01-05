@@ -61,7 +61,7 @@ class Opportunity(Post):
 
 class Story(Post):
 
-    blurb = models.TextField()
+    blurb = models.TextField(null=True, blank=True)
     date = models.DateTimeField()
 
     class Meta:
