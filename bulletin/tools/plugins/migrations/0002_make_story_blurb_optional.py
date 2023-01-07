@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bulletin', '0009_auto_20170306_1220'),
+        ('plugins', '0001_initial'),
     ]
 
     operations = [
