@@ -163,7 +163,8 @@ class IssueFill(generics.UpdateAPIView):
         """
         issue = self.get_object()
 
-        ScheduledPost.make_all_available_to_issue(issue)
+        # Disabled in favor of reprint_scheduled_posts cronjob
+        # ScheduledPost.make_all_available_to_issue(issue)
 
         remaining_posts = Post.available_for_newsletter()
 
