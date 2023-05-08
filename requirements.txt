@@ -1,7 +1,7 @@
 Django==1.9.13
 Pillow<5
 django-bootstrap-pagination==1.7.1
-django-bootstrap3==7.0.0
+django-bootstrap3==23.1
 django-braces==1.4.0
 django-constant-contact==1.5
 django-cors-headers==1.1.0
