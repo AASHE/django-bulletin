@@ -4,7 +4,7 @@ django-bootstrap-pagination==1.7.1
 django-bootstrap3==7.0.0
 django-braces==1.4.0
 django-constant-contact==1.5
-django-cors-headers==1.1.0
+django-cors-headers==4.0.0
 django-datetime-widget==0.9.3
 django-form-utils==1.0.2
 django-haystack==3.0
