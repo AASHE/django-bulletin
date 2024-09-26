@@ -42,7 +42,7 @@ setup(name='django-bulletin',
           "django-polymorphic==3.1.0",
           "django-positions==0.6.0",
           "djangorestframework==3.3.1",
-          "python-constantcontact",
+        #   "python-constantcontact",
           "pytz==2024.2",
           "sorl-thumbnail==12.7.0"],
       zip_safe=False)

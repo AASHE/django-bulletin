@@ -10,7 +10,7 @@ import polymorphic.models
 
 from django_constant_contact.models import EmailMarketingCampaign
 from positions.fields import PositionField
-from python_constantcontact import cc
+# from python_constantcontact import cc
 
 
 class BadEmailAddress(Exception):
@@ -31,33 +31,34 @@ class Newsletter(models.Model):
         return self.name
 
     def subscribe(self, email):
-        api = cc.Api(api_key=settings.CONSTANT_CONTACT_API_KEY,
-                     username=settings.CONSTANT_CONTACT_USERNAME,
-                     password=settings.CONSTANT_CONTACT_PASSWORD)
+        # api = cc.Api(api_key=settings.CONSTANT_CONTACT_API_KEY,
+        #              username=settings.CONSTANT_CONTACT_USERNAME,
+        #              password=settings.CONSTANT_CONTACT_PASSWORD)
 
-        # Get the number portion of AASHE Events list id:
-        mailing_lists = api.get_collection()
-        mailing_list = [mailing_list for
-                        mailing_list in mailing_lists.entries
-                        if mailing_list.title == self.mailing_list][0]
-        mailing_list_id_number = mailing_list.id.split('/')[-1]
+        # # Get the number portion of AASHE Events list id:
+        # mailing_lists = api.get_collection()
+        # mailing_list = [mailing_list for
+        #                 mailing_list in mailing_lists.entries
+        #                 if mailing_list.title == self.mailing_list][0]
+        # mailing_list_id_number = mailing_list.id.split('/')[-1]
 
-        try:
-            api.get_contact_by_email(email)
-        except cc.HTTPNotFound:
-            # Create a new contact, and subscribe it:
-            try:
-                api.create_contact(email, [mailing_list_id_number])
-            except cc.HTTPBadRequest as exc:
-                if exc.status.status == 400:
-                    raise BadEmailAddress(email)
-                else:
-                    raise
-            return
-        else:
-            # Subscribe existing contact to AASHE Events list:
-            api.add_contact_to_lists_by_email(email,
-                                              [mailing_list_id_number])
+        # try:
+        #     api.get_contact_by_email(email)
+        # except cc.HTTPNotFound:
+        #     # Create a new contact, and subscribe it:
+        #     try:
+        #         api.create_contact(email, [mailing_list_id_number])
+        #     except cc.HTTPBadRequest as exc:
+        #         if exc.status.status == 400:
+        #             raise BadEmailAddress(email)
+        #         else:
+        #             raise
+        #     return
+        # else:
+        #     # Subscribe existing contact to AASHE Events list:
+        #     api.add_contact_to_lists_by_email(email,
+        #                                       [mailing_list_id_number])
+        pass
 
 
 class Issue(models.Model):
