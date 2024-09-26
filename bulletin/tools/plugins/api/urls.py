@@ -1,10 +1,10 @@
 from django.urls import re_path
 from rest_framework.urlpatterns import format_suffix_patterns
 
-import event.views
-import job.views
-import new_resource.views
-import story.views
+from . import event
+from . import job
+from . import new_resource
+from . import story
 
 urlpatterns = [
     re_path(r'^event/$',
