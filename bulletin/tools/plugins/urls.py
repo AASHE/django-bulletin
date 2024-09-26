@@ -145,6 +145,5 @@ urlpatterns = [
     #######
     # API #
     #######
-    re_path(r'^api/', include(api_urls,
-                          namespace='api')),
+    re_path(r'^api/', include(api_urls)),
 ]

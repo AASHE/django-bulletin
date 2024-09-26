@@ -313,15 +313,12 @@ urlpatterns = [
         views.AdDeleteView.as_view(),
         name='ad-delete'),
 
-    re_path(r'^issue-editor/', include(editor_urls,
-                                   namespace='issue-editor')),
+    re_path(r'^issue-editor/', include(editor_urls)),
 
-    re_path(r'^posts/', include(plugin_urls,
-                            namespace='plugins')),
+    re_path(r'^posts/', include(plugin_urls)),
 
     #######
     # API #
     #######
-    re_path(r'^api/', include(api_urls,
-                          namespace='api')),
+    re_path(r'^api/', include(api_urls)),
 ]

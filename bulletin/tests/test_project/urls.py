@@ -1,5 +1,5 @@
 from django.urls import include, re_path
 
 urlpatterns = [
-    re_path(r'^bulletin/', include('bulletin.urls', namespace='bulletin'))
+    re_path(r'^bulletin/', include('bulletin.urls'))
 ]
