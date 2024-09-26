@@ -1,34 +1,32 @@
-from django.conf.urls import include, patterns, url
+from django.urls import include, re_path
 
 import views
 from api import urls as api_urls
 
 
-urlpatterns = patterns(
-    '',
-
+urlpatterns = [
     ########################
     # Generic plugin views #
     ########################
     # List installed plugins:
-    url(r'^submit/$',
+    re_path(r'^submit/$',
         views.plugin.PluginListView.as_view(),
         name='plugin-list'),
 
     # Generic submit view.
-    url(r'^submit-post/$',
+    re_path(r'^submit-post/$',
         views.plugin.PluginSubmitView.as_view(),
         name='submit'),
 
     # Generic update view.
-    url(r'^update-post/(?P<post_type>\w+)/(?P<pk>\d+)$',
+    re_path(r'^update-post/(?P<post_type>\w+)/(?P<pk>\d+)$',
         views.plugin.PluginUpdateView.as_view(),
         name='update'),
     ###############################
     # End of generic plugin views #
     ###############################
 
-    url(r'^moderation/$',
+    re_path(r'^moderation/$',
         views.plugin.ModerationView.as_view(),
         name='moderation'),
 
@@ -36,17 +34,17 @@ urlpatterns = patterns(
     # Event views #
     ###############
     # Submit an event:
-    url(r'^event/submit/$',
+    re_path(r'^event/submit/$',
         views.event.EventSubmitView.as_view(),
         name='event-submit'),
 
     # Update an event:
-    url(r'^event/(?P<pk>\d+)$',
+    re_path(r'^event/(?P<pk>\d+)$',
         views.event.EventUpdateView.as_view(),
         name='event-update'),
 
     # List of events.
-    url(r'^event/$',
+    re_path(r'^event/$',
         views.event.EventListView.as_view(),
         name='event-list'),
     ######################
@@ -57,17 +55,17 @@ urlpatterns = patterns(
     # Job views #
     #############
     # Submit a job:
-    url(r'^job/submit/$',
+    re_path(r'^job/submit/$',
         views.job.JobSubmitView.as_view(),
         name='job-submit'),
 
     # Update a job:
-    url(r'^job/(?P<pk>\d+)$',
+    re_path(r'^job/(?P<pk>\d+)$',
         views.job.JobUpdateView.as_view(),
         name='job-update'),
 
     # List of jobs.
-    url(r'^job/$',
+    re_path(r'^job/$',
         views.job.JobListView.as_view(),
         name='job-list'),
     ####################
@@ -79,7 +77,7 @@ urlpatterns = patterns(
     #####################
     # Submit a new resource:
     # Same goes for this url as the following. It's turdy.
-    url(r'^new-resource/submit/$',
+    re_path(r'^new-resource/submit/$',
         views.new_resource.NewResourceSubmitView.as_view(),
         name='newresource-submit'),
 
@@ -90,12 +88,12 @@ urlpatterns = patterns(
     # to redirect requests to this URL to `{post-type}-update` where
     # post-type is `newresource`. Not `new-resource`. `newresource-update`
     # it must be.
-    url(r'^new-resource/(?P<pk>\d+)$',
+    re_path(r'^new-resource/(?P<pk>\d+)$',
         views.new_resource.NewResourceUpdateView.as_view(),
         name='newresource-update'),
 
     # List of new resources.
-    url(r'^new-resource/$',
+    re_path(r'^new-resource/$',
         views.new_resource.NewResourceListView.as_view(),
         name='new-resource-list'),
     ############################
@@ -106,17 +104,17 @@ urlpatterns = patterns(
     # Opportunity views #
     #####################
     # Submit a opportunity:
-    url(r'^opportunity/submit/$',
+    re_path(r'^opportunity/submit/$',
         views.opportunity.OpportunitySubmitView.as_view(),
         name='opportunity-submit'),
 
     # Update a opportunity:
-    url(r'^opportunity/(?P<pk>\d+)$',
+    re_path(r'^opportunity/(?P<pk>\d+)$',
         views.opportunity.OpportunityUpdateView.as_view(),
         name='opportunity-update'),
 
     # List of opportunities.
-    url(r'^opportunity/$',
+    re_path(r'^opportunity/$',
         views.opportunity.OpportunityListView.as_view(),
         name='opportunity-list'),
     ############################
@@ -127,17 +125,17 @@ urlpatterns = patterns(
     # Story views #
     ###############
     # Submit a story:
-    url(r'^story/submit/$',
+    re_path(r'^story/submit/$',
         views.story.StorySubmitView.as_view(),
         name='story-submit'),
 
     # Update a story:
-    url(r'^story/(?P<pk>\d+)$',
+    re_path(r'^story/(?P<pk>\d+)$',
         views.story.StoryUpdateView.as_view(),
         name='story-update'),
 
     # List of stories
-    url(r'^story/$',
+    re_path(r'^story/$',
         views.story.StoryListView.as_view(),
         name='story-list'),
     ######################
@@ -147,7 +145,7 @@ urlpatterns = patterns(
     #######
     # API #
     #######
-    url(r'^api/', include(api_urls,
+    re_path(r'^api/', include(api_urls,
                           namespace='api',
                           app_name='Newsletter Plugins API')),
-)
+]
