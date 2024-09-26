@@ -3,7 +3,7 @@ Pillow==10.4.0
 django-bootstrap-pagination @ git+https://github.com/AASHE/django-bootstrap-pagination@master#egg=django-bootstrap-pagination
 # django-bootstrap-pagination==1.7.1
 django-bootstrap3==24.3
-django-braces==1.4.0
+django-braces==1.15.0
 django-constant-contact==1.5
 django-cors-headers==1.1.0
 django-datetime-widget==0.9.3
