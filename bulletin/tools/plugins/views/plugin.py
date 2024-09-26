@@ -1,5 +1,5 @@
 import braces.views
-import django.core.urlresolvers
+from django.urls import reverse
 import django.shortcuts
 import django.views.generic
 
@@ -20,7 +20,7 @@ class PluginSubmitView(braces.views.LoginRequiredMixin,
 
     def form_valid(self, form):
         selected_type = form.cleaned_data['post_types']
-        type_url = django.core.urlresolvers.reverse(
+        type_url = reverse(
             'bulletin:plugins:{selected_type}-submit'.format(
                 selected_type=selected_type))
         return django.shortcuts.redirect(type_url)
@@ -37,7 +37,7 @@ class PluginUpdateView(braces.views.LoginRequiredMixin,
 
     def get_redirect_url(self, *args, **kwargs):
         post_type = kwargs['post_type']
-        url = django.core.urlresolvers.reverse(
+        url = reverse(
             'bulletin:plugins:{post_type}-update'.format(
                 post_type=post_type),
             kwargs={'pk': kwargs['pk']})
@@ -67,7 +67,7 @@ class PluginListView(SidebarView,
                  submission.
                  """),
              'button_caption': 'Submit a News Story',
-             'submit_url': django.core.urlresolvers.reverse(
+             'submit_url': reverse(
                  'bulletin:plugins:story-submit')},
             {'name': 'Opportunities',
              'description': (
@@ -82,7 +82,7 @@ class PluginListView(SidebarView,
                  as Opportunities; they should be submitted as Jobs. Unpaid internships will not be accepted.
                  """),
              'button_caption': 'Submit an Opportunity',
-             'submit_url': django.core.urlresolvers.reverse(
+             'submit_url': reverse(
                  'bulletin:plugins:opportunity-submit')},
             {'name': 'New Resources',
              'description': (
@@ -94,7 +94,7 @@ class PluginListView(SidebarView,
                  content, websites, newsletters and videos.
                  """),
              'button_caption': 'Submit a New Resource',
-             'submit_url': django.core.urlresolvers.reverse(
+             'submit_url': reverse(
                  'bulletin:plugins:newresource-submit')},
             {'name': 'Events',
              'description': (
@@ -105,7 +105,7 @@ class PluginListView(SidebarView,
                  dedicated to higher education.
                  """),
              'button_caption': 'Submit an Event',
-             'submit_url': django.core.urlresolvers.reverse(
+             'submit_url': reverse(
                  'bulletin:plugins:event-submit')},
             {'name': 'Jobs',
              'description': (
@@ -130,7 +130,7 @@ class PluginListView(SidebarView,
                  That's what our ads are for</a>.
                  """),
              'button_caption': 'Submit a Job',
-             'submit_url': django.core.urlresolvers.reverse(
+             'submit_url': reverse(
                  'bulletin:plugins:job-submit')}
         ]
         return context
