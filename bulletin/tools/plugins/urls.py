@@ -146,6 +146,5 @@ urlpatterns = [
     # API #
     #######
     re_path(r'^api/', include(api_urls,
-                          namespace='api',
-                          app_name='Newsletter Plugins API')),
+                          namespace='api')),
 ]

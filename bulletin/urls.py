@@ -314,17 +314,14 @@ urlpatterns = [
         name='ad-delete'),
 
     re_path(r'^issue-editor/', include(editor_urls,
-                                   namespace='issue-editor',
-                                   app_name='Issue Editor')),
+                                   namespace='issue-editor')),
 
     re_path(r'^posts/', include(plugin_urls,
-                            namespace='plugins',
-                            app_name='Plugins')),
+                            namespace='plugins')),
 
     #######
     # API #
     #######
     re_path(r'^api/', include(api_urls,
-                          namespace='api',
-                          app_name='Newsletter API')),
+                          namespace='api')),
 ]
