@@ -29,7 +29,7 @@ setup(name='django-bulletin',
       install_requires=[
           "Django>=5",
           "Pillow==10.4.0",
-          "django-bootstrap-pagination==1.7.1",
+        #   "django-bootstrap-pagination==1.7.1",
           "django-bootstrap3==24.3",
           "django-braces==1.4.0",
           "django-constant-contact==1.5",
