@@ -2,7 +2,7 @@ from braces.views import (LoginRequiredMixin,
                           SetHeadlineMixin,
                           StaffuserRequiredMixin)
 from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.views.generic import (CreateView,
