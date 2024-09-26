@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='cloned_from',
-            field=models.ForeignKey(blank=True, to='bulletin.Post', null=True),
+            field=models.ForeignKey(blank=True, to='bulletin.Post', null=True, on_delete=models.deletion.CASCADE),
         ),
     ]

@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('pub_date', models.DateField()),
-                ('post', models.ForeignKey(to='bulletin.Post')),
+                ('post', models.ForeignKey(to='bulletin.Post', on_delete=models.deletion.CASCADE)),
             ],
         ),
     ]

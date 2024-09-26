@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('private', models.BooleanField(default=False)),
                 ('image', models.ImageField(max_length=512, null=True, upload_to=b'django-bulletin/%Y/%m/%d/category', blank=True)),
                 ('url', models.URLField(max_length=640, null=True, blank=True)),
-                ('parent', models.ForeignKey(blank=True, to='bulletin.Category', null=True)),
+                ('parent', models.ForeignKey(blank=True, to='bulletin.Category', null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ['fully_qualified_name'],
@@ -134,7 +134,7 @@ class Migration(migrations.Migration):
                 ('position', models.IntegerField(null=True, blank=True)),
                 ('image', models.ImageField(max_length=512, null=True, upload_to=b'django-bulletin/%Y/%m/%d/post', blank=True)),
                 ('category', models.ForeignKey(related_name='posts', on_delete=django.db.models.deletion.SET_NULL, blank=True, to='bulletin.Category', null=True)),
-                ('polymorphic_ctype', models.ForeignKey(related_name='polymorphic_bulletin.post_set+', editable=False, to='contenttypes.ContentType', null=True)),
+                ('polymorphic_ctype', models.ForeignKey(related_name='polymorphic_bulletin.post_set+', editable=False, to='contenttypes.ContentType', null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('section', 'position'),
@@ -148,7 +148,7 @@ class Migration(migrations.Migration):
                 ('position', models.IntegerField(null=True, blank=True)),
                 ('categories', models.ManyToManyField(related_name='sections', null=True, to='bulletin.Category', blank=True)),
                 ('content_types', models.ManyToManyField(to='contenttypes.ContentType', null=True, blank=True)),
-                ('issue', models.ForeignKey(related_name='sections', to='bulletin.Issue')),
+                ('issue', models.ForeignKey(related_name='sections', to='bulletin.Issue', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('issue', 'position'),
@@ -162,7 +162,7 @@ class Migration(migrations.Migration):
                 ('position', positions.fields.PositionField(default=-1, blank=True)),
                 ('categories', models.ManyToManyField(related_name='section_templates', null=True, to='bulletin.Category', blank=True)),
                 ('content_types', models.ManyToManyField(to='contenttypes.ContentType', null=True, blank=True)),
-                ('issue_template', models.ForeignKey(related_name='section_templates', to='bulletin.IssueTemplate')),
+                ('issue_template', models.ForeignKey(related_name='section_templates', to='bulletin.IssueTemplate', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'ordering': ('issue_template', 'position'),
@@ -176,27 +176,27 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='submitter',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='link',
             name='post',
-            field=models.ForeignKey(related_name='links', blank=True, to='bulletin.Post'),
+            field=models.ForeignKey(related_name='links', blank=True, to='bulletin.Post', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='issuetemplate',
             name='newsletter',
-            field=models.ForeignKey(related_name='issue_templates', blank=True, to='bulletin.Newsletter'),
+            field=models.ForeignKey(related_name='issue_templates', blank=True, to='bulletin.Newsletter', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='issue',
             name='newsletter',
-            field=models.ForeignKey(related_name='issues', to='bulletin.Newsletter'),
+            field=models.ForeignKey(related_name='issues', to='bulletin.Newsletter', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AddField(
             model_name='ad',
             name='size',
-            field=models.ForeignKey(to='bulletin.AdSize'),
+            field=models.ForeignKey(to='bulletin.AdSize', on_delete=django.db.models.deletion.CASCADE),
         ),
         migrations.AlterUniqueTogether(
             name='section',

@@ -19,8 +19,8 @@ class Migration(migrations.Migration):
                                         auto_created=True,
                                         primary_key=True)),
                 ('primary', models.BooleanField(default=False)),
-                ('category', models.ForeignKey(to='bulletin.Category')),
-                ('post', models.ForeignKey(to='bulletin.Post')),
+                ('category', models.ForeignKey(to='bulletin.Category', on_delete=models.deletion.CASCADE)),
+                ('post', models.ForeignKey(to='bulletin.Post', on_delete=models.deletion.CASCADE)),
             ],
         ),
         migrations.AddField(
