@@ -1,12 +1,10 @@
-from django.conf.urls import patterns, url
+from django.urls import re_path
 
 from . import views
 
 
-urlpatterns = patterns(
-    '',
-
-    url(r'^newsletter/(?P<pk>\w+)/issue/$',
+urlpatterns = [
+    re_path(r'^newsletter/(?P<pk>\w+)/issue/$',
         views.NewsletterIssueListView.as_view(),
         name='newsletter-issue-list'),
-)
+]

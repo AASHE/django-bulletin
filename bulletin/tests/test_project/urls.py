@@ -1,6 +1,5 @@
-from django.conf.urls import patterns, include, url
+from django.urls import include, re_path
 
-urlpatterns = patterns(
-    '',
-    url(r'^bulletin/', include('bulletin.urls', namespace='bulletin'))
-)
+urlpatterns = [
+    re_path(r'^bulletin/', include('bulletin.urls', namespace='bulletin'))
+]
