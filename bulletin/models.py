@@ -64,7 +64,7 @@ class Newsletter(models.Model):
 class Issue(models.Model):
 
     newsletter = models.ForeignKey(Newsletter,
-                                   related_name='issues')
+                                   related_name='issues', on_delete=models.CASCADE)
     pub_date = models.DateField(null=True,
                                 blank=True,
                                 db_index=True)
@@ -224,6 +224,7 @@ class Category(models.Model):
     name = models.CharField(max_length=255,
                             db_index=True)
     parent = models.ForeignKey("self",
+                               on_delete=models.CASCADE,
                                null=True,
                                blank=True)
     fully_qualified_name = models.CharField(max_length=1024,
@@ -266,6 +267,7 @@ class Section(models.Model):
     name = models.CharField(max_length=255,
                             db_index=True)
     issue = models.ForeignKey(Issue,
+                              on_delete=models.CASCADE,
                               related_name='sections')
     position = models.IntegerField(null=True,
                                    blank=True)
@@ -329,7 +331,7 @@ class Post(polymorphic.models.PolymorphicModel):
     # Required fields:
     title = models.CharField(max_length=255)
     url = models.URLField(max_length=1024)
-    submitter = models.ForeignKey(User)
+    submitter = models.ForeignKey(User, on_delete=models.CASCADE)
     # Optional fields:
     approved = models.NullBooleanField(null=True,
                                        db_index=True)
@@ -359,6 +361,7 @@ class Post(polymorphic.models.PolymorphicModel):
                               null=True,
                               blank=True)
     cloned_from = models.ForeignKey('self',
+                                    on_delete=models.SET_NULL,
                                     null=True,
                                     blank=True)
 
@@ -480,8 +483,8 @@ class PostCategory(models.Model):
         ordering = ('post', '-primary')
         index_together = ['post', 'category']
 
-    post = models.ForeignKey(Post)
-    category = models.ForeignKey(Category)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     primary = models.BooleanField(default=False)
 
 
@@ -490,6 +493,7 @@ class Link(models.Model):
     url = models.URLField(max_length=1024)
     text = models.CharField(max_length=255)
     post = models.ForeignKey(Post,
+                             on_delete=models.CASCADE,
                              blank=True,
                              related_name='links')
 
@@ -499,7 +503,7 @@ class Link(models.Model):
 
 class IssueTemplate(models.Model):
 
-    newsletter = models.ForeignKey(Newsletter, blank=True,
+    newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE, blank=True,
                                    related_name='issue_templates')
     name = models.CharField(max_length=128,
                             unique=True)
@@ -534,6 +538,7 @@ class SectionTemplate(models.Model):
 
     name = models.CharField(max_length=255)
     issue_template = models.ForeignKey(IssueTemplate,
+                                       on_delete=models.CASCADE,
                                        related_name='section_templates')
     position = PositionField(collection='issue_template',
                              blank=True)
@@ -576,7 +581,7 @@ class Ad(models.Model):
                            blank=True,
                            db_index=True)
 
-    size = models.ForeignKey(AdSize)
+    size = models.ForeignKey(AdSize, on_delete=models.CASCADE)
     url = models.URLField(max_length=1024)
     image = models.ImageField(max_length=512,
                               upload_to='django-bulletin/%Y/%m/%d/ad',
@@ -619,7 +624,7 @@ class Ad(models.Model):
 
 class ScheduledPost(models.Model):
 
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     pub_date = models.DateField(db_index=True)
 
     def make_available_to_issue(self, issue):
