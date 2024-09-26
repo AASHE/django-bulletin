@@ -1,7 +1,7 @@
 from django.urls import include, re_path
 
 from . import views
-from api import urls as api_urls
+from .api import urls as api_urls
 
 
 urlpatterns = [
