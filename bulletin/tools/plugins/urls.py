@@ -1,6 +1,6 @@
 from django.urls import include, re_path
 
-import views
+from . import views
 from api import urls as api_urls
 
 

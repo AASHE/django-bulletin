@@ -1,2 +1,2 @@
-import serializers
-import views
+from . import serializers
+from . import views
