@@ -36,7 +36,7 @@ from .serializers import (AdSerializer,
                           SectionSerializer,
                           SectionTemplateSerializer,
                           UserSerializer)
-import permissions
+from . import permissions
 
 
 @api_view(('GET',))
