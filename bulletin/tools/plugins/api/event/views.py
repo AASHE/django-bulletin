@@ -1,6 +1,6 @@
 from bulletin.api import permissions
 from bulletin.api.views import PostList, PostDetail
-import serializers
+from . import serializers
 from bulletin.tools.plugins.models import Event
 
 
