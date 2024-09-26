@@ -333,7 +333,7 @@ class Post(polymorphic.models.PolymorphicModel):
     url = models.URLField(max_length=1024)
     submitter = models.ForeignKey(User, on_delete=models.CASCADE)
     # Optional fields:
-    approved = models.NullBooleanField(null=True,
+    approved = models.BooleanField(null=True, blank=True,
                                        db_index=True)
     include_in_newsletter = models.BooleanField(default=True,
                                                 blank=True,
