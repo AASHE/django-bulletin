@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('post_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
+                ('post_ptr', models.OneToOneField(parent_link=True, on_delete=models.deletion.CASCADE, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
                 ('start_date', models.DateTimeField()),
                 ('end_date', models.DateTimeField(null=True, blank=True)),
                 ('time', models.CharField(max_length=255, null=True, blank=True)),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Job',
             fields=[
-                ('post_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
+                ('post_ptr', models.OneToOneField(parent_link=True, on_delete=models.deletion.CASCADE, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
                 ('organization', models.CharField(max_length=255)),
             ],
             options={
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NewResource',
             fields=[
-                ('post_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
+                ('post_ptr', models.OneToOneField(parent_link=True, on_delete=models.deletion.CASCADE, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
                 ('blurb', models.TextField()),
             ],
             options={
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Opportunity',
             fields=[
-                ('post_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
+                ('post_ptr', models.OneToOneField(parent_link=True, on_delete=models.deletion.CASCADE, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
                 ('blurb', models.TextField()),
             ],
             options={
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Story',
             fields=[
-                ('post_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
+                ('post_ptr', models.OneToOneField(parent_link=True, on_delete=models.deletion.CASCADE, auto_created=True, primary_key=True, serialize=False, to='bulletin.Post')),
                 ('blurb', models.TextField()),
                 ('date', models.DateTimeField()),
             ],
