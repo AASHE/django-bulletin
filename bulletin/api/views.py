@@ -20,8 +20,8 @@ from ..models import (Ad,
                       ScheduledPost,
                       Section,
                       SectionTemplate)
-from django_constant_contact.models import (ConstantContact,
-                                            ConstantContactAPIError)
+# from django_constant_contact.models import (ConstantContact,
+#                                             ConstantContactAPIError)
 from .serializers import (AdSerializer,
                           AdSizeSerializer,
                           CategorySerializer,
@@ -245,112 +245,112 @@ class IssueUpload(generics.RetrieveUpdateDestroyAPIView):
         if rendering_errors:
             raise TemplateProducedNoOutputError(json.dumps(rendering_errors))
 
-    def put(self, request, **kwargs):
-        """Upload an Issue to Constant Contact.
-        """
-        issue = self.get_object()
+    # def put(self, request, **kwargs):
+    #     """Upload an Issue to Constant Contact.
+    #     """
+    #     issue = self.get_object()
 
-        try:
-            self.pre_upload_check(issue)
-        except TemplateProducedNoOutputError:
-            raise
-        except Exception as exc:
-            return HttpResponseServerError(content=str(exc))
+    #     try:
+    #         self.pre_upload_check(issue)
+    #     except TemplateProducedNoOutputError:
+    #         raise
+    #     except Exception as exc:
+    #         return HttpResponseServerError(content=str(exc))
 
-        email_content = issue.render_to_html()
-        text_content = issue.render_to_text()
+    #     email_content = issue.render_to_html()
+    #     text_content = issue.render_to_text()
 
-        constant_contact = ConstantContact()
+    #     constant_contact = ConstantContact()
 
-        try:
-            issue.email_marketing_campaign = (
-                constant_contact.new_email_marketing_campaign(
-                    name=issue.name,
-                    from_email=issue.from_email,
-                    from_name=issue.from_name,
-                    reply_to_email=issue.reply_to_email,
-                    subject=issue.subject,
-                    email_content=email_content,
-                    text_content=text_content,
-                    address={'organization_name': issue.organization_name,
-                             'address_line_1': issue.address_line_1,
-                             'address_line_2': issue.address_line_2,
-                             'address_line_3': issue.address_line_3,
-                             'city': issue.city,
-                             'state': issue.state,
-                             'international_state': issue.international_state,
-                             'postal_code': issue.postal_code,
-                             'country': issue.country}))
-        except ConstantContactAPIError as exc:
-            content = {
-                'ConstantContact.[new|update]_email_markeing_campaign':
-                str(exc),
-                'errors': exc.errors
-            }
-            return HttpResponseServerError(content=json.dumps(content))
-        except Exception as exc:
-            return HttpResponseServerError(str(exc))
-        else:
-            issue.save()
+    #     try:
+    #         issue.email_marketing_campaign = (
+    #             constant_contact.new_email_marketing_campaign(
+    #                 name=issue.name,
+    #                 from_email=issue.from_email,
+    #                 from_name=issue.from_name,
+    #                 reply_to_email=issue.reply_to_email,
+    #                 subject=issue.subject,
+    #                 email_content=email_content,
+    #                 text_content=text_content,
+    #                 address={'organization_name': issue.organization_name,
+    #                          'address_line_1': issue.address_line_1,
+    #                          'address_line_2': issue.address_line_2,
+    #                          'address_line_3': issue.address_line_3,
+    #                          'city': issue.city,
+    #                          'state': issue.state,
+    #                          'international_state': issue.international_state,
+    #                          'postal_code': issue.postal_code,
+    #                          'country': issue.country}))
+    #     except ConstantContactAPIError as exc:
+    #         content = {
+    #             'ConstantContact.[new|update]_email_markeing_campaign':
+    #             str(exc),
+    #             'errors': exc.errors
+    #         }
+    #         return HttpResponseServerError(content=json.dumps(content))
+    #     except Exception as exc:
+    #         return HttpResponseServerError(str(exc))
+    #     else:
+    #         issue.save()
 
-            serialized_issue = self.serializer_class(issue)
+    #         serialized_issue = self.serializer_class(issue)
 
-        return Response(status=status.HTTP_202_ACCEPTED,
-                        data=serialized_issue.data)
+    #     return Response(status=status.HTTP_202_ACCEPTED,
+    #                     data=serialized_issue.data)
 
-    def patch(self, request, **kwargs):
-        """Update an Issue up at Constant Contact.
-        """
-        issue = self.get_object()
+    # def patch(self, request, **kwargs):
+    #     """Update an Issue up at Constant Contact.
+    #     """
+    #     issue = self.get_object()
 
-        try:
-            self.pre_upload_check(issue)
-        except TemplateProducedNoOutputError:
-            raise
-        except Exception as exc:
-            return HttpResponseServerError(content=str(exc))
+    #     try:
+    #         self.pre_upload_check(issue)
+    #     except TemplateProducedNoOutputError:
+    #         raise
+    #     except Exception as exc:
+    #         return HttpResponseServerError(content=str(exc))
 
-        email_content = issue.render_to_html()
-        text_content = issue.render_to_text()
+    #     email_content = issue.render_to_html()
+    #     text_content = issue.render_to_text()
 
-        constant_contact = ConstantContact()
+    #     constant_contact = ConstantContact()
 
-        try:
-            issue.email_marketing_campaign = (
-                constant_contact.update_email_marketing_campaign(
-                    email_marketing_campaign=issue.email_marketing_campaign,
-                    name=issue.name,
-                    from_email=issue.from_email,
-                    from_name=issue.from_name,
-                    reply_to_email=issue.reply_to_email,
-                    subject=issue.subject,
-                    email_content=email_content,
-                    text_content=text_content,
-                    address={'organization_name': issue.organization_name,
-                             'address_line_1': issue.address_line_1,
-                             'address_line_2': issue.address_line_2,
-                             'address_line_3': issue.address_line_3,
-                             'city': issue.city,
-                             'state': issue.state,
-                             'international_state': issue.international_state,
-                             'postal_code': issue.postal_code,
-                             'country': issue.country}))
-        except ConstantContactAPIError as exc:
-            content = {
-                'ConstantContact.[new|update]_email_markeing_campaign':
-                str(exc),
-                'errors': exc.errors
-            }
-            return HttpResponseServerError(content=json.dumps(content))
-        except Exception as exc:
-            return HttpResponseServerError(str(exc))
-        else:
-            issue.save()
+    #     try:
+    #         issue.email_marketing_campaign = (
+    #             constant_contact.update_email_marketing_campaign(
+    #                 email_marketing_campaign=issue.email_marketing_campaign,
+    #                 name=issue.name,
+    #                 from_email=issue.from_email,
+    #                 from_name=issue.from_name,
+    #                 reply_to_email=issue.reply_to_email,
+    #                 subject=issue.subject,
+    #                 email_content=email_content,
+    #                 text_content=text_content,
+    #                 address={'organization_name': issue.organization_name,
+    #                          'address_line_1': issue.address_line_1,
+    #                          'address_line_2': issue.address_line_2,
+    #                          'address_line_3': issue.address_line_3,
+    #                          'city': issue.city,
+    #                          'state': issue.state,
+    #                          'international_state': issue.international_state,
+    #                          'postal_code': issue.postal_code,
+    #                          'country': issue.country}))
+    #     except ConstantContactAPIError as exc:
+    #         content = {
+    #             'ConstantContact.[new|update]_email_markeing_campaign':
+    #             str(exc),
+    #             'errors': exc.errors
+    #         }
+    #         return HttpResponseServerError(content=json.dumps(content))
+    #     except Exception as exc:
+    #         return HttpResponseServerError(str(exc))
+    #     else:
+    #         issue.save()
 
-        serialized_issue = self.serializer_class(issue)
+    #     serialized_issue = self.serializer_class(issue)
 
-        return Response(status=status.HTTP_202_ACCEPTED,
-                        data=serialized_issue.data)
+    #     return Response(status=status.HTTP_202_ACCEPTED,
+    #                     data=serialized_issue.data)
 
     def delete(self, request, **kwargs):
         issue = self.get_object()

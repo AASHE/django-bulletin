@@ -8,7 +8,7 @@ from django.utils import timezone
 
 import polymorphic.models
 
-from django_constant_contact.models import EmailMarketingCampaign
+# from django_constant_contact.models import EmailMarketingCampaign
 from positions.fields import PositionField
 # from python_constantcontact import cc
 
@@ -74,10 +74,10 @@ class Issue(models.Model):
     text_template_name = models.CharField(max_length=1024,
                                           null=True,
                                           blank=True)
-    email_marketing_campaign = models.OneToOneField(EmailMarketingCampaign,
-                                                    null=True,
-                                                    blank=True,
-                                                    on_delete=models.SET_NULL)
+    # email_marketing_campaign = models.OneToOneField(EmailMarketingCampaign,
+    #                                                 null=True,
+    #                                                 blank=True,
+    #                                                 on_delete=models.SET_NULL)
     introduction = models.TextField(null=True, blank=True)
 
     # The following are fields required by Constant Contact:

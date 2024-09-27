@@ -14,7 +14,7 @@ from django.views.generic import (CreateView,
 from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 
-from django_constant_contact.models import ConstantContact
+# from django_constant_contact.models import ConstantContact
 
 from .forms import (IssueCreateForm,
                     IssueDeleteForm,
@@ -337,8 +337,8 @@ class IssuePreviewView(TemplateView):
             context,
             **response_kwargs)
         response.render()
-        cc = ConstantContact()
-        response.content = cc.inline_css(response.content.decode('utf-8'))
+        # cc = ConstantContact()
+        # response.content = cc.inline_css(response.content.decode('utf-8'))
         return response
 
 

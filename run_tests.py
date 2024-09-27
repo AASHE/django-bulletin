@@ -60,7 +60,7 @@ def main():
         # AASHE Apps
         'bulletin',
         'bulletin.tools.plugins',
-        'django_constant_contact',
+        # 'django_constant_contact',
 
         'haystack',
 

@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('contenttypes', '0002_remove_content_type_name'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('django_constant_contact', '__first__'),
+        # ('django_constant_contact', '__first__'),
     ]
 
     operations = [
@@ -76,7 +76,7 @@ class Migration(migrations.Migration):
                 ('international_state', models.CharField(max_length=128, null=True, blank=True)),
                 ('postal_code', models.CharField(max_length=128, null=True)),
                 ('country', models.CharField(max_length=128, null=True)),
-                ('email_marketing_campaign', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='django_constant_contact.EmailMarketingCampaign')),
+                # ('email_marketing_campaign', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, blank=True, to='django_constant_contact.EmailMarketingCampaign')),
             ],
             options={
                 'ordering': ('-pub_date',),
