@@ -3,6 +3,7 @@ from django.urls import include, re_path
 from . import views
 from .api import urls as api_urls
 
+app_name = 'plugins'
 
 urlpatterns = [
     ########################

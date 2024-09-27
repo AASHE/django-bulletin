@@ -3,6 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from . import views
 
+app_name = 'api'
 
 urlpatterns = [
     re_path(r'^$', views.api_root, name='newsletter-api-root'),

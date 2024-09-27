@@ -6,6 +6,8 @@ from . import job
 from . import new_resource
 from . import story
 
+app_name = 'plugins_api'
+
 urlpatterns = [
     re_path(r'^event/$',
         event.views.EventList.as_view(),
