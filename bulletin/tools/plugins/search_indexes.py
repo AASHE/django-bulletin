@@ -1,7 +1,7 @@
 from django.utils import timezone
 from haystack import indexes
 
-import models
+from .models import *
 
 
 class EventIndex(indexes.SearchIndex,
@@ -10,10 +10,10 @@ class EventIndex(indexes.SearchIndex,
     pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
-        return models.Event
+        return Event
 
     def index_queryset(self, **kwargs):
-        return models.Event.objects.filter(approved=True,
+        return Event.objects.filter(approved=True,
                                            pub_date__lte=timezone.now())
 
 
@@ -23,10 +23,10 @@ class JobIndex(indexes.SearchIndex,
     pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
-        return models.Job
+        return Job
 
     def index_queryset(self, **kwargs):
-        return models.Job.objects.filter(approved=True,
+        return Job.objects.filter(approved=True,
                                          pub_date__lte=timezone.now())
 
 
@@ -36,10 +36,10 @@ class NewResourceIndex(indexes.SearchIndex,
     pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
-        return models.NewResource
+        return NewResource
 
     def index_queryset(self, **kwargs):
-        return models.NewResource.objects.filter(
+        return NewResource.objects.filter(
             approved=True,
             pub_date__lte=timezone.now())
 
@@ -50,10 +50,10 @@ class OpportunityIndex(indexes.SearchIndex,
     pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
-        return models.Opportunity
+        return Opportunity
 
     def index_queryset(self, **kwargs):
-        return models.Opportunity.objects.filter(
+        return Opportunity.objects.filter(
             approved=True,
             pub_date__lte=timezone.now())
 
@@ -64,8 +64,8 @@ class StoryIndex(indexes.SearchIndex,
     pub_date = indexes.DateTimeField(model_attr='pub_date', null=True)
 
     def get_model(self):
-        return models.Story
+        return Story
 
     def index_queryset(self, **kwargs):
-        return models.Story.objects.filter(approved=True,
+        return Story.objects.filter(approved=True,
                                            pub_date__lte=timezone.now())
