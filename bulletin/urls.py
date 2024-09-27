@@ -32,6 +32,8 @@ if getattr(settings, "SEARCH_LOGIN_REQUIRED", False):
 
     search_view = login_required(search_view)
 
+app_name = 'bulletin'
+
 urlpatterns = [
     re_path(r'^$',
         views.FrontPageView.as_view(),
