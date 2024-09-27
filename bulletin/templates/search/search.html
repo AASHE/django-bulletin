@@ -67,7 +67,7 @@
   {% if query %}
     {% for result in page.object_list %}
       {% if result.object.url %}  {% comment %} Skip Posts with no URL. {% endcomment %}
-        {% if result.content_type = 'plugins.story' %}
+        {% if result.content_type == 'plugins.story' %}
           {% with result.object as story %}
             <div class="row blog blog-medium">
               <div class="col-sm-3 text-right">
@@ -80,7 +80,7 @@
             </div>
             {% include "plugins/story.html" %}
           {% endwith %}
-        {% elif result.content_type = 'plugins.event' %}
+        {% elif result.content_type == 'plugins.event' %}
           {% with result.object as event %}
             <div class="row blog blog-medium">
               <div class="col-sm-3 text-right">
@@ -93,7 +93,7 @@
             </div>
             {% include "plugins/event.html" %}
           {% endwith %}
-        {% elif result.content_type = 'plugins.job' %}
+        {% elif result.content_type == 'plugins.job' %}
           {% with result.object as job %}
             <div class="row blog blog-medium">
               <div class="col-sm-3 text-right">
@@ -106,7 +106,7 @@
             </div>
             {% include "plugins/job.html" %}
           {% endwith %}
-        {% elif result.content_type = 'plugins.newresource' %}
+        {% elif result.content_type == 'plugins.newresource' %}
           {% with result.object as new_resource %}
             <div class="row blog blog-medium">
               <div class="col-sm-3 text-right">
@@ -119,7 +119,7 @@
             </div>
             {% include "plugins/new_resource.html" %}
           {% endwith %}
-        {% elif result.content_type = 'plugins.opportunity' %}
+        {% elif result.content_type == 'plugins.opportunity' %}
           {% with result.object as opportunity %}
             <div class="row blog blog-medium">
               <div class="col-sm-3 text-right">
