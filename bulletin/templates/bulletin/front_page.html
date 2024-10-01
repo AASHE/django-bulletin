@@ -24,7 +24,7 @@
         <div class="row blog blog-medium margin-bottom-40">
           <div class="col-sm-3 text-right">
             {% if post.image %}
-              <img class="img-responsive" src="{{ post.image.url }}" />
+              <img class="img-responsive" src="{{ STATIC_URL }}{{ post.image.url }}" />
             {% endif %}
           </div>
           <div class="col-sm-9">

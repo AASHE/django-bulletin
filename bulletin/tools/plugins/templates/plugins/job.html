@@ -3,7 +3,7 @@
   <div class="col-sm-3 text-right">
     {% if job.image %}
       <a href="{{ job.url }}">
-        <img class="img-responsive" src="{{ job.image.url }}" />
+        <img class="img-responsive" src="{{ STATIC_URL }}{{ job.image.url }}" />
       </a>
     {% endif %}
   </div>

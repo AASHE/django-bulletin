@@ -2,7 +2,7 @@
 <div class="row blog blog-medium margin-bottom-40">
   <div class="{% if opportunity.image %} col-sm-3 {% else %} col-sm-1 {% endif %} text-right">
     {% if opportunity.image %}
-      <img class="img-responsive" src="{{ opportunity.image.url }}" />
+      <img class="img-responsive" src="{{ STATIC_URL }}{{ opportunity.image.url }}" />
     {% endif %}
   </div>
   <div class="{% if opportunity.image %} col-sm-9 {% else %} col-sm-11 {% endif %}">

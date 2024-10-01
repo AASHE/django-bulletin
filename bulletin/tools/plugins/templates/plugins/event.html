@@ -3,7 +3,7 @@
   <div class="{% if event.image %} col-sm-3 {% else %} col-sm-1 {% endif %} text-right">
     {% if event.image %}
       <a href="{{ event.url }}">
-        <img class="img-responsive" src="{{ event.image.url }}" />
+        <img class="img-responsive" src="{{ STATIC_URL }}{{ event.image.url }}" />
       </a>
     {% endif %}
   </div>

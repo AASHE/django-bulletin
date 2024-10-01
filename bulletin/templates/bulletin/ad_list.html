@@ -22,7 +22,7 @@
         <div class="col-sm-5">
           {% if ad.image %}
             <a href="{% url "bulletin:ad-update" ad.id %}">
-              <img class="img-responsive" src="{{ ad.image.url }}" />
+              <img class="img-responsive" src="{{ STATIC_URL }}{{ ad.image.url }}" />
             </a>
           {% endif %}
         </div>
